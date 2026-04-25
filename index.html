@@ -1,422 +1,141 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <title>i12 Cloud Broker</title>
-  <meta name="description" content="Independent cloud phone system broker for small businesses. Compare providers, design call flows, and get set up right—explained in plain English." />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Signal Restore</title>
 
   <style>
-    :root{
-      /* Base */
-      --bg:#0b1020;
-      --panel:#0f1733;
-      --text:#e9ecf5;
-      --muted:#b8c0da;
-      --line:rgba(255,255,255,.12);
-      --shadow:0 18px 50px rgba(0,0,0,.45);
-      --radius:16px;
-
-      /* Brand palette (your scheme) */
-      --mexican-pink:#e4007c;
-      --steel-azure:#234C91;
-      --tropical-teal:#25BCC0;
-      --dark-orange:#F98F21;
-      --flag-red:#D71919;
-      --golden-pollen:#FFC95B;
-
-      /* UI usage */
-      --brand: var(--tropical-teal);
-      --brand2: var(--mexican-pink);
-      --accent: var(--dark-orange);
-      --cta: var(--flag-red);
-      --highlight: var(--golden-pollen);
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0d0f14;
+      color: #ffffff;
     }
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background:
-        radial-gradient(900px 500px at 15% 5%, rgba(37,188,192,.18), transparent 60%),
-        radial-gradient(900px 500px at 85% 0%, rgba(228,0,124,.16), transparent 60%),
-        radial-gradient(900px 500px at 80% 90%, rgba(249,143,33,.12), transparent 60%),
-        linear-gradient(180deg, #070a14 0%, var(--bg) 65%, #070a14 100%);
-      color:var(--text);
-    }
-    a{color:inherit}
-    .container{max-width:1080px;margin:0 auto;padding:28px 18px}
-
-    .nav{
-      display:flex;align-items:center;justify-content:space-between;
-      gap:14px;padding:14px 16px;border:1px solid var(--line);
-      border-radius:999px;background:rgba(15,23,51,.55);backdrop-filter: blur(10px);
-    }
-    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px;}
-    .dot{
-      width:12px;height:12px;border-radius:999px;
-      background:linear-gradient(135deg,var(--brand),var(--brand2));
-      box-shadow:0 0 0 6px rgba(37,188,192,.08);
-    }
-    .nav a{opacity:.9;text-decoration:none}
-    .navlinks{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
-
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:8px;
-      padding:10px 14px;border-radius:999px;border:1px solid var(--line);
-      background:rgba(255,255,255,.05);text-decoration:none;font-weight:650;
-      transition:transform .08s ease, border-color .2s ease, background .2s ease;
-    }
-    .btn:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.22)}
-    .btn.primary{
-      background:linear-gradient(135deg, rgba(37,188,192,.22), rgba(228,0,124,.18));
-      border-color:rgba(37,188,192,.40);
-    }
-    .btn.cta{
-      background:linear-gradient(135deg, rgba(215,25,25,.28), rgba(249,143,33,.16));
-      border-color:rgba(215,25,25,.45);
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 40px 20px;
     }
 
-    .hero{padding:42px 0 26px}
-    .grid{
-      display:grid;gap:18px;
-      grid-template-columns: 1.2fr .8fr;
-      align-items:stretch;
-    }
-    @media (max-width:900px){ .grid{grid-template-columns:1fr} }
-
-    .card{
-      background:rgba(15,23,51,.58);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:22px;
-      backdrop-filter: blur(10px);
+    .hero {
+      text-align: center;
+      padding: 80px 0;
+      background: radial-gradient(circle at top, #121622, #0d0f14);
     }
 
-    .h1{font-size:42px;line-height:1.05;margin:0 0 12px}
-    @media (max-width:540px){ .h1{font-size:34px} }
-
-    .sub{color:var(--muted);font-size:16px;line-height:1.65;margin:0 0 14px}
-
-    .badges{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 0}
-    .badge{
-      font-size:13px;color:var(--muted);
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.04);
-      padding:7px 10px;border-radius:999px;
+    h1 {
+      font-size: 2.5em;
     }
 
-    .kpis{display:grid;gap:12px;grid-template-columns:1fr 1fr}
-    .kpi{
-      padding:14px;border-radius:14px;border:1px solid var(--line);
-      background:rgba(255,255,255,.04)
-    }
-    .kpi strong{display:block;font-size:22px}
-    .kpi span{color:var(--muted);font-size:13px;line-height:1.45}
-
-    .section{padding:18px 0}
-    h2{margin:0 0 12px;font-size:22px}
-    h3{margin:0 0 10px;font-size:16px}
-    .list{margin:0;padding-left:18px;color:var(--muted);line-height:1.7}
-    .list li{margin:8px 0}
-
-    .cols3{display:grid;gap:14px;grid-template-columns:repeat(3,1fr)}
-    @media (max-width:900px){ .cols3{grid-template-columns:1fr} }
-
-    hr{border:0;border-top:1px solid var(--line);margin:16px 0}
-    .small{color:var(--muted);font-size:13px;line-height:1.6}
-    .footer{padding:24px 0 50px;color:var(--muted);font-size:13px;line-height:1.6}
-
-    code{background:rgba(255,255,255,.06);padding:2px 6px;border-radius:8px;border:1px solid rgba(255,255,255,.1)}
-
-    .notice{
-      border-left:3px solid rgba(37,188,192,.60);
-      padding:12px 12px;background:rgba(37,188,192,.07);
-      border-radius:12px;color:var(--muted)
+    h2 {
+      color: #F98F21;
     }
 
-    /* Contact form */
-    form{display:grid;gap:10px;margin-top:10px}
-    label{font-size:13px;color:var(--muted)}
-    input, textarea{
-      width:100%;
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.14);
-      border-radius:12px;
-      padding:11px 12px;
-      color:var(--text);
-      outline:none;
+    .cta {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 24px;
+      background: #F98F21;
+      color: #000;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 6px;
     }
-    input:focus, textarea:focus{
-      border-color:rgba(37,188,192,.55);
-      box-shadow:0 0 0 4px rgba(37,188,192,.10);
-    }
-    textarea{min-height:120px;resize:vertical}
-    .form-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .form-hint{margin:0;color:var(--muted);font-size:12.5px;line-height:1.55}
 
-    .pill{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:7px 10px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(255,255,255,.03);
-      color:var(--muted);
-      font-size:13px;
+    .section {
+      padding: 60px 0;
     }
-    .pill b{color:var(--text);font-weight:700}
+
+    .section.dark {
+      background: #121622;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: #121622;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    .contact {
+      text-align: center;
+    }
+
+    .contact-info p {
+      margin: 5px 0;
+    }
   </style>
 </head>
 
 <body>
+
+<section class="hero">
   <div class="container">
-    <header class="nav">
-      <div class="brand">
-        <span class="dot" aria-hidden="true"></span>
-        <span>i12 Cloud Broker</span>
-      </div>
+    <h1>Your Business Phone System—Handled.</h1>
+    <p>We set up, fix, and manage cloud phone systems—and deal with providers so you don’t have to.</p>
 
-      <nav class="navlinks" aria-label="Primary">
-        <a href="#services">Services</a>
-        <a href="#proof">Proof</a>
-        <a href="#who">Who I help</a>
-        <a href="#contact" class="btn cta">Contact</a>
-      </nav>
-    </header>
-
-    <main>
-      <section class="hero">
-        <div class="grid">
-          <div class="card">
-            <p class="badge" style="display:inline-block;margin:0 0 12px;">Independent broker • Cloud phone systems</p>
-
-            <h1 class="h1">Business phones that just work.</h1>
-
-            <p class="sub">
-              i12 Cloud Broker helps small businesses compare providers, choose the right cloud phone system, and get set up
-              with routing that matches how calls should flow in the real world.
-            </p>
-
-            <p class="sub">
-              The goal is simple: fewer missed calls, clearer routing, smoother porting, and a setup you can actually maintain.
-              Everything is explained in plain English.
-            </p>
-
-            <div class="badges" aria-label="Highlights">
-              <span class="badge">Vendor-neutral guidance</span>
-              <span class="badge">Call flow design</span>
-              <span class="badge">Porting coordination</span>
-              <span class="badge">Fix messy setups</span>
-              <span class="badge">Clarity + ownership</span>
-            </div>
-
-            <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap">
-              <a class="btn cta" href="#contact">Start with a quick assessment</a>
-              <a class="btn primary" href="#services">See services</a>
-            </div>
-          </div>
-
-          <aside class="card">
-            <h2 style="margin:0 0 12px;">What you get</h2>
-
-            <div class="kpis">
-              <div class="kpi">
-                <strong>Shortlist</strong>
-                <span>Providers that fit your needs</span>
-              </div>
-
-              <div class="kpi">
-                <strong>Plan</strong>
-                <span>Clear setup + cutover steps</span>
-              </div>
-
-              <div class="kpi">
-                <strong>Flow</strong>
-                <span>IVR, queues, hours, voicemail</span>
-              </div>
-
-              <div class="kpi">
-                <strong>Confidence</strong>
-                <span>No guessing. Documented changes.</span>
-              </div>
-            </div>
-
-            <hr>
-
-            <div class="notice">
-              <strong style="color:var(--text)">Publishing note:</strong>
-              This is a single-file site. Paste into <code>index.html</code>.
-              If you want the built-in contact form to work, set the form endpoint (see Contact section).
-            </div>
-
-            <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
-              <span class="pill"><b>Email:</b> kathymelendez80@gmail.com</span>
-              <span class="pill"><b>Domain:</b> www.i12cloudbroker.com</span>
-            </div>
-
-            <p class="small" style="margin-top:12px;">
-              GitHub Pages (after enabled):
-              <code>i12connect.github.io/&lt;repo&gt;/</code>
-            </p>
-          </aside>
-        </div>
-      </section>
-
-      <section class="section card" id="services">
-        <h2>Services</h2>
-
-        <div class="cols3">
-          <div class="kpi">
-            <h3>1) Phone system selection</h3>
-            <ul class="list">
-              <li>Requirements discovery (users, locations, call flow)</li>
-              <li>Provider comparison + feature mapping</li>
-              <li>Recommendation + rollout plan</li>
-            </ul>
-          </div>
-
-          <div class="kpi">
-            <h3>2) Audit + repair</h3>
-            <ul class="list">
-              <li>Routing / IVR / queue review</li>
-              <li>Missed calls, voicemail gaps, call quality triage</li>
-              <li>Fix plan: quick wins vs redesign</li>
-            </ul>
-          </div>
-
-          <div class="kpi">
-            <h3>3) Optimization</h3>
-            <ul class="list">
-              <li>Clean routing logic and business hours</li>
-              <li>Call recording, reporting basics, simple dashboards</li>
-              <li>Documentation so changes stay maintainable</li>
-            </ul>
-          </div>
-        </div>
-
-        <hr>
-
-        <div class="kpi">
-          <h3>“Lost number” recovery support</h3>
-          <p class="small" style="margin:0">
-            If your business lost track of where the phone number is hosted or who controls the port, i12 can help document
-            the situation, identify likely carrier paths, and guide the recovery steps.
-          </p>
-        </div>
-      </section>
-
-      <section class="section card" id="proof">
-        <h2>Proof (public recognition)</h2>
-
-        <p class="small">
-          The strongest pattern in customer feedback is consistent follow-through: clear explanations, patience with non-technical owners,
-          and creative solutions when the “default” setup does not fit.
-        </p>
-
-        <ul class="list">
-          <li><strong>Implementation support:</strong> complex auto-attendant / call flow setup</li>
-          <li><strong>Creative solutions:</strong> edge cases and unusual queue routing</li>
-          <li><strong>Proactive tools:</strong> checklists and tracking during transitions</li>
-          <li><strong>Clear guidance:</strong> walking owners through porting and setup</li>
-        </ul>
-
-        <p class="small" style="margin-top:12px;">
-          Optional: add your review library link here later.
-        </p>
-      </section>
-
-      <section class="section card" id="who">
-        <h2>Who I help</h2>
-
-        <ul class="list">
-          <li>Small businesses without dedicated telecom staff</li>
-          <li>Remote-first teams that rely on clean routing and dependable calling</li>
-          <li>Businesses migrating from legacy PBX or switching VoIP vendors</li>
-          <li>Teams with a “good enough” system that needs cleanup and optimization</li>
-        </ul>
-      </section>
-
-      <section class="section card" id="contact">
-        <h2>Contact</h2>
-
-        <p class="small" style="margin:0 0 12px;">
-          Fastest path: email me, or send a quick intake message here. I typically reply within 1 business day.
-        </p>
-
-        <div class="cols3" style="margin-top:10px;">
-          <div class="kpi">
-            <h3>Email</h3>
-            <p class="small" style="margin:0">
-              <a class="btn primary" href="mailto:kathymelendez80@gmail.com">kathymelendez80@gmail.com</a>
-            </p>
-          </div>
-
-          <div class="kpi">
-            <h3>Book a call</h3>
-            <p class="small" style="margin:0">
-              <!-- Replace with your Calendly/Cal.com link when ready -->
-              <a class="btn" href="#" target="_blank" rel="noreferrer noopener">Calendar link (add yours)</a>
-            </p>
-          </div>
-
-          <div class="kpi">
-            <h3>What to send</h3>
-            <p class="small" style="margin:0">
-              Current provider (if any), number of users, business hours, and what you want callers to hear and do.
-            </p>
-          </div>
-        </div>
-
-        <hr>
-
-        <div class="kpi">
-          <h3 style="margin:0 0 8px;">Quick intake message</h3>
-
-          <!--
-            To make this form work:
-            1) Create a Formspree form (or similar) and replace the action URL below.
-               Example: https://formspree.io/f/abcdwxyz
-            2) Or remove the form entirely and keep email-only.
-          -->
-          <form action="https://formspree.io/f/REPLACE_WITH_YOUR_FORM_ID" method="POST">
-            <div>
-              <label for="name">Name</label>
-              <input id="name" name="name" autocomplete="name" required />
-            </div>
-
-            <div>
-              <label for="email">Email</label>
-              <input id="email" name="email" type="email" autocomplete="email" required />
-            </div>
-
-            <div>
-              <label for="message">What are you trying to fix or set up?</label>
-              <textarea id="message" name="message" required></textarea>
-            </div>
-
-            <div class="form-actions">
-              <button class="btn cta" type="submit">Send message</button>
-              <span class="form-hint">
-                If you prefer, email directly:
-                <a href="mailto:kathymelendez80@gmail.com">kathymelendez80@gmail.com</a>
-              </span>
-            </div>
-          </form>
-        </div>
-      </section>
-
-      <p class="footer">
-        © <span id="year"></span> i12 Cloud Broker. All rights reserved.
-        <br>Built as a single-file homepage you can paste into <code>index.html</code>.
-        <br>Independent broker. Not affiliated with any single provider. Provider availability, pricing, and features may change.
-      </p>
-    </main>
+    <a href="tel:9519000067" class="cta">Call Now</a>
   </div>
+</section>
 
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+<section class="section dark">
+  <div class="container">
+    <h2>Is Your Phone System Causing Problems?</h2>
+    <ul>
+      <li>Calls going to the wrong place</li>
+      <li>No one understands the system</li>
+      <li>Support isn’t helping</li>
+      <li>You may be overpaying</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>What We Do</h2>
+
+    <div class="grid">
+      <div class="card"><h3>Setup</h3><p>We configure your system the right way.</p></div>
+      <div class="card"><h3>Fix</h3><p>We troubleshoot and resolve issues.</p></div>
+      <div class="card"><h3>Manage</h3><p>We handle ongoing system updates.</p></div>
+      <div class="card"><h3>Advocate</h3><p>We deal with providers for you.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section dark">
+  <div class="container">
+    <h2>Why Signal Restore</h2>
+    <ul>
+      <li>Independent guidance</li>
+      <li>Deep VoIP expertise</li>
+      <li>Fast issue resolution</li>
+      <li>No confusion</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section contact">
+  <div class="container">
+    <h2>Let’s Fix Your Phone System</h2>
+    <p>Call or reach out today.</p>
+
+    <a href="tel:9519000067" class="cta">Call 951-900-0067</a>
+
+    <div class="contact-info">
+      <p>📧 kathy@signal-restore.com</p>
+      <p>🌐 signal-restore.com</p>
+      <p>📍 Riverside, OC, LA</p>
+    </div>
+  </div>
+</section>
+
 </body>
 </html>
