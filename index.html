@@ -1,140 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Signal Restore v2</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Signal Restore</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0d0f14;
-      color: #ffffff;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #05070d;
+  color: #fff;
+}
 
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 40px 20px;
-    }
+/* NAV */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+}
 
-    .hero {
-      text-align: center;
-      padding: 80px 0;
-      background: radial-gradient(circle at top, #121622, #0d0f14);
-    }
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-    h1 {
-      font-size: 2.5em;
-    }
+.logo img {
+  width: 45px;
+}
 
-    h2 {
-      color: #F98F21;
-    }
+.brand {
+  font-weight: bold;
+  letter-spacing: 2px;
+}
 
-    .cta {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 12px 24px;
-      background: #F98F21;
-      color: #000;
-      text-decoration: none;
-      font-weight: bold;
-      border-radius: 6px;
-    }
+.restore {
+  color: #F98F21;
+}
 
-    .section {
-      padding: 60px 0;
-    }
+/* HERO */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 80px 40px;
+  flex-wrap: wrap;
+}
 
-    .section.dark {
-      background: #121622;
-    }
+.hero-text {
+  max-width: 550px;
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
+.hero h1 {
+  font-size: 48px;
+  line-height: 1.2;
+}
 
-    .card {
-      background: #121622;
-      padding: 20px;
-      border-radius: 8px;
-    }
+.highlight {
+  color: #25BCC0;
+}
 
-    .contact {
-      text-align: center;
-    }
+.cta {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 14px 26px;
+  background: #F98F21;
+  color: #000;
+  font-weight: bold;
+  border-radius: 6px;
+  text-decoration: none;
+}
 
-    .contact-info p {
-      margin: 5px 0;
-    }
-  </style>
+.cta.secondary {
+  background: transparent;
+  border: 1px solid #25BCC0;
+  color: #25BCC0;
+  margin-left: 10px;
+}
+
+/* HERO IMAGE */
+.hero-img img {
+  width: 300px;
+}
+
+/* STRIP */
+.strip {
+  margin: 40px;
+  padding: 20px;
+  border: 1px solid #1f2937;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.strip span {
+  color: #25BCC0;
+}
+
+/* SERVICES */
+.section {
+  padding: 60px 40px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: #0f172a;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #1e293b;
+}
+
+/* COLORS */
+.pink { color: #e4007c; }
+.teal { color: #25BCC0; }
+.blue { color: #234C91; }
+.orange { color: #F98F21; }
+
+/* CONTACT */
+.footer {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.footer h2 span {
+  color: #F98F21;
+}
+</style>
 </head>
 
 <body>
 
+<!-- NAV -->
+<div class="nav">
+  <div class="logo">
+    <img src="assets/logo.png"/>
+    <div class="brand">SIGNAL <span class="restore">RESTORE</span></div>
+  </div>
+
+  <a href="tel:9519000067" class="cta">CALL NOW</a>
+</div>
+
+<!-- HERO -->
 <section class="hero">
-  <div class="container">
-    <h1>Your Business Phone System—Handled.</h1>
-    <p>We set up, fix, and manage cloud phone systems—and deal with providers so you don’t have to.</p>
 
-    <a href="tel:9519000067" class="cta">Call Now</a>
-  </div>
-</section>
+  <div class="hero-text">
+    <h1>
+      Expert Support for <span class="highlight">Your Business</span><br>
+      Phone Systems
+    </h1>
 
-<section class="section dark">
-  <div class="container">
-    <h2>Is Your Phone System Causing Problems?</h2>
-    <ul>
-      <li>Calls going to the wrong place</li>
-      <li>No one understands the system</li>
-      <li>Support isn’t helping</li>
-      <li>You may be overpaying</li>
-    </ul>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container">
-    <h2>What We Do</h2>
-
-    <div class="grid">
-      <div class="card"><h3>Setup</h3><p>We configure your system the right way.</p></div>
-      <div class="card"><h3>Fix</h3><p>We troubleshoot and resolve issues.</p></div>
-      <div class="card"><h3>Manage</h3><p>We handle ongoing system updates.</p></div>
-      <div class="card"><h3>Advocate</h3><p>We deal with providers for you.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="section dark">
-  <div class="container">
-    <h2>Why Signal Restore</h2>
-    <ul>
-      <li>Independent guidance</li>
-      <li>Deep VoIP expertise</li>
-      <li>Fast issue resolution</li>
-      <li>No confusion</li>
-    </ul>
-  </div>
-</section>
-
-<section class="section contact">
-  <div class="container">
-    <h2>Let’s Fix Your Phone System</h2>
-    <p>Call or reach out today.</p>
+    <p>
+      We help small to mid-sized businesses set up, fix, and manage cloud phone systems—
+      so you can stay connected and focused.
+    </p>
 
     <a href="tel:9519000067" class="cta">Call 951-900-0067</a>
-
-    <div class="contact-info">
-      <p>📧 kathy@signal-restore.com</p>
-      <p>🌐 signal-restore.com</p>
-      <p>📍 Riverside, OC, LA</p>
-    </div>
+    <a href="#" class="cta secondary">Book Consultation</a>
   </div>
+
+  <div class="hero-img">
+    <img src="assets/logo.png"/>
+  </div>
+
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <strong>We don’t sell phone service.</strong><br>
+  We make your phone system <span>work better.</span>
+</div>
+
+<!-- SERVICES -->
+<section class="section">
+  <h2>How We Help Your Business</h2>
+
+  <div class="grid">
+
+    <div class="card pink">
+      <h3>Setup</h3>
+      <p>We design and deploy systems tailored to your business.</p>
+    </div>
+
+    <div class="card teal">
+      <h3>Fix</h3>
+      <p>We diagnose and resolve issues quickly.</p>
+    </div>
+
+    <div class="card blue">
+      <h3>Manage</h3>
+      <p>We keep your system running smoothly.</p>
+    </div>
+
+    <div class="card orange">
+      <h3>Support</h3>
+      <p>Expert help when you need it most.</p>
+    </div>
+
+    <div class="card teal">
+      <h3>Advocate</h3>
+      <p>We deal with providers so you don’t have to.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="section">
+  <h2>Why Businesses Choose Signal Restore</h2>
+
+  <ul>
+    <li>Independent — we work for you</li>
+    <li>VoIP, UCaaS, CCaaS expertise</li>
+    <li>We handle providers and MSPs</li>
+    <li>Fast issue resolution</li>
+    <li>Scalable solutions</li>
+  </ul>
+</section>
+
+<!-- FOOTER -->
+<section class="footer">
+
+  <h2>Let’s Make Your Phone System <span>Work For You</span></h2>
+
+  <p>📞 951-900-0067</p>
+  <p>📧 kathy@signal-restore.com</p>
+  <p>🌐 signal-restore.com</p>
+
+  <a href="tel:9519000067" class="cta">Call Now</a>
+
 </section>
 
 </body>
