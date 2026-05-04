@@ -120,24 +120,66 @@ body {
 /* SERVICES */
 .grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
 }
 
 .card {
   box-sizing: border-box;
-  background: #0f172a;
-  padding: 0;
-  border-radius: 10px;
+  min-height: 210px;
+  background: linear-gradient(180deg, #0f172a 0%, #0b1220 100%);
+  padding: 24px;
+  border-radius: 16px;
   border: 1px solid #1e293b;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
 }
 
-.card img {
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: contain;
+.card-tag {
+  display: inline-block;
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.card h3 {
+  margin: 20px 0 10px;
+  font-size: 30px;
+  line-height: 1.05;
+}
+
+.card p {
+  margin: 0;
+  color: #c3cfdf;
+  line-height: 1.65;
+  font-size: 16px;
+}
+
+.card.pink h3,
+.card.pink .card-tag {
+  color: #ff4aa2;
+}
+
+.card.teal h3,
+.card.teal .card-tag {
+  color: #4ce2e6;
+}
+
+.card.blue h3,
+.card.blue .card-tag {
+  color: #53a6ff;
+}
+
+.card.orange h3,
+.card.orange .card-tag {
+  color: #ffb14a;
 }
 
 /* WHY */
@@ -282,24 +324,44 @@ body {
   <h2>How We Help Your Business</h2>
 
   <div class="grid">
-    <div class="card">
-      <img src="Setup Web box image.png" alt="Setup service box" />
+    <div class="card pink">
+      <span class="card-tag">Build</span>
+      <div>
+        <h3>Setup</h3>
+        <p>We design and deploy systems tailored to your team, workflows, and business goals.</p>
+      </div>
     </div>
 
-    <div class="card">
-      <img src="Fix Web box image.png" alt="Fix service box" />
+    <div class="card teal">
+      <span class="card-tag">Resolve</span>
+      <div>
+        <h3>Fix</h3>
+        <p>We diagnose issues quickly, isolate root causes, and restore service without wasted time.</p>
+      </div>
     </div>
 
-    <div class="card">
-      <img src="Manage WEb box image.png" alt="Manage service box" />
+    <div class="card blue">
+      <span class="card-tag">Operate</span>
+      <div>
+        <h3>Manage</h3>
+        <p>We keep your system stable, optimized, and ready as your team grows and changes.</p>
+      </div>
     </div>
 
-    <div class="card">
-      <img src="Support web box image.png" alt="Support service box" />
+    <div class="card orange">
+      <span class="card-tag">Assist</span>
+      <div>
+        <h3>Support</h3>
+        <p>Expert help when you need it most, from urgent outages to day-to-day user issues.</p>
+      </div>
     </div>
 
-    <div class="card">
-      <img src="Advacate -web box image.png" alt="Advocate service box" />
+    <div class="card teal">
+      <span class="card-tag">Represent</span>
+      <div>
+        <h3>Advocate</h3>
+        <p>We work with providers and vendors on your behalf so problems get solved faster.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -345,9 +407,8 @@ body {
   <h2>Let's Make Your Phone System <span>Work For You</span></h2>
 
   <p>Phone: <a href="tel:9519000067">951-900-0067</a></p>
-  <p>Email: <a href="mailto:kathy@signal-restore.com">kathy@signal-restore.com</a></p>
-  <p>Web: <a href="https://signal-restore.com" target="_blank" rel="noopener noreferrer">signal-restore.com</a></p>
-
+  <p>Email: <a href="mailto:kathy@signal-restore.com">admin@signal-restore.com</a></p>
+  
   <a href="tel:9519000067" class="cta">Call Now</a>
   <a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2miJjeZl24rVLY5BeVnPWpysOX9j7z6gQK5C5do21sD4Of89ZKFuLZP4F_fsq7acOfOAsP2zMl" class="cta secondary" target="_blank" rel="noopener noreferrer">Book Consultation</a>
 </section>
