@@ -183,41 +183,68 @@ body {
 }
 
 /* WHY */
-.why-intro {
-  max-width: 1000px;
-}
-
-.why-intro p {
-  color: #c3cfdf;
-  line-height: 1.8;
-  margin: 0 0 20px;
-}
-
-.why-subhead {
-  margin: 32px 0 18px;
+.why-section h2 {
   color: #25BCC0;
-  font-size: 20px;
-  letter-spacing: 0.5px;
+  font-size: 32px;
+  margin: 0 0 16px;
 }
 
-.why-points {
-  max-width: 1000px;
+.why-header {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 28px;
+  align-items: stretch;
+  margin-bottom: 32px;
+}
+
+.why-header-copy p,
+.why-header-note p,
+.why-point p {
+  color: #c3cfdf;
+  line-height: 1.75;
+}
+
+.why-header-copy p,
+.why-header-note p {
+  margin: 0;
+}
+
+.why-header-note {
+  background: linear-gradient(180deg, rgba(37, 188, 192, 0.08) 0%, rgba(249, 143, 33, 0.06) 100%);
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.why-points-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
 }
 
 .why-point {
-  margin-bottom: 26px;
+  padding: 22px 24px;
+  border-left: 3px solid #25BCC0;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 0 14px 14px 0;
+}
+
+.why-point:nth-child(2n) {
+  border-left-color: #F98F21;
 }
 
 .why-point h4 {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   color: #ffffff;
   font-size: 20px;
 }
 
 .why-point p {
   margin: 0;
-  color: #c3cfdf;
-  line-height: 1.75;
+}
+
+.why-point-wide {
+  grid-column: 1 / -1;
 }
 
 /* CONTACT */
@@ -257,8 +284,18 @@ body {
     white-space: normal;
   }
 
-  .grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .grid,
+  .why-header,
+  .why-points-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .why-point-wide {
+    grid-column: auto;
+  }
+
+  .why-section h2 {
+    font-size: 28px;
   }
 }
 
@@ -363,16 +400,26 @@ body {
 </section>
 
 <!-- WHY -->
-<section class="section">
-  <h2>Why Businesses Choose Signal Restore</h2>
+<section class="section why-section">
+  <div class="why-header">
+    <div class="why-header-copy">
+      <h2>Why Businesses Choose Signal Restore</h2>
+      <p>
+        We don't just install systems, we protect business communication. Your phones are your front door.
+        Missed calls, poor routing, billing issues, and bad provider support cost real money.
+        We help businesses eliminate those problems by designing, fixing, and managing phone systems that actually work.
+      </p>
+    </div>
 
-  <div class="why-intro">
-    <p>We don't just install systems, we protect business communication. Your phones are your front door. Missed calls, poor routing, billing issues, and bad provider support cost real money. We help businesses eliminate those problems by designing, fixing, and managing phone systems that actually work.</p>
+    <div class="why-header-note">
+      <h2>Why It Matters</h2>
+      <p>
+        Strong phone systems protect revenue, customer trust, and day-to-day operations.
+      </p>
+    </div>
   </div>
 
-  <h3 class="why-subhead">Why It Matters</h3>
-
-  <div class="why-points">
+  <div class="why-points-grid">
     <div class="why-point">
       <h4>Independent Advocacy</h4>
       <p>We work for you, not the carrier, provider, or vendor. Our recommendations are based on what your business actually needs, not commissions or provider quotas.</p>
@@ -393,7 +440,7 @@ body {
       <p>We don't stop at temporary fixes. We identify root causes, resolve service-impacting issues, and implement preventative solutions to reduce repeat problems.</p>
     </div>
 
-    <div class="why-point">
+    <div class="why-point why-point-wide">
       <h4>Built for Growth</h4>
       <p>Whether you have 1 user or 500, your system should scale with you. We design solutions that support remote teams, multiple offices, expansion, and future reporting needs.</p>
     </div>
@@ -406,6 +453,7 @@ body {
 
   <p>Phone: <a href="tel:9519000067">951-900-0067</a></p>
   <p>Email: <a href="mailto:kathy@signal-restore.com">kathy@signal-restore.com</a></p>
+
 
   <a href="tel:9519000067" class="cta">Call Now</a>
   <a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2miJjeZl24rVLY5BeVnPWpysOX9j7z6gQK5C5do21sD4Of89ZKFuLZP4F_fsq7acOfOAsP2zMl" class="cta secondary" target="_blank" rel="noopener noreferrer">Book Consultation</a>
