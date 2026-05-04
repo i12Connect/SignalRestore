@@ -112,11 +112,16 @@ body {
   border-radius: 8px;
 }
 
-/* SERVICES */
+/* SECTIONS */
 .section {
   padding: 40px 40px;
 }
 
+.section h2 {
+  margin-top: 0;
+}
+
+/* SERVICES */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -161,14 +166,14 @@ body {
   font-size: 16px;
 }
 
-.card.pink h3,
-.card.pink .card-tag {
-  color: #ff4aa2;
-}
-
 .card.teal h3,
 .card.teal .card-tag {
   color: #4ce2e6;
+}
+
+.card.pink h3,
+.card.pink .card-tag {
+  color: #ff4aa2;
 }
 
 .card.blue h3,
@@ -182,71 +187,85 @@ body {
 }
 
 /* WHY */
-.why-section h2 {
-  color: #25BCC0;
-  font-size: 32px;
-  margin: 0 0 16px;
+.why-section {
+  padding-top: 48px;
 }
 
-.why-header {
-  max-width: 1100px;
-  margin: 0 auto 28px;
+.why-title {
+  color: #25BCC0;
+  font-size: 32px;
   text-align: center;
+  margin: 0 0 18px;
 }
 
 .why-intro {
-  max-width: 920px;
-  margin: 0 auto;
+  max-width: 900px;
+  margin: 0 auto 32px;
+  text-align: center;
 }
 
 .why-intro p {
+  margin: 0;
   color: #c3cfdf;
   line-height: 1.8;
-  margin: 0;
 }
 
-.why-header-note {
-  max-width: 560px;
+.why-matters {
+  max-width: 980px;
   margin: 0 0 28px;
-  padding-left: 18px;
-  border-left: 3px solid #F98F21;
 }
 
-.why-header-note p,
-.why-point p {
+.why-matters h3 {
+  margin: 0 0 10px;
+  color: #25BCC0;
+  font-size: 32px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.why-matters p {
+  margin: 0;
   color: #c3cfdf;
   line-height: 1.75;
 }
 
-.why-header-note p {
-  margin: 0;
-}
-
-.why-points-grid {
+.why-points {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
+  gap: 22px 28px;
 }
 
 .why-point {
-  padding: 22px 24px;
-  border-left: 3px solid #25BCC0;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 0 14px 14px 0;
-}
-
-.why-point:nth-child(2n) {
-  border-left-color: #F98F21;
+  padding-left: 18px;
+  border-left: 4px solid #25BCC0;
 }
 
 .why-point h4 {
-  margin: 0 0 10px;
-  color: #ffffff;
+  margin: 0 0 8px;
+  color: #fff;
   font-size: 20px;
 }
 
 .why-point p {
   margin: 0;
+  color: #c3cfdf;
+  line-height: 1.75;
+}
+
+.why-point.teal {
+  border-left-color: #25BCC0;
+}
+
+.why-point.pink {
+  border-left-color: #e4007c;
+}
+
+.why-point.blue {
+  border-left-color: #53a6ff;
+}
+
+.why-point.orange {
+  border-left-color: #F98F21;
 }
 
 .why-point-wide {
@@ -286,12 +305,13 @@ body {
 
 @media (max-width: 900px) {
   .hero h1,
-  .hero-text p {
+  .hero-text p,
+  .why-matters h3 {
     white-space: normal;
   }
 
   .grid,
-  .why-points-grid {
+  .why-points {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -309,11 +329,8 @@ body {
     margin-right: 20px;
   }
 
-  .grid {
-    grid-template-columns: 1fr;
-  }
-
-  .why-points-grid {
+  .grid,
+  .why-points {
     grid-template-columns: 1fr;
   }
 
@@ -321,7 +338,8 @@ body {
     grid-column: auto;
   }
 
-  .why-section h2 {
+  .why-title,
+  .why-matters h3 {
     font-size: 28px;
   }
 }
@@ -366,7 +384,7 @@ body {
   <h2>How We Help Your Business</h2>
 
   <div class="grid">
-    <div class="card pink">
+    <div class="card teal">
       <span class="card-tag">Build</span>
       <div>
         <h3>Setup</h3>
@@ -374,7 +392,7 @@ body {
       </div>
     </div>
 
-    <div class="card teal">
+    <div class="card pink">
       <span class="card-tag">Resolve</span>
       <div>
         <h3>Fix</h3>
@@ -410,40 +428,39 @@ body {
 
 <!-- WHY -->
 <section class="section why-section">
-  <div class="why-header">
-    <h2>Why Businesses Choose Signal Restore</h2>
-    <div class="why-intro">
-      <p>We don't just install systems, we protect business communication. Your phones are your front door. Missed calls, poor routing, billing issues, and bad provider support cost real money. We help businesses eliminate those problems by designing, fixing, and managing phone systems that actually work.</p>
-    </div>
+  <h2 class="why-title">Why Businesses Choose Signal Restore</h2>
+
+  <div class="why-intro">
+    <p>We do more than install phone systems. We help protect the flow of communication your business depends on every day. When calls are missed, routing breaks, billing gets messy, or provider support falls short, the impact is real. We design, fix, and manage business phone systems so your team stays connected, responsive, and ready to grow.</p>
   </div>
 
-  <div class="why-header-note">
-    <h2>Why It Matters</h2>
+  <div class="why-matters">
+    <h3>Why It Matters</h3>
     <p>Strong phone systems protect revenue, customer trust, and day-to-day operations.</p>
   </div>
 
-  <div class="why-points-grid">
-    <div class="why-point">
+  <div class="why-points">
+    <div class="why-point teal">
       <h4>Independent Advocacy</h4>
-      <p>We do more than install phone systems. We help protect the flow of communication your business depends on every day. When calls are missed, routing breaks, billing gets messy, or provider support falls short, the impact is real. We design, fix, and manage business phone systems so your team stays connected, responsive, and ready to grow.</p>
+      <p>We work for you, not the carrier, provider, or vendor. Our recommendations are based on what your business actually needs, not commissions or provider quotas.</p>
     </div>
 
-    <div class="why-point">
+    <div class="why-point blue">
       <h4>Real Industry Experience</h4>
       <p>Deep expertise across VoIP, UCaaS, and CCaaS platforms. From small office systems to multi-location call centers, we understand call flows, IVR design, queues, routing logic, reporting, and operational efficiency.</p>
     </div>
 
-    <div class="why-point">
+    <div class="why-point orange">
       <h4>One Point of Contact</h4>
       <p>No more getting bounced between providers, IT teams, and vendors. We coordinate providers, MSPs, internet carriers, and hardware vendors so issues get resolved faster.</p>
     </div>
 
-    <div class="why-point">
+    <div class="why-point pink">
       <h4>Faster Problem Resolution</h4>
       <p>We don't stop at temporary fixes. We identify root causes, resolve service-impacting issues, and implement preventative solutions to reduce repeat problems.</p>
     </div>
 
-    <div class="why-point why-point-wide">
+    <div class="why-point teal why-point-wide">
       <h4>Built for Growth</h4>
       <p>Whether you have 1 user or 500, your system should scale with you. We design solutions that support remote teams, multiple offices, expansion, and future reporting needs.</p>
     </div>
@@ -456,6 +473,7 @@ body {
 
   <p>Phone: <a href="tel:9519000067">951-900-0067</a></p>
   <p>Email: <a href="mailto:kathy@signal-restore.com">kathy@signal-restore.com</a></p>
+  <p>Web: <a href="https://signal-restore.com" target="_blank" rel="noopener noreferrer">signal-restore.com</a></p>
 
   <a href="tel:9519000067" class="cta">Call Now</a>
   <a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2miJjeZl24rVLY5BeVnPWpysOX9j7z6gQK5C5do21sD4Of89ZKFuLZP4F_fsq7acOfOAsP2zMl" class="cta secondary" target="_blank" rel="noopener noreferrer">Book Consultation</a>
