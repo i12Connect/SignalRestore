@@ -45,17 +45,24 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 80px 40px;
+  padding: 32px 40px 56px;
   flex-wrap: wrap;
 }
 
 .hero-text {
-  max-width: 550px;
+  max-width: 980px;
 }
 
 .hero h1 {
-  font-size: 48px;
+  font-size: 36px;
   line-height: 1.2;
+  margin: 0 0 14px;
+  white-space: nowrap;
+}
+
+.hero-text p {
+  margin: 0;
+  white-space: nowrap;
 }
 
 .highlight {
@@ -82,11 +89,11 @@ body {
 
 /* HERO IMAGE */
 .hero-img img {
-  width: 300px;
+  width: 170px;
 }
 
-/* STRIP */
-.strip {
+/* BANNER */
+.banner {
   margin: 40px;
   padding: 12px;
   border: 1px solid #1f2937;
@@ -96,7 +103,7 @@ body {
   overflow: hidden;
 }
 
-.strip img {
+.banner img {
   display: block;
   width: 100%;
   height: auto;
@@ -139,6 +146,17 @@ body {
 
 .footer p {
   margin: 10px 0;
+  color: #9aa7bc;
+}
+
+.footer p a {
+  color: #7ee7ea;
+  text-decoration: none;
+}
+
+.footer p a:hover {
+  color: #F98F21;
+  text-decoration: underline;
 }
 </style>
 </head>
@@ -155,19 +173,20 @@ body {
   <a href="tel:9519000067" class="cta">CALL NOW</a>
 </div>
 
+<!-- BANNER -->
+<div class="banner">
+  <img src="Signal Restore services banner.png" alt="Signal Restore services banner" />
+</div>
+
 <!-- HERO -->
 <section class="hero">
 
   <div class="hero-text">
     <h1>
-      Expert Support for <span class="highlight">Your Business</span><br>
-      Phone Systems
+      Expert Support for <span class="highlight">Your Business</span> Phone Systems
     </h1>
 
-    <p>
-      We help small to mid-sized businesses set up, fix, and manage cloud phone systems
-      so you can stay connected and focused.
-    </p>
+    <p>We help small to mid-sized businesses set up, fix, and manage cloud phone systems so you can stay connected and focused.</p>
 
     <a href="tel:9519000067" class="cta">Call 951-900-0067</a>
     <a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2miJjeZl24rVLY5BeVnPWpysOX9j7z6gQK5C5do21sD4Of89ZKFuLZP4F_fsq7acOfOAsP2zMl" class="cta secondary" target="_blank" rel="noopener noreferrer">Book Consultation</a>
@@ -178,11 +197,6 @@ body {
   </div>
 
 </section>
-
-<!-- STRIP -->
-<div class="strip">
-  <img src="Signal Restore services banner.png" alt="Signal Restore services banner" />
-</div>
 
 <!-- SERVICES -->
 <section class="section">
