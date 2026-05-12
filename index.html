@@ -351,10 +351,68 @@ main {
 }
 
 .contact {
-  padding-top: 100px;
-  padding-bottom: 100px;
-  background:
-    linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  grid-template-areas:
+    "title form"
+    "copy form"
+    "actions form";
+  gap: 40px 56px;
+  align-items: start;
+  padding-top: 110px;
+  padding-bottom: 110px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.contact-copy {
+  display: contents;
+}
+
+.contact-copy .eyebrow {
+  grid-area: title;
+  margin-bottom: 10px;
+}
+
+.contact-copy h2 {
+  grid-area: title;
+  font-size: clamp(2.8rem, 5vw, 5.4rem);
+  line-height: 0.94;
+  letter-spacing: -0.04em;
+  margin-top: 24px;
+  margin-bottom: 0;
+  max-width: 640px;
+}
+
+.contact-copy p {
+  grid-area: copy;
+  font-size: 1.06rem;
+  line-height: 1.85;
+  color: #465368;
+  max-width: 520px;
+  margin-top: 0;
+}
+
+.contact-actions {
+  grid-area: actions;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.form-frame {
+  grid-area: form;
+  width: 100%;
+  align-self: start;
+}
+
+.form-frame iframe {
+  width: 100%;
+  min-height: 860px;
+  border: 1px solid #e8edf2;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 18px 40px rgba(16,21,34,0.05);
 }
 
 .contact-copy h2 {
@@ -406,7 +464,7 @@ main {
     <nav aria-label="Main navigation">
       <a href="#services">Services</a>
       <a href="#industries">Industries</a>
-      <a href="#approach">Approach</a>
+      <a href="#about">About Us</a>
       <a href="#contact">Contact</a>
     </nav>
 
@@ -438,8 +496,6 @@ main {
 
           <p>
             You get a local expert who translates technical details into practical next steps.
-            We work for you, not the provider.
-      </div>
           </p>
         </div>
 
@@ -448,7 +504,8 @@ main {
           <a class="button secondary" href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2miJjeZl24rVLY5BeVnPWpysOX9j7z6gQK5C5do21sD4Of89ZKFuLZP4F_fsq7acOfOAsP2zMl" target="_blank">Book Consultation</a>
         </div>
 
-        
+        <p class="support-note">We work for you, not the provider.</p>
+      </div>
 
       <div class="hero-image">
         <img src="assets/live-agent.png" alt="Signal Restore support specialist working beside a business phone" />
@@ -524,24 +581,41 @@ main {
       </div>
     </section>
 
-    <section class="section approach" id="approach">
+    <section class="section about" id="about">
       <div class="section-heading">
-        <p class="eyebrow">Our approach</p>
-        <h2>Independent guidance from people who know the local landscape</h2>
+        <p class="eyebrow">About Us</p>
+        <h2>Local experts with deep roots in business communications.</h2>
       </div>
 
       <div class="approach-list">
         <div>
-          <strong>Listen first</strong>
-          <p>We learn how your business communicates today and where the system is failing you.</p>
+          <strong>15+ years in the phone industry</strong>
+          <p>
+            We are a team of professionals who have spent more than 15 years working
+            across business phone systems, carrier support, VoIP platforms, UCaaS,
+            call routing, migrations, troubleshooting, and customer operations.
+          </p>
         </div>
+
         <div>
-          <strong>Stabilize the essentials</strong>
-          <p>We prioritize reachable numbers, clean routing, working phones, and clear ownership.</p>
+          <strong>Built on real customer service</strong>
+          <p>
+            We believe in good old classic customer service—being reachable,
+            responsive, and present. We value local relationships, clear
+            communication, and working side by side with our clients to solve
+            problems the right way.
+          </p>
         </div>
+
         <div>
-          <strong>Improve what matters</strong>
-          <p>We help you simplify vendors, modernize systems, and reduce repeat support headaches.</p>
+          <strong>Silicon Valley mindset, SoCal presence</strong>
+          <p>
+            We have encountered hundreds of real-world use cases and helped
+            businesses through unique challenges with practical solutions.
+            Our goal is to bring a Silicon Valley work style to Southern
+            California—faster execution, better systems, and stronger support
+            for the local business community.
+          </p>
         </div>
       </div>
     </section>
@@ -549,8 +623,8 @@ main {
     <section class="section contact" id="contact">
       <div class="contact-copy">
         <p class="eyebrow">Get support</p>
-        <h2>Tell us what is happening with your phone system.</h2>
-        <p>For urgent support, call <a href="tel:+19519000067">951.900.0067</a> and press 1. You can also email <a href="mailto:support@signal-restore.com">support@signal-restore.com</a> or schedule a time that works for you.</p>
+        <h2>Local expert support for your business phone systems.</h2>
+        <p>Tell us what is happening with your phone system. For urgent support, call <a href="tel:+19519000067">951.900.0067</a> and press 1. You can also email <a href="mailto:support@signal-restore.com">support@signal-restore.com</a> or schedule a time that works for you.</p>
 
         <div class="contact-actions">
           <a class="button primary" href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2miJjeZl24rVLY5BeVnPWpysOX9j7z6gQK5C5do21sD4Of89ZKFuLZP4F_fsq7acOfOAsP2zMl" target="_blank">Book a Call</a>
