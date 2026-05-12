@@ -1,379 +1,452 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Signal Restore provides expert support for business phone systems, VoIP, UCaaS, call routing, provider coordination, and communications troubleshooting." />
-  <title>Signal Restore | Business Phone System Support</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Signal Restore</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #05070d;
+  color: #fff;
+}
 
-  <style>
-    :root {
-      --navy: #14213D;
-      --teal: #2EC4B6;
-      --gold: #F4A261;
-      --bg: #FAFAF8;
-      --white: #ffffff;
-      --text: #2B2D42;
-      --muted: #5C6470;
-      --line: #E8ECF2;
-      --shadow: 0 18px 40px rgba(20,33,61,0.06);
-    }
+/* NAV */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-    html {
-      scroll-behavior: smooth;
-    }
+.logo img {
+  width: 45px;
+}
 
-    body {
-      font-family: "Inter", sans-serif;
-      background: var(--white);
-      color: var(--text);
-      line-height: 1.6;
-    }
+.brand {
+  font-weight: bold;
+  letter-spacing: 2px;
+}
 
-    img {
-      max-width: 100%;
-      display: block;
-    }
+.restore {
+  color: #F98F21;
+}
 
-    a {
-      text-decoration: none;
-    }
+/* HERO */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px 30px;
+  flex-wrap: wrap;
+}
 
-    section {
-      padding: 80px clamp(20px, 5vw, 80px);
-    }
+.hero-text {
+  max-width: 980px;
+}
 
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(20,33,61,0.96);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      padding: 18px clamp(20px, 5vw, 80px);
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: 32px;
-    }
+.hero h1 {
+  font-size: 36px;
+  line-height: 1.2;
+  margin: 0 0 14px;
+  white-space: nowrap;
+}
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: white;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
+.hero-text p {
+  margin: 0;
+  white-space: nowrap;
+}
 
-    .brand img {
-      width: 44px;
-      height: 44px;
-    }
+.highlight {
+  color: #25BCC0;
+}
 
-    .brand span span {
-      color: var(--gold);
-    }
+.cta {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 14px 26px;
+  background: #F98F21;
+  color: #000;
+  font-weight: bold;
+  border-radius: 6px;
+  text-decoration: none;
+}
 
-    .main-nav {
-      display: flex;
-      justify-content: center;
-      gap: 32px;
-      flex-wrap: wrap;
-    }
+.cta.secondary {
+  background: transparent;
+  border: 1px solid #25BCC0;
+  color: #25BCC0;
+  margin-left: 10px;
+}
 
-    .main-nav a {
-      color: #DCE6F5;
-      font-weight: 600;
-      font-size: 0.96rem;
-      padding-bottom: 6px;
-      border-bottom: 2px solid transparent;
-      transition: 0.2s ease;
-    }
+/* HERO IMAGE */
+.hero-img img {
+  width: 170px;
+}
 
-    .main-nav a:hover {
-      color: white;
-      border-bottom: 2px solid var(--teal);
-    }
+/* BANNER */
+.banner {
+  margin: 20px 40px 24px;
+  padding: 8px;
+  border: 1px solid #1f2937;
+  border-radius: 10px;
+  text-align: center;
+  background: #09111f;
+  overflow: hidden;
+}
 
-    .phone-cta {
-      padding: 12px 22px;
-      border-radius: 999px;
-      background: var(--gold);
-      color: var(--navy);
-      font-weight: 800;
-      white-space: nowrap;
-    }
+.banner img {
+  display: block;
+  width: 100%;
+  max-width: 1500px;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 8px;
+}
 
-    .hero {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 48px;
-      align-items: center;
-      background: linear-gradient(180deg, #ffffff 0%, #f8fbfc 100%);
-    }
+/* SECTIONS */
+.section {
+  padding: 40px 40px;
+}
 
-    .eyebrow {
-      color: var(--gold);
-      font-size: 0.85rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 16px;
-    }
+.section h2 {
+  margin-top: 0;
+}
 
-    h1 {
-      font-size: clamp(2.5rem, 6vw, 5.5rem);
-      line-height: 0.98;
-      margin-bottom: 24px;
-      color: var(--navy);
-    }
+/* SERVICES */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
 
-    h2 {
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      line-height: 1.1;
-      margin-bottom: 18px;
-      color: var(--navy);
-    }
+.card {
+  box-sizing: border-box;
+  min-height: 210px;
+  background: linear-gradient(180deg, #0f172a 0%, #0b1220 100%);
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid #1e293b;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+}
 
-    .hero p,
-    .section-copy,
-    .about-copy {
-      color: var(--muted);
-      font-size: 1.05rem;
-    }
+.card-tag {
+  display: inline-block;
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.06);
+}
 
-    .actions {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-top: 28px;
-    }
+.card h3 {
+  margin: 20px 0 10px;
+  font-size: 30px;
+  line-height: 1.05;
+}
 
-    .button {
-      padding: 14px 28px;
-      border-radius: 999px;
-      font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
+.card p {
+  margin: 0;
+  color: #c3cfdf;
+  line-height: 1.65;
+  font-size: 16px;
+}
 
-    .primary {
-      background: var(--gold);
-      color: var(--navy);
-    }
+.card.teal h3,
+.card.teal .card-tag {
+  color: #4ce2e6;
+}
 
-    .secondary {
-      background: var(--navy);
-      color: white;
-    }
+.card.pink h3,
+.card.pink .card-tag {
+  color: #ff4aa2;
+}
 
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      margin-top: 28px;
-    }
+.card.blue h3,
+.card.blue .card-tag {
+  color: #53a6ff;
+}
 
-    .card {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 28px;
-      box-shadow: var(--shadow);
-    }
+.card.orange h3,
+.card.orange .card-tag {
+  color: #ffb14a;
+}
 
-    .card strong {
-      display: block;
-      margin-bottom: 10px;
-      color: var(--navy);
-    }
+/* WHY */
+.why-section {
+  padding-top: 48px;
+}
 
-    .contact {
-      background: #F8FAFC;
-    }
+.why-title {
+  color: #25BCC0;
+  font-size: 32px;
+  text-align: center;
+  margin: 0 0 18px;
+}
 
-    .footer {
-      padding: 60px clamp(20px, 5vw, 80px);
-      border-top: 1px solid var(--line);
-    }
+.why-intro {
+  max-width: 900px;
+  margin: 0 auto 32px;
+  text-align: center;
+}
 
-    @media (max-width: 900px) {
-      .site-header {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 18px;
-      }
+.why-intro p {
+  margin: 0;
+  color: #c3cfdf;
+  line-height: 1.8;
+}
 
-      .brand {
-        justify-content: center;
-      }
+.why-matters {
+  max-width: 980px;
+  margin: 0 0 28px;
+}
 
-      .main-nav {
-        gap: 18px;
-      }
+.why-matters h3 {
+  margin: 0 0 10px;
+  color: #F98F21;
+  font-size: 32px;
+  font-weight: bold;
+  white-space: nowrap;
+}
 
-      .phone-cta {
-        width: 100%;
-        max-width: 320px;
-        margin: 0 auto;
-      }
+.why-matters p {
+  margin: 0;
+  color: #c3cfdf;
+  line-height: 1.75;
+}
 
-      .hero {
-        grid-template-columns: 1fr;
-      }
+.why-points {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 28px;
+}
 
-      .card-grid {
-        grid-template-columns: 1fr;
-      }
+.why-point {
+  padding-left: 18px;
+  border-left: 4px solid #6b7280;
+}
 
-      .actions {
-        flex-direction: column;
-      }
+.why-point h4 {
+  margin: 0 0 8px;
+  color: #fff;
+  font-size: 20px;
+}
 
-      .button {
-        width: 100%;
-      }
-    }
-  </style>
+.why-point p {
+  margin: 0;
+  color: #c3cfdf;
+  line-height: 1.75;
+}
+
+/* CONTACT */
+.footer {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.footer h2 span {
+  color: #F98F21;
+}
+
+.footer p {
+  margin: 10px 0;
+  color: #9aa7bc;
+}
+
+.footer p a {
+  color: #7ee7ea;
+  text-decoration: none;
+}
+
+.footer p a:hover {
+  color: #F98F21;
+  text-decoration: underline;
+}
+
+@media (max-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .hero h1,
+  .hero-text p,
+  .why-matters h3 {
+    white-space: normal;
+  }
+
+  .grid,
+  .why-points {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .nav,
+  .hero,
+  .section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .banner {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .grid,
+  .why-points {
+    grid-template-columns: 1fr;
+  }
+
+  .why-title,
+  .why-matters h3 {
+    font-size: 28px;
+  }
+}
+</style>
 </head>
+
 <body>
 
-<header class="site-header">
-  <a href="#top" class="brand">
-    <img src="assets/signal-restore-logo.png" alt="Signal Restore Logo">
-    <span>Signal <span>Restore</span></span>
-  </a>
+<!-- NAV -->
+<div class="nav">
+  <div class="logo">
+    <img src="logo.png" alt="Signal Restore logo" />
+    <div class="brand">SIGNAL <span class="restore">RESTORE</span></div>
+  </div>
+</div>
 
-  <nav class="main-nav">
-    <a href="#services">Services</a>
-    <a href="#industries">Industries</a>
-    <a href="#about">About Us</a>
-    <a href="#contact">Contact</a>
-  </nav>
-
-  <a href="tel:+19519000067" class="phone-cta">951.900.0067</a>
-</header>
-
-<main id="top">
-
+<!-- HERO -->
 <section class="hero">
-  <div>
-    <p class="eyebrow">Independent Local Support</p>
-    <h1 style="max-width: 760px;">Phone systems get complicated.<br>We make them workable.</h1>
+  <div class="hero-text">
+    <h1>Expert Support for <span class="highlight">Your Business</span> Phone Systems</h1>
 
-    <p style="max-width: 640px;">
-      From daily troubleshooting to cloud migrations, Signal Restore helps businesses manage VoIP, UCaaS, call routing, provider coordination, and communications support without the usual frustration.
-    </p>
+    <p>We help small to mid-sized businesses set up, fix, and manage cloud phone systems so you can stay connected and focused.</p>
 
-    <div class="actions">
-      <a href="tel:+19519000067" class="button primary">Call Now</a>
-      <a href="#contact" class="button secondary">Book Consultation</a>
-    </div>
+    <a href="tel:9519000067" class="cta">Call 951-900-0067</a>
+    <a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2miJjeZl24rVLY5BeVnPWpysOX9j7z6gQK5C5do21sD4Of89ZKFuLZP4F_fsq7acOfOAsP2zMl" class="cta secondary" target="_blank" rel="noopener noreferrer">Book Consultation</a>
   </div>
 
-  <div>
-    <img src="assets/live-agent.png" alt="Business phone support specialist" style="width:100%; max-width:520px; margin-left:auto; border-radius:20px; box-shadow: var(--shadow);">
+  <div class="hero-img">
+    <img src="logo.png" alt="Signal Restore logo" />
   </div>
 </section>
 
-<section id="services">
-  <div style="display:grid; grid-template-columns: 0.9fr 1.1fr; gap:48px; align-items:start;">
-    <div>
-      <img src="assets/projects-infographic.png" alt="Common projects we take on infographic" style="width:100%; max-width:520px; margin-left:auto; border-radius:20px; box-shadow: var(--shadow); display:block;">
-    </div>
+<!-- BANNER -->
+<div class="banner">
+  <img src="Signal Restore services banner.png" alt="Signal Restore services banner" />
+</div>
 
-    <div>
-      <p class="eyebrow">Services</p>
-      <h2>Support built for real business operations.</h2>
-      <p class="section-copy">
-        We help businesses clean up outdated systems, reduce billing waste, consolidate multiple phone platforms, improve routing, recover business numbers, and modernize communications without unnecessary provider confusion.
-      </p>
-    </div>
-  </div>
-</section>
+<!-- SERVICES -->
+<section class="section">
+  <h2>How We Help Your Business</h2>
 
-<section id="industries">
-  <p class="eyebrow">Industries</p>
-  <h2>Businesses where missed calls mean missed revenue.</h2>
-  <p class="section-copy">
-    Medical offices, law firms, retail operations, field service teams, call centers, marketing agencies, and growing businesses that depend on reliable communication.
-  </p>
-
-  <div style="margin-top: 32px;">
-    <img src="assets/industries-infographic.png" alt="Industries we help infographic" style="width:100%; border-radius:20px; box-shadow: var(--shadow);">
-  </div>
-</section>
-
-<section id="about">
-  <p class="eyebrow">About Us</p>
-  <h2>Local experts with deep roots in business communications.</h2>
-  <p class="about-copy">
-    With more than 15 years of experience, Signal Restore supports Southern California businesses with practical solutions for communications systems, faster execution, and direct local support.
-  </p>
-</section>
-
-<section id="contact" class="contact">
-  <div style="display:grid; grid-template-columns: 1fr 1.1fr; gap:40px; align-items:start;">
-    <div>
-  <p class="eyebrow">Get Support</p>
-  <h2>Talk to a real expert.</h2>
-  <p class="section-copy">
-    Call for urgent support, email us for project planning, or schedule a consultation for your business phone system needs.
-  </p>
-
-  <div class="actions">
-    <a href="tel:+19519000067" class="button primary">Call Support</a>
-    <a href="mailto:support@signal-restore.com" class="button secondary">Email Support</a>
-  </div>
-    </div>
-
-    <div>
-      <iframe
-        src="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2miJjeZl24rVLY5BeVnPWpysOX9j7z6gQK5C5do21sD4Of89ZKFuLZP4F_fsq7acOfOAsP2zMl"
-        title="Book a consultation"
-        style="width:100%; min-height:700px; border:1px solid var(--line); border-radius:20px; background:#fff; box-shadow: var(--shadow);"
-      ></iframe>
-    </div>
-  </div>
-</section>
-
-</main>
-
-<footer class="footer">
-  <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap:48px; align-items:start;">
-    <div>
-      <div class="brand" style="color: var(--navy); margin-bottom:18px;">
-        <img src="assets/signal-restore-logo.png" alt="Signal Restore logo" />
-        <span>Signal <span>Restore</span></span>
+  <div class="grid">
+    <div class="card teal">
+      <span class="card-tag">Build</span>
+      <div>
+        <h3>Setup</h3>
+        <p>We design and deploy systems tailored to your team, workflows, and business goals.</p>
       </div>
-
-      <p style="color: var(--muted); max-width:520px; line-height:1.8;">
-        Local expert support for business phone systems across Southern California and nearby service areas.
-        We help businesses set up, fix, manage, and modernize communications.
-      </p>
     </div>
 
-    <div style="display:flex; flex-direction:column; gap:14px; align-items:flex-start;">
-      <h3 style="font-size:1.1rem; color: var(--navy); margin-bottom:6px;">Contact Information</h3>
-      <a href="tel:+19519000067" style="color: var(--navy); font-weight:600;">Call: 951.900.0067 | Press 1 for Support</a>
-      <a href="mailto:support@signal-restore.com" style="color: var(--navy); font-weight:600;">Email: support@signal-restore.com</a>
-      <a href="https://signal-restore.com" target="_blank" style="color: var(--navy); font-weight:600;">Web: signal-restore.com</a>
+    <div class="card pink">
+      <span class="card-tag">Resolve</span>
+      <div>
+        <h3>Fix</h3>
+        <p>We diagnose issues quickly, isolate root causes, and restore service without wasted time.</p>
+      </div>
+    </div>
+
+    <div class="card blue">
+      <span class="card-tag">Operate</span>
+      <div>
+        <h3>Manage</h3>
+        <p>We keep your system stable, optimized, and ready as your team grows and changes.</p>
+      </div>
+    </div>
+
+    <div class="card orange">
+      <span class="card-tag">Assist</span>
+      <div>
+        <h3>Support</h3>
+        <p>Expert help when you need it most, from urgent outages to day-to-day user issues.</p>
+      </div>
+    </div>
+
+    <div class="card teal">
+      <span class="card-tag">Represent</span>
+      <div>
+        <h3>Advocate</h3>
+        <p>We work with providers and vendors on your behalf so problems get solved faster.</p>
+      </div>
     </div>
   </div>
-</footer>
+</section>
+
+<!-- WHY -->
+<section class="section why-section">
+  <h2 class="why-title">Why Businesses Choose Signal Restore</h2>
+
+  <div class="why-intro">
+    <p>We do more than install phone systems. We help protect the flow of communication your business depends on every day. When calls are missed, routing breaks, billing gets messy, or provider support falls short, the impact is real. We design, fix, and manage business phone systems so your team stays connected, responsive, and ready to grow.</p>
+  </div>
+
+  <div class="why-matters">
+    <h3>Why It Matters</h3>
+    <p>Strong phone systems protect revenue, customer trust, and day-to-day operations.</p>
+  </div>
+
+  <div class="why-points">
+    <div class="why-point">
+      <h4>Independent Advocacy</h4>
+      <p>We work for you, not the carrier, provider, or vendor. Our recommendations are based on what your business actually needs, not commissions or provider quotas.</p>
+    </div>
+
+    <div class="why-point">
+      <h4>Real Industry Experience</h4>
+      <p>Deep expertise across VoIP, UCaaS, and CCaaS platforms. From small office systems to multi-location call centers, we understand call flows, IVR design, queues, routing logic, reporting, and operational efficiency.</p>
+    </div>
+
+    <div class="why-point">
+      <h4>One Point of Contact</h4>
+      <p>No more getting bounced between providers, IT teams, and vendors. We coordinate providers, MSPs, internet carriers, and hardware vendors so issues get resolved faster.</p>
+    </div>
+
+    <div class="why-point">
+      <h4>Faster Problem Resolution</h4>
+      <p>We don't stop at temporary fixes. We identify root causes, resolve service-impacting issues, and implement preventative solutions to reduce repeat problems.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<section class="footer">
+  <h2>Let's Make Your Phone System <span>Work For You</span></h2>
+
+  <p>Phone: <a href="tel:9519000067">951-900-0067</a></p>
+  <p>Email: <a href="mailto:support@signal-restore.com">support@signal-restore.com</a></p>
+  <p>Web: <a href="https://signal-restore.com" target="_blank" rel="noopener noreferrer">signal-restore.com</a></p>
+
+  <a href="tel:9519000067" class="cta">Call Now</a>
+  <a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2miJjeZl24rVLY5BeVnPWpysOX9j7z6gQK5C5do21sD4Of89ZKFuLZP4F_fsq7acOfOAsP2zMl" class="cta secondary" target="_blank" rel="noopener noreferrer">Book Consultation</a>
+</section>
 
 </body>
 </html>
