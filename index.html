@@ -38,7 +38,7 @@
     body {
       font-family: "Inter", sans-serif;
       background: #ffffff;
-      color: #ffffff;
+      color: #101522;
       line-height: 1.6;
     }
 
@@ -73,10 +73,11 @@
 }
 
 .main-nav a {
-  color: rgba(255,255,255,0.92);
+  color: #25BCC0;
   font-weight: 700;
   text-decoration: none;
   font-size: 0.98rem;
+  transition: 0.2s ease;
 }
 
 .main-nav a:hover {
@@ -139,21 +140,16 @@
 
     .hero {
   display: grid;
-  grid-template-columns: 1fr 0.9fr;
+  grid-template-columns: 1.15fr 0.85fr;
   grid-template-areas:
     "title title"
     "copy image";
   align-items: start;
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  align-items: center;
-  gap: clamp(40px, 6vw, 90px);
-
+  gap: clamp(36px, 5vw, 80px);
   padding:
-    clamp(70px, 8vw, 110px)
+    clamp(72px, 8vw, 110px)
     clamp(24px, 5vw, 76px)
-    clamp(60px, 7vw, 90px);
-
+    clamp(64px, 7vw, 90px);
   background:
     radial-gradient(
       circle at 80% 20%,
@@ -170,7 +166,8 @@
 .hero-title {
   grid-area: title;
   width: 100%;
-  margin-bottom: 28px;
+  max-width: 1100px;
+  margin-bottom: 34px;
 }
 
 .hero-copy {
@@ -185,6 +182,14 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin-bottom: 18px;
+}
+
+.text-cyan {
+  color: var(--cyan);
+}
+
+.text-magenta {
+  color: var(--magenta);
 }
 
 h1 {
@@ -231,10 +236,36 @@ h1 {
   border: 1px solid #F98F21;
 }
 
+.button.primary,
+.button.primary:visited,
+.button.primary:active {
+  color: #101522;
+  text-decoration: none;
+}
+
+.button.primary:hover {
+  background: #234C91;
+  border-color: #234C91;
+  color: #ffffff;
+}
+
 .button.secondary {
   background: #101522;
   color: #25BCC0;
   border: 1px solid #101522;
+}
+
+.button.secondary,
+.button.secondary:visited,
+.button.secondary:active {
+  color: #25BCC0;
+  text-decoration: none;
+}
+
+.button.secondary:hover {
+  background: #234C91;
+  border-color: #234C91;
+  color: #ffffff;
 }
 
 .hero-actions,
@@ -247,7 +278,9 @@ h1 {
 
 .support-note {
   margin-top: 18px;
+  max-width: 680px;
   font-size: 0.96rem;
+  line-height: 1.7;
   color: var(--muted);
 }
 
@@ -357,6 +390,11 @@ h1 {
   min-height: 132px;
 }
 
+.service-list span {
+  color: #465368;
+  line-height: 1.7;
+}
+
 .service-list strong {
   display: block;
   margin-bottom: 10px;
@@ -390,8 +428,19 @@ h1 {
   box-shadow: 0 16px 40px rgba(16,21,34,0.04);
 }
 
+.approach-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
 .approach-list div {
+  background: #ffffff;
+  border: 1px solid #e8edf2;
   border-top: 4px solid rgba(37,188,192,0.14);
+  border-radius: 22px;
+  padding: 28px;
+  color: #101522;
 }
 
 .contact {
@@ -476,6 +525,10 @@ h1 {
   gap: 18px;
 }
 
+.about p,
+.approach-list p,
+.routing-list small,
+.contact-copy p,
 .footer-tagline {
   max-width: 520px;
   color: #5f6675;
