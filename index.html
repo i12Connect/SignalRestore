@@ -106,6 +106,12 @@
 
     .hero {
   display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  grid-template-areas:
+    "title title"
+    "copy image";
+  align-items: start;
+  display: grid;
   grid-template-columns: 1.2fr 0.8fr;
   align-items: center;
   gap: clamp(40px, 6vw, 90px);
@@ -128,7 +134,14 @@
     );
 }
 
+.hero-title {
+  grid-area: title;
+  width: 100%;
+  margin-bottom: 28px;
+}
+
 .hero-copy {
+  grid-area: copy;
   max-width: 760px;
 }
 
@@ -206,6 +219,7 @@ h1 {
 }
 
 .hero-image {
+  grid-area: image;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -274,13 +288,13 @@ h1 {
 
   <main id="top">
     <section class="hero">
+      <h1 class="hero-title">
+        Phone systems get complicated.<br />
+        <span class="text-cyan">We make them workable.</span>
+      </h1>
+
       <div class="hero-copy">
         <p class="eyebrow">Independent local phone system support</p>
-
-        <h1>
-          Phone systems get complicated.<br />
-          <span class="text-cyan">We make them workable.</span>
-        </h1>
 
         <div class="hero-lede">
           <p>
