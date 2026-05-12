@@ -159,8 +159,36 @@ h1 {
   max-width: 700px;
 }
 
+.hero-lede p {
+  margin: 0;
+}
+
 .hero-lede span {
-  display: block;
+  display: inline;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  padding: 0 30px;
+  border-radius: 999px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.button.primary {
+  background: #F98F21;
+  color: #101522;
+  border: 1px solid #F98F21;
+}
+
+.button.secondary {
+  background: #101522;
+  color: #25BCC0;
+  border: 1px solid #101522;
 }
 
 .hero-actions,
@@ -255,13 +283,21 @@ h1 {
         </h1>
 
         <div class="hero-lede">
-          <span>From <span class="text-cyan">daily troubleshooting</span> to <span class="text-magenta">cloud migrations</span>,</span>
-          <span>your communications stay clear, reliable, and easier to manage.</span>
-          <span>Signal Restore coordinates the moving parts:</span>
-          <span>carriers, cable providers, UCaaS platforms, desk phones, mobile apps,</span>
-          <span>billing issues, porting timelines, and stalled support tickets.</span>
-          <span>You get a local expert who translates technical details</span>
-          <span>into practical next steps.</span>
+          <p>
+            From <span class="text-cyan">daily troubleshooting</span> to
+            <span class="text-magenta">cloud migrations</span>, your communications stay
+            clear, reliable, and easier to manage.
+          </p>
+
+          <p>
+            Signal Restore coordinates the moving parts: carriers, cable providers,
+            UCaaS platforms, desk phones, mobile apps, billing issues, porting timelines,
+            and stalled support tickets.
+          </p>
+
+          <p>
+            You get a local expert who translates technical details into practical next steps.
+          </p>
         </div>
 
         <div class="hero-actions">
@@ -269,7 +305,7 @@ h1 {
           <a class="button secondary" href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2miJjeZl24rVLY5BeVnPWpysOX9j7z6gQK5C5do21sD4Of89ZKFuLZP4F_fsq7acOfOAsP2zMl" target="_blank">Book Consultation</a>
         </div>
 
-        <p class="support-note">Press 1 for Support. We work for you, not the provider.</p>
+        <p class="support-note">We work for you, not the provider.</p>
       </div>
 
       <div class="hero-image">
