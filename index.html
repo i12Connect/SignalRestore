@@ -284,6 +284,13 @@ main {
   background: #ffffff;
 }
 
+.service-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  list-style: none;
+}
+
 .service-list li,
 .industry-list > li {
   background: #ffffff;
@@ -295,11 +302,41 @@ main {
 }
 
 .service-list li {
+  border-radius: 0;
+  border-left: none;
+  border-bottom: 1px solid #e7e3dc;
+  padding: 26px 32px;
+  min-height: 132px;
+}
   border-left: 4px solid rgba(35,76,145,0.10);
 }
 
 .service-list strong {
+  display: block;
+  margin-bottom: 10px;
   font-size: 1.02rem;
+  color: var(--ink);
+}
+  font-size: 1.02rem;
+}
+
+.industries-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.08fr;
+  gap: 56px;
+  align-items: start;
+}
+
+.routing-card {
+  background: #f8fafb;
+  border: 1px solid #e7edf2;
+  padding: 28px;
+}
+
+.outcome-panel {
+  background: linear-gradient(135deg, #f8fbfc 0%, #eef6f7 100%);
+  border: 1px solid #dfecef;
+  padding: 42px;
 }
 
 .routing-card,
@@ -449,7 +486,7 @@ main {
 
       <div class="industries-layout">
         <div>
-          <ul class="industry-list">
+          <ul class="industry-list" style="display:flex; flex-direction:column; gap:12px; list-style:none; margin-bottom:18px;">
             <li>Legacy POTS lines and antiquated phone systems</li>
             <li>Franchises with multiple locations or inconsistent setups</li>
             <li>Small to medium retail shops</li>
@@ -467,7 +504,7 @@ main {
         </div>
 
         <div class="outcome-panel">
-          <h3>Common projects we take on</h3>
+          <h3 style="font-size:clamp(2rem,3vw,3.2rem); line-height:1.05; margin-bottom:24px;">Common projects we take on</h3>
           <ul>
             <li>Phone system cleanups for messy routing, old users, unused devices, and confusing settings</li>
             <li>Billing audits for businesses that feel they may be paying too much</li>
