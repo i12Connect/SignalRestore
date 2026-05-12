@@ -303,31 +303,97 @@ h1 {
 }
 
 @media (max-width: 1100px) {
-  .hero,
-  .industries-layout,
-  .contact {
+  .site-header {
     grid-template-columns: 1fr;
+    gap: 18px;
+    justify-items: center;
+    text-align: center;
+    padding: 18px 20px;
+  }
+
+  .main-nav {
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+  }
+
+  .header-phone {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "title"
+      "image"
+      "copy";
+    gap: 28px;
+    padding: 56px 20px;
+  }
+
+  .hero-title {
+    margin-bottom: 8px;
   }
 
   .hero-image {
-    order: -1;
+    order: 0;
   }
 
   .hero-image img {
-    max-width: 460px;
+    max-width: 420px;
+    margin: 0 auto;
   }
 
-  h1,
-  .eyebrow,
-  .hero-lede span,
-  .support-note {
-    white-space: normal;
+  h1 {
+    font-size: clamp(2.3rem, 9vw, 3.8rem);
+    line-height: 1.02;
   }
 
-  .site-header,
-  .site-footer {
+  .hero-actions,
+  .contact-actions {
     flex-direction: column;
+    align-items: stretch;
+  }
+
+  .button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .service-list,
+  .approach-list,
+  .contact,
+  .site-footer {
+    grid-template-columns: 1fr;
+  }
+
+  .contact {
+    grid-template-areas:
+      "title"
+      "copy"
+      "actions"
+      "form";
+    gap: 28px;
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+
+  .contact-copy h2 {
+    font-size: clamp(2.2rem, 8vw, 3.6rem);
+    max-width: 100%;
+  }
+
+  .form-frame iframe {
+    min-height: 620px;
+  }
+
+  .footer-right {
     align-items: flex-start;
+  }
+
+  .proof-visuals img {
+    height: auto;
   }
 }
 
@@ -584,9 +650,17 @@ h1 {
 
 .proof-visuals {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 24px;
   align-items: center;
+}
+
+.proof-visuals img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 22px;
+  box-shadow: 0 16px 40px rgba(16,21,34,0.06);
 }
 
 .proof-visuals img {
@@ -658,8 +732,7 @@ h1 {
 
     <section class="proof-band" aria-label="Signal Restore visual support section">
   <div class="proof-visuals">
-    <img src="assets/provider-support.png" alt="Business owner reviewing phone system support" />
-    <img src="assets/cloud-migration.png" alt="Modern business communications and cloud migration support" />
+    <img src="assets/modern-communications-remote.png" alt="Modern communications and cloud migration support" />
   </div>
 </section>
 
