@@ -52,18 +52,51 @@
     }
 
     .site-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 24px;
-      padding: 18px clamp(20px, 4vw, 56px);
-      background: rgba(251, 250, 247, 0.96);
-      border-bottom: 1px solid rgba(228, 224, 216, 0.8);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(18px);
-    }
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 32px;
+  padding: 18px clamp(24px, 4vw, 64px);
+  background: rgba(8, 10, 16, 0.96);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(18px);
+}
+
+.main-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(28px, 3vw, 52px);
+}
+
+.main-nav a {
+  color: rgba(255,255,255,0.82);
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 0.98rem;
+}
+
+.main-nav a:hover {
+  color: #ffffff;
+}
+
+.header-phone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.06);
+  color: #ffffff;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+}
 
     .brand {
       display: inline-flex;
@@ -238,16 +271,31 @@ h1 {
 
 @media (max-width: 1100px) {
   .hero,
-  .intro,
   .industries-layout,
-  .contact,
-  .approach-list,
-  /* ========================================
-   VISUAL COHESION + SECTION FLOW REDESIGN
-======================================== */
+  .contact {
+    grid-template-columns: 1fr;
+  }
 
-main {
-  background: #ffffff;
+  .hero-image {
+    order: -1;
+  }
+
+  .hero-image img {
+    max-width: 460px;
+  }
+
+  h1,
+  .eyebrow,
+  .hero-lede span,
+  .support-note {
+    white-space: normal;
+  }
+
+  .site-header,
+  .site-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 .section-heading {
@@ -303,12 +351,10 @@ main {
 
 .service-list li {
   border-radius: 0;
-  border-left: none;
+  border-left: 4px solid rgba(35,76,145,0.10);
   border-bottom: 1px solid #e7e3dc;
   padding: 26px 32px;
   min-height: 132px;
-}
-  border-left: 4px solid rgba(35,76,145,0.10);
 }
 
 .service-list strong {
@@ -316,8 +362,6 @@ main {
   margin-bottom: 10px;
   font-size: 1.02rem;
   color: var(--ink);
-}
-  font-size: 1.02rem;
 }
 
 .industries-layout {
@@ -424,52 +468,99 @@ main {
 }
 
 .site-footer {
+}
+
+.footer-left {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.footer-tagline {
+  max-width: 520px;
+  color: #5f6675;
+  line-height: 1.8;
+  font-size: 0.98rem;
+}
+
+.footer-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.footer-right h3 {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  color: #101522;
+}
+
+.footer-right a {
+  color: #234C91;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.footer-right a:hover {
+  color: #F98F21;
+}
+
+.footer-right p {
+  margin-top: 8px;
+  color: #5f6675;
+  font-weight: 500;
+}
+
+.site-footer {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 56px;
+  align-items: start;
+  padding: 72px clamp(24px, 5vw, 76px);
+  border-top: 1px solid #edf1f5;
   background: #ffffff;
 }
 
 .proof-band {
-    grid-template-columns: 1fr;
-  }
+  padding: 48px clamp(24px, 5vw, 76px);
+  background: #f8fafc;
+  border-top: 1px solid #edf1f5;
+  border-bottom: 1px solid #edf1f5;
+}
 
-  .hero-image {
-    order: -1;
-  }
+.proof-visuals {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: center;
+}
 
-  .hero-image img {
-    max-width: 460px;
-  }
-
-  h1,
-  .eyebrow,
-  .hero-lede span,
-  .support-note {
-    white-space: normal;
-  }
-
-  .site-header,
-  .site-footer {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+.proof-visuals img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 22px;
+  box-shadow: 0 16px 40px rgba(16,21,34,0.06);
 }
   </style>
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="#top" aria-label="Signal Restore home">
-      <img src="assets/signal-restore-logo.png" alt="Signal Restore logo" />
-      <span class="wordmark">Signal <span>Restore</span></span>
-    </a>
+  <a class="brand" href="#top" aria-label="Signal Restore home">
+    <img src="assets/signal-restore-logo.png" alt="Signal Restore logo">
+    <span class="wordmark">Signal <span>Restore</span></span>
+  </a>
 
-    <nav aria-label="Main navigation">
-      <a href="#services">Services</a>
-      <a href="#industries">Industries</a>
-      <a href="#about">About Us</a>
-      <a href="#contact">Contact</a>
-    </nav>
+  <nav aria-label="Main navigation" class="main-nav">
+    <a href="#services">Services</a>
+    <a href="#industries">Industries</a>
+    <a href="#about">About Us</a>
+    <a href="#contact">Contact Us</a>
+  </nav>
 
-    <a class="header-call" href="tel:+19519000067">951.900.0067</a>
-  </header>
+  <a class="header-phone" href="tel:+19519000067">951.900.0067</a>
+</header>
 
   <main id="top">
     <section class="hero">
@@ -504,7 +595,7 @@ main {
           <a class="button secondary" href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2miJjeZl24rVLY5BeVnPWpysOX9j7z6gQK5C5do21sD4Of89ZKFuLZP4F_fsq7acOfOAsP2zMl" target="_blank">Book Consultation</a>
         </div>
 
-        <p class="support-note">We work for you, not the provider.</p>
+        <p class="support-note">We work for you, not the provider — independent support focused on your business, not the provider’s agenda.</p>
       </div>
 
       <div class="hero-image">
@@ -512,10 +603,12 @@ main {
       </div>
     </section>
 
-    <section class="proof-band" aria-label="Signal Restore promise">
-      <p>We make your phone system work better.</p>
-      <p>Real support. Real solutions.</p>
-    </section>
+    <section class="proof-band" aria-label="Signal Restore visual support section">
+  <div class="proof-visuals">
+    <img src="assets/provider-support.jpg" alt="Business owner reviewing phone system support" />
+    <img src="assets/cloud-migration.jpg" alt="Modern business communications and cloud migration support" />
+  </div>
+</section>
 
     <section class="section services" id="services">
       <div class="section-heading">
@@ -542,44 +635,11 @@ main {
         <h2>Support for businesses where missed calls mean missed revenue.</h2>
       </div>
 
-      <div class="industries-layout">
-        <div>
-          <ul class="industry-list" style="display:flex; flex-direction:column; gap:12px; list-style:none; margin-bottom:18px;">
-            <li>Legacy POTS lines and antiquated phone systems</li>
-            <li>Franchises with multiple locations or inconsistent setups</li>
-            <li>Small to medium retail shops</li>
-          </ul>
-
-          <div class="routing-card">
-            <strong>Special routing for offices:</strong>
-            <ul class="routing-list">
-              <li><span>Financial offices</span><small>Route clients to advisors, service teams, after-hours support, or priority lines.</small></li>
-              <li><span>Law offices</span><small>Direct callers by practice area, attorney, intake team, voicemail, or emergency handling.</small></li>
-              <li><span>Clinics and doctors offices</span><small>Separate scheduling, billing, clinical questions, referrals, and urgent call paths.</small></li>
-              <li><span>Healthcare call centers</span><small>Design routing, queues, escalation flows, reporting, and team training.</small></li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="outcome-panel">
-          <h3 style="font-size:clamp(2rem,3vw,3.2rem); line-height:1.05; margin-bottom:24px;">Common projects we take on</h3>
-          <ul>
-            <li>Phone system cleanups for messy routing, old users, unused devices, and confusing settings</li>
-            <li>Billing audits for businesses that feel they may be paying too much</li>
-            <li>Consolidating multiple phone systems into one cleaner setup</li>
-            <li>Helping teams move to hybrid phone systems</li>
-            <li>Removing old systems that are no longer needed</li>
-            <li>Retrieving business numbers and restoring call routing where possible</li>
-          </ul>
-
-          <p>If your phone bill seems too high and you do not know why, or the system you have is not what you had in mind, we can help you sort through the details. We explain the industry jargon, review the setup, and help you understand what is working, what is wasteful, and what should change.</p>
-
-          <p>Number recovery and routing restoration are not guaranteed, but we will investigate the options, push the right providers, and do our best. We have helped businesses succeed with these issues before.</p>
-
-          <p>We have been pioneers in this industry, and we are here to help our local community the best way we can.</p>
-        </div>
+      <div style="margin-bottom:32px;">
+        <img src="assets/industries-infographic.png" alt="Industries we help infographic" style="width:100%; border-radius:22px; box-shadow:0 16px 40px rgba(16,21,34,0.06);">
       </div>
-    </section>
+
+      </section>
 
     <section class="section about" id="about">
       <div class="section-heading">
@@ -639,16 +699,24 @@ main {
   </main>
 
   <footer class="site-footer">
+  <div class="footer-left">
     <div class="brand">
       <img src="assets/signal-restore-logo.png" alt="Signal Restore logo" />
-      <span>Signal Restore</span>
+      <span class="wordmark">Signal <span>Restore</span></span>
     </div>
 
-    <div>
-      <a href="https://signal-restore.com">signal-restore.com</a>
-      <a href="mailto:support@signal-restore.com">support@signal-restore.com</a>
-      <a href="tel:+19519000067">951.900.0067</a>
-    </div>
-  </footer>
+    <p class="footer-tagline">
+      Local expert support for business phone systems across Southern California and nearby service areas.
+      We help businesses set up, fix, manage, and modernize communications.
+    </p>
+  </div>
+
+  <div class="footer-right">
+    <h3>Contact Information</h3>
+    <a href="tel:+19519000067">Call: 951.900.0067 &nbsp; | &nbsp; Press 1 for Support</a>
+    <a href="mailto:support@signal-restore.com">Email: support@signal-restore.com</a>
+    <a href="https://signal-restore.com" target="_blank">Web: signal-restore.com</a>
+  </div>
+</footer>
 </body>
 </html>
