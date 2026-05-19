@@ -62,6 +62,7 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 56px;
+      position: relative;
     }
 
     .brand {
@@ -70,16 +71,29 @@
       gap: 14px;
       font-weight: 800;
       letter-spacing: 0.08em;
-    }
-
-    .brand img {
-      width: 52px;
-      height: 52px;
-      object-fit: contain;
+      font-size: 1.1rem;
     }
 
     .brand .restore {
       color: var(--orange);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+      font-weight: 600;
+      color: #d8dee8;
+      font-size: 0.98rem;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
     }
 
     .hero-grid {
@@ -123,8 +137,7 @@
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 1.1rem;
-      transition: 0.2s ease;
+      font-size: 1.05rem;
     }
 
     .btn-primary {
@@ -148,20 +161,9 @@
       width: 220px;
     }
 
-    .feature-banner {
-      position: relative;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 24px;
-      overflow: hidden;
-      background: #07111f;
-      box-shadow: var(--shadow);
-    }
-
     /* BODY */
 
     .services-section {
-      position: relative;
-      overflow: hidden;
       background: #f7f6f2;
       color: var(--navy);
       padding: 72px 0;
@@ -176,80 +178,44 @@
     }
 
     h2 {
-      font-size: clamp(2.5rem, 5vw, 5rem);
-      line-height: 1.02;
-      margin-bottom: 36px;
-      max-width: 100%;
-      width: 100%;
+      font-size: clamp(2.2rem, 4vw, 4rem);
+      margin-bottom: 24px;
     }
 
     .service-list {
-      border-top: 1px solid var(--line);
-    }
-
-    .service-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 56px;
-      padding: 26px 0;
-      border-bottom: 1px solid var(--line);
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 30px;
     }
 
     .service-item {
-      padding: 20px;
-      border-radius: 16px;
-      background: rgba(255,255,255,0.85);
-      border: 1px solid rgba(37,188,192,0.08);
+      background: white;
+      padding: 28px;
+      border-radius: 18px;
       box-shadow: 0 10px 24px rgba(0,0,0,0.04);
-      display: flex;
-      gap: 18px;
-      align-items: flex-start;
-    }
-
-    .dot {
-      width: 12px;
-      height: 12px;
-      min-width: 12px;
-      border-radius: 50%;
-      background: var(--cyan);
-      margin-top: 10px;
-      box-shadow: 0 0 0 6px rgba(37,188,192,0.15);
+      border: 1px solid rgba(37,188,192,0.08);
     }
 
     .service-item h3 {
-      font-size: 1.15rem;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
+      font-size: 1.2rem;
     }
 
     .service-item p {
       color: #5f6778;
-      font-size: 1.05rem;
     }
 
-    /* FOOTER CTA */
+    /* FOOTER */
 
     .footer-cta {
       background: #02060c;
-      padding: 80px 0 100px;
+      padding: 80px 0;
       text-align: center;
     }
 
-    .footer-cta h2 {
-      color: #fff;
-      margin: 0 auto 28px;
-      max-width: 1000px;
-    }
-
-    .footer-cta .accent {
-      color: var(--orange);
-    }
-
-    .contact-lines {
-      margin-bottom: 34px;
-    }
-
     .contact-lines p {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       color: #b7c1d0;
       margin-bottom: 10px;
     }
@@ -259,338 +225,200 @@
       font-weight: 600;
     }
 
-    .footer-actions {
-      justify-content: center;
-    }
+    /* MOBILE */
 
     @media (max-width: 900px) {
-      .hero-grid,
-      .service-row {
-        grid-template-columns: 1fr;
+      .menu-toggle {
+        display: block;
       }
 
-      h1 {
-        font-size: 2.6rem;
-      }
-
-      h2 {
-        font-size: 2.4rem;
-      }
-
-      .hero-side-logo {
-        justify-content: flex-start;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .btn {
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
         width: 100%;
-      }
-
-      .hero-actions,
-      .footer-actions {
+        background: #07111f;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 16px;
+        box-shadow: var(--shadow);
         flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease;
+        z-index: 100;
       }
 
-      .topbar {
-        margin-bottom: 36px;
+      .nav-links a {
+        width: 100%;
+        padding: 16px 20px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+      }
+
+      .nav-links.active {
+        max-height: 400px;
+      }
+
+      .hero-grid,
+      .service-list {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- TOP HERO -->
-  <section class="hero-wrap">
-    <div class="container">
+<section class="hero-wrap">
+  <div class="container">
 
-      <div class="topbar">
-        <div class="brand">
-          <img src="assets/signal-restore-logo.png" alt="Signal Restore Logo">
-          <div>
-            SIGNAL <span class="restore">RESTORE</span>
-          </div>
-        </div>
-
-        <nav style="display:flex; gap:28px; align-items:center; font-weight:600; color:#d8dee8; font-size:0.98rem;">
-          <a href="#services">Services</a>
-          <a href="#industries">Industries</a>
-          <a href="#about">About Us</a>
-          <a href="#contact">Contact Us</a>
-        </nav>
+    <div class="topbar">
+      <div class="brand">
+        SIGNAL <span class="restore">RESTORE</span>
       </div>
 
-      <div class="hero-grid">
-        <div class="hero-copy">
-          <h1>
-            Local Support for
-            <span class="cyan">Your Business</span>
-            Phone Systems
-          </h1>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open Menu">☰</button>
 
-          <p>
-            We help small to mid-sized businesses set up, fix, and manage cloud phone
-            systems so you can stay connected and focused.
-          </p>
-
-          <div class="hero-actions">
-            <a href="tel:+19519000067" class="btn btn-primary">Call 951-900-0067</a>
-            <a href="#" class="btn btn-secondary">Book Consultation</a>
-          </div>
-        </div>
-
-        <div class="hero-side-logo">
-          <img src="assets/signal-restore-logo.png" alt="Signal Restore">
-        </div>
-      </div>
-
-      <div class="feature-banner">
-        <img src="assets/signal-restore-services-banner.png" alt="Signal Restore feature banner" style="width:100%; height:auto; display:block;">
-      </div>
-
+      <nav class="nav-links" id="navLinks">
+        <a href="#services">Services</a>
+        <a href="#industries">Industries</a>
+        <a href="#about">About Us</a>
+        <a href="#contact">Contact Us</a>
+      </nav>
     </div>
-  </section>
 
-  <!-- BODY -->
-  <section class="services-section" id="services">
-    <div class="container">
-      <p class="eyebrow">How We Help</p>
-      <h2>Support across your entire phone system</h2>
-      <p style="max-width:100%; width:100%; font-size:1.08rem; color:#5f6778; margin-bottom:34px;">
-        Strategic support, clean implementations, and reliable communication systems built for real business operations.
-      </p>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1>
+          Local Support for <span class="cyan">Your Business</span> Phone Systems
+        </h1>
 
-      <div class="service-list">
+        <p>
+          We help small to mid-sized businesses set up, fix, and manage cloud phone systems so you can stay connected and focused.
+        </p>
 
-        <div class="service-row">
-          <div class="service-item">
-            <div class="dot"></div>
-            <div>
-              <h3>Existing phone system repairs</h3>
-              <p>For call quality problems, broken routing, voicemail issues, phone setup, or day-to-day system problems.</p>
-            </div>
-          </div>
-
-          <div class="service-item">
-            <div class="dot"></div>
-            <div>
-              <h3>POTS to cloud migration planning</h3>
-              <p>For businesses moving old phone lines, alarms, fax lines, elevators, or main numbers to modern service.</p>
-            </div>
-          </div>
+        <div class="hero-actions">
+          <a href="tel:+19519000067" class="btn btn-primary">Call 951-900-0067</a>
+          <a href="#contact" class="btn btn-secondary">Book Consultation</a>
         </div>
+      </div>
 
-        <div class="service-row">
-          <div class="service-item">
-            <div class="dot"></div>
-            <div>
-              <h3>VoIP and UCaaS setup</h3>
-              <p>For new users, desk phones, mobile apps, softphones, call flows, and admin settings.</p>
-            </div>
-          </div>
-
-          <div class="service-item">
-            <div class="dot"></div>
-            <div>
-              <h3>Call routing and IVR design</h3>
-              <p>For menus, departments, after-hours routing, hunt groups, queues, and caller experience cleanup.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="service-row">
-          <div class="service-item">
-            <div class="dot"></div>
-            <div>
-              <h3>MSP and vendor coordination</h3>
-              <p>For projects where your IT provider, phone vendor, carrier, and internal team all need to stay aligned.</p>
-            </div>
-          </div>
-
-          <div class="service-item">
-            <div class="dot"></div>
-            <div>
-              <h3>Number porting and service transitions</h3>
-              <p>For moving numbers, checking inventories, planning cutovers, and avoiding avoidable downtime.</p>
-            </div>
-          </div>
-        </div>
-
+      <div class="hero-side-logo">
+        <img src="assets/signal-restore-logo.png" alt="Signal Restore Logo">
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- INDUSTRIES SECTION -->
-  <section class="services-section" id="industries" style="padding-top: 40px; padding-bottom: 60px; background:#eef3f4;">
-    <div class="container">
-      <p class="eyebrow">Industries We Help</p>
-      <h2 style="max-width: 900px; margin-bottom: 32px;">
-        Support for businesses where missed calls mean missed revenue.
-      </h2>
+<section class="services-section" id="services">
+  <div class="container">
+    <p class="eyebrow">How We Help</p>
+    <h2>Support Across Your Entire Phone System</h2>
 
-      <div style="display:block; max-width: 1100px;">
+    <div class="service-list">
+      <div class="service-item">
+        <h3>Existing Phone System Repairs</h3>
+        <p>Call quality issues, broken routing, voicemail problems, and day-to-day system fixes.</p>
+      </div>
 
-        <!-- FULL WIDTH CONTENT -->
-        <div style="display:grid; gap: 22px;">
+      <div class="service-item">
+        <h3>POTS to Cloud Migration</h3>
+        <p>Move old lines, alarms, fax lines, and legacy infrastructure to modern service.</p>
+      </div>
 
-          <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; margin-bottom:8px;">
-            <div style="padding:28px; border:1px solid rgba(37,188,192,0.10); border-radius:20px; background:linear-gradient(180deg,#ffffff,#f8fcfc); box-shadow:0 12px 28px rgba(0,0,0,0.04);">
-              <h3 style="font-size:1.35rem; margin-bottom:12px;">Legacy POTS lines</h3>
-              <p style="color:#5f6778; line-height:1.6;">Support for aging phone systems, copper line transitions, analog devices, fax lines, alarms, and outdated infrastructure that still needs to work reliably.</p>
-            </div>
+      <div class="service-item">
+        <h3>VoIP and UCaaS Setup</h3>
+        <p>Desk phones, mobile apps, softphones, call flows, and admin setup.</p>
+      </div>
 
-            <div style="padding:28px; border:1px solid rgba(37,188,192,0.10); border-radius:20px; background:linear-gradient(180deg,#ffffff,#f8fcfc); box-shadow:0 12px 28px rgba(0,0,0,0.04);">
-              <h3 style="font-size:1.35rem; margin-bottom:12px;">Multi-location Franchises</h3>
-              <p style="color:#5f6778; line-height:1.6;">Helping businesses with multiple locations standardize routing, providers, call handling, reporting, and overall communication consistency.</p>
-            </div>
-
-            <div style="padding:28px; border:1px solid rgba(37,188,192,0.10); border-radius:20px; background:linear-gradient(180deg,#ffffff,#f8fcfc); box-shadow:0 12px 28px rgba(0,0,0,0.04);">
-              <h3 style="font-size:1.35rem; margin-bottom:12px;">Retail & Small Business</h3>
-              <p style="color:#5f6778; line-height:1.6;">Clean, practical phone systems for local shops and growing teams where every missed call can directly impact customer trust and revenue.</p>
-            </div>
-          </div>
-
-          <div style="display:grid; gap:28px;">
-
-          <div style="padding:40px; border:1px solid rgba(35,76,145,0.08); border-radius:24px; background:linear-gradient(180deg,#eef4f8,#f7fafc); box-shadow:0 16px 34px rgba(0,0,0,0.04);">
-            <h3 style="font-size:2rem; margin-bottom:24px;">Special routing for offices</h3>
-
-            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; margin-bottom:28px;">
-              <div style="padding:20px; background:#fff; border-radius:14px; border:1px solid rgba(37,188,192,0.08);">
-                <strong>Financial Offices</strong>
-                <p style="color:#5f6778; margin-top:8px;">Priority routing for advisors, service teams, after-hours support, and VIP callers.</p>
-              </div>
-              <div style="padding:20px; background:#fff; border-radius:14px; border:1px solid rgba(37,188,192,0.08);">
-                <strong>Law Offices</strong>
-                <p style="color:#5f6778; margin-top:8px;">Direct callers by practice area, intake team, attorney, or emergency response.</p>
-              </div>
-              <div style="padding:20px; background:#fff; border-radius:14px; border:1px solid rgba(37,188,192,0.08);">
-                <strong>Medical Clinics</strong>
-                <p style="color:#5f6778; margin-top:8px;">Separate scheduling, billing, referrals, and urgent patient call paths.</p>
-              </div>
-              <div style="padding:20px; background:#fff; border-radius:14px; border:1px solid rgba(37,188,192,0.08);">
-                <strong>Healthcare Call Centers</strong>
-                <p style="color:#5f6778; margin-top:8px;">Queue design, escalations, reporting visibility, and team workflow optimization.</p>
-              </div>
-            
-            </div>
-          </div>
-
-          <div style="padding:36px; border:1px solid rgba(37,188,192,0.10); border-radius:20px; background:linear-gradient(180deg,#ffffff,#f8fcfc); box-shadow:0 18px 40px rgba(0,0,0,0.05);">
-            <div style="display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-bottom:22px;">
-              <div style="font-size:2rem; font-weight:800;">Common projects we take on</div>
-            </div>
-
-            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; margin-bottom:26px;">
-              <div style="padding:18px; background:#fff; border:1px solid rgba(37,188,192,0.10); border-radius:12px;">• Phone system cleanups and routing fixes</div>
-              <div style="padding:18px; background:#fff; border:1px solid rgba(37,188,192,0.10); border-radius:12px;">• Billing audits and provider cost reviews</div>
-              <div style="padding:18px; background:#fff; border:1px solid rgba(37,188,192,0.10); border-radius:12px;">• Consolidating multiple systems into one setup</div>
-              <div style="padding:18px; background:#fff; border:1px solid rgba(37,188,192,0.10); border-radius:12px;">• Hybrid phone system transitions</div>
-              <div style="padding:18px; background:#fff; border:1px solid rgba(37,188,192,0.10); border-radius:12px;">• Retiring outdated infrastructure</div>
-              <div style="padding:18px; background:#fff; border:1px solid rgba(37,188,192,0.10); border-radius:12px;">• Number recovery and routing restoration</div>
-            </div>
-
-            <div style="display:grid; gap:14px;">
-              <div style="padding:18px 22px; background:#f8fafb; border-radius:12px; color:#5f6778;">
-                If your phone bill feels too high or your system is not performing the way it should, we help identify the problem and the practical fix.
-              </div>
-              <div style="padding:18px 22px; background:#f8fafb; border-radius:12px; color:#5f6778;">
-                Number recovery is not always guaranteed, but we know where to push, who to contact, and how to improve the chances.
-              </div>
-              <div style="padding:18px 22px; background:#f8fafb; border-radius:12px; color:#5f6778;">
-                Our focus is simple: clearer systems, fewer surprises, and better support for local businesses.
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- INTAKE FORM SECTION -->
-        <div style="padding:40px; border:1px solid rgba(37,188,192,0.12); border-radius:20px; background:linear-gradient(180deg,#ffffff,#fbffff); box-shadow: 0 20px 40px rgba(0,0,0,0.06); margin-top:40px; width:100%;">
-          <h2 style="font-size:2.2rem; margin-bottom:18px; max-width:none;">Request Help / System Intake Form</h2>
-          <p style="color:#5f6778; margin-bottom:22px;">
-            If you'd like help diagnosing issues with your phone system, complete the intake form below and we’ll review your setup and next steps.
-          </p>
-
-          <iframe
-            src="https://i12clientgallery.notion.site/ebd//c8168dc57392837cab3d817f454f3e01"
-            width="100%"
-            height="700"
-            frameborder="0"
-            allowfullscreen
-            style="border:0; border-radius:12px; background:#fff;">
-          </iframe>
-        </div>
-
+      <div class="service-item">
+        <h3>Vendor Coordination</h3>
+        <p>Keeping providers, carriers, MSPs, and internal teams aligned.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ABOUT US SECTION -->
-  <section class="services-section" style="background:#eef4f8; padding-top:70px; padding-bottom:70px;">
-    <div class="container">
-      <p class="eyebrow">How Engagements Work</p>
-      <h2 style="font-size:2.4rem; margin-bottom:28px; max-width:800px;">A clear workflow from diagnosis to long-term stability</h2>
+<section class="services-section" id="industries" style="background:#f7f8fa;">
+  <div class="container">
+    <p class="eyebrow">Businesses We Support</p>
 
-      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:22px; max-width:1100px;">
-        <div style="padding:30px; background:rgba(255,255,255,0.92); border-radius:22px; border:1px solid rgba(35,76,145,0.08); box-shadow:0 10px 24px rgba(0,0,0,0.03);">
-          <div style="font-size:0.9rem; font-weight:800; color:#234C91; margin-bottom:10px;">STEP 01</div><strong>Free 30-minute review</strong>
-          <p style="color:#5f6778; margin-top:10px;">We diagnose routing, porting, billing, device, and system issues.</p>
-        </div>
-        <div style="padding:30px; background:rgba(255,255,255,0.92); border-radius:22px; border:1px solid rgba(35,76,145,0.08); box-shadow:0 10px 24px rgba(0,0,0,0.03);">
-          <div style="font-size:0.9rem; font-weight:800; color:#234C91; margin-bottom:10px;">STEP 02</div><strong>Fix plan</strong>
-          <p style="color:#5f6778; margin-top:10px;">Priorities, quick wins, and clear ownership for next steps.</p>
-        </div>
-        <div style="padding:30px; background:rgba(255,255,255,0.92); border-radius:22px; border:1px solid rgba(35,76,145,0.08); box-shadow:0 10px 24px rgba(0,0,0,0.03);">
-          <div style="font-size:0.9rem; font-weight:800; color:#234C91; margin-bottom:10px;">STEP 03</div><strong>Implementation</strong>
-          <p style="color:#5f6778; margin-top:10px;">We handle cleanup, corrections, and documentation.</p>
-        </div>
-        <div style="padding:30px; background:rgba(255,255,255,0.92); border-radius:22px; border:1px solid rgba(35,76,145,0.08); box-shadow:0 10px 24px rgba(0,0,0,0.03);">
-          <div style="font-size:0.9rem; font-weight:800; color:#234C91; margin-bottom:10px;">STEP 04</div><strong>Stabilize + handoff</strong>
-          <p style="color:#5f6778; margin-top:10px;">Training, runbooks, and reliable day-to-day ownership.</p>
-        </div>
-        <div style="padding:30px; background:rgba(255,255,255,0.92); border-radius:22px; border:1px solid rgba(35,76,145,0.08); box-shadow:0 10px 24px rgba(0,0,0,0.03);">
-          <div style="font-size:0.9rem; font-weight:800; color:#234C91; margin-bottom:10px;">STEP 05</div><strong>Ongoing support</strong>
-          <p style="color:#5f6778; margin-top:10px;">Optional monthly support or quarterly system checkups.</p>
-        </div>
+    <h2>
+      Businesses <span style="color:#e4007c;">we</span>
+      <span style="color:#f98f21;">support</span>
+    </h2>
+
+    <p style="font-size:1.35rem; font-weight:700; margin-bottom:42px; max-width:1000px;">
+      Support for organizations where
+      <span style="color:#e4007c;">missed calls</span>
+      mean
+      <span style="color:#25bcc0;">missed revenue.</span>
+    </p>
+
+    <div class="service-list">
+      <div class="service-item">
+        <h3>Businesses with Legacy Phone Systems</h3>
+        <p>Older analog systems, copper lines, outdated PBX setups, and modernization planning.</p>
       </div>
 
-      <div id="about" style="margin-top:60px; scroll-margin-top:120px;">
-        <p class="eyebrow">About Us</p>
-        <h2 style="max-width:900px; margin-bottom:24px;">Local support for business phone systems.</h2>
-
-        <div style="max-width:980px; padding:40px; background:#ffffff; border:1px solid rgba(37,188,192,0.10); border-radius:20px; box-shadow:0 18px 40px rgba(0,0,0,0.05); margin-bottom:20px;">
-          <p style="font-size:1.08rem; line-height:1.8; color:#5f6778; margin-bottom:20px;">
-            Signal Restore helps Inland Empire, Orange County, and Los Angeles small businesses fix, clean up, and manage their cloud phone systems—so calls route correctly, numbers do not get lost, and someone actually owns the system.
-          </p>
-          <p style="font-size:1.08rem; line-height:1.8; color:#5f6778;">
-            Our mission is simple: make business communications easier to manage, easier to trust, and easier to scale without unnecessary complexity, wasted costs, or provider confusion.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <section id="contact" class="footer-cta" style="background: radial-gradient(circle at top, #0b1b2f 0%, #02060c 70%);">
-    <div class="container">
-      <h1>
-        Let's Make Your Phone System
-        <span class="accent">Work For You</span>
-      </h2>
-
-      <div class="contact-lines">
-        <p>Phone: <span>951-900-0067</span></p>
-        <p>Email: <span>support@signal-restore.com</span></p>
-        <p>Web: <span>signal-restore.com</span></p>
+      <div class="service-item">
+        <h3>Financial Offices</h3>
+        <p>Priority routing for advisors, billing departments, service teams, and after-hours support.</p>
       </div>
 
-      <div class="footer-actions">
-        <a href="tel:+19519000067" class="btn btn-primary">Call Now</a>
-        <a href="#" class="btn btn-secondary">Book Consultation</a>
+      <div class="service-item">
+        <h3>Franchises & Multi-Location Businesses</h3>
+        <p>Consistent routing, provider management, and standardized communication across locations.</p>
+      </div>
+
+      <div class="service-item">
+        <h3>Law Offices</h3>
+        <p>Call routing by practice area, attorney, intake team, consultations, and urgent response.</p>
+      </div>
+
+      <div class="service-item">
+        <h3>Retail & Customer-Facing Businesses</h3>
+        <p>Reliable inbound call handling, front desk routing, voicemail cleanup, and fewer missed calls.</p>
+      </div>
+
+      <div class="service-item">
+        <h3>Healthcare Call Centers</h3>
+        <p>Queue design, escalations, reporting visibility, and smoother team workflows.</p>
       </div>
     </div>
-  </section>
+
+    <div style="margin-top:42px; padding:28px 34px; border-radius:20px; background:linear-gradient(90deg, #07111f, #0b1b2f); color:white; text-align:center; font-size:2rem; font-weight:700;">
+      Better <span style="color:#e4007c;">communication.</span>
+      <span style="color:#25bcc0;">Stronger</span> business.
+    </div>
+  </div>
+</section>
+
+<section class="footer-cta" id="contact">
+  <div class="container">
+    <h2>Let's Make Your Phone System Work For You</h2>
+
+    <div class="contact-lines">
+      <p>Phone: <span>951-900-0067</span></p>
+      <p>Email: <span>support@signal-restore.com</span></p>
+      <p>Web: <span>signal-restore.com</span></p>
+    </div>
+
+    <div class="footer-actions">
+      <a href="tel:+19519000067" class="btn btn-primary">Call Now</a>
+      <a href="#" class="btn btn-secondary">Book Consultation</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+
+  menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+  });
+</script>
 
 </body>
 </html>
