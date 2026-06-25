@@ -408,18 +408,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
         <div style="text-align:center;margin-bottom:32px">
           <div style="font-size:40px;margin-bottom:12px">🔒</div>
           <div style="font-size:20px;font-weight:700;letter-spacing:-0.3px">Admin Access</div>
-          <div style="color:var(--text-2);font-size:13px;margin-top:6px">Enter your password to continue</div>
+          <div style="color:var(--text-2);font-size:13px;margin-top:6px">Enter your credentials to continue</div>
         </div>
         <div class="panel">
+          <div class="field"><label>Username / ID</label>
+            <input id="admin-user-input" type="text" placeholder="Username or Employee ID" autocomplete="username"
+              onkeydown="if(event.key==='Enter')document.getElementById('admin-pw-input').focus()"/>
+          </div>
           <div class="field"><label>Password</label>
-            <input id="admin-pw-input" type="password" placeholder="Enter password" autocomplete="current-password"
+            <input id="admin-pw-input" type="password" placeholder="Password" autocomplete="current-password"
               onkeydown="if(event.key==='Enter')attemptAdminLogin()"/>
           </div>
-          <div id="admin-lock-error" style="color:var(--red);font-size:12px;margin-bottom:12px;display:none">Incorrect password. Try again.</div>
+          <div id="admin-lock-error" style="color:var(--red);font-size:12px;margin-bottom:12px;display:none">Incorrect credentials. Try again.</div>
           <button class="btn btn-p" onclick="attemptAdminLogin()" style="width:100%">Unlock</button>
-          <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);font-size:12px;color:var(--text-3);text-align:center">
-            Default: <span style="font-family:var(--mono)">admin</span> · Super Admin: <span style="font-family:var(--mono)">superadmin</span>
-          </div>
         </div>
       </div>
     </div>
@@ -453,12 +454,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
             <div class="field"><label>Employee ID</label>
               <div class="frow"><input id="ag-id" type="text" inputmode="numeric" maxlength="6" placeholder="e.g. 482910" style="flex:1"/><button class="btn btn-g btn-sm" onclick="genPIN('ag-id')">⚄ Random</button></div>
             </div>
-            <button class="btn btn-p" id="btn-add-ag" onclick="addAgent()" style="width:100%">Add Agent</button>
+            <div class="frow">
+              <div class="field"><label>Department</label><input id="ag-dept" type="text" placeholder="Support"/></div>
+              <div class="field"><label>Hire Date</label><input id="ag-hire" type="date"/></div>
+            </div>
+            <div class="frow">
+              <div class="field"><label>Phone</label><input id="ag-phone" type="text" placeholder="555-000-0000"/></div>
+              <div class="field"><label>Weekly Hours</label>
+                <select id="ag-weekly">
+                  <option value="40">40h — Full Time</option>
+                  <option value="37.5">37.5h</option>
+                  <option value="32">32h</option>
+                  <option value="24">24h — Part Time</option>
+                  <option value="20">20h — Part Time</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn btn-p" id="btn-add-ag" onclick="addAgent()" style="width:100%;margin-top:4px">Add Agent</button>
           </div>
           <div class="panel">
             <div class="panel-hdr"><div class="panel-title">Agent Roster</div><button class="bicon" onclick="loadRoster()">↻</button></div>
-            <table class="dt"><thead><tr><th>Name</th><th>ID</th><th>Status</th><th></th></tr></thead>
-            <tbody id="roster-tbody"><tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:24px">Loading…</td></tr></tbody></table>
+            <table class="dt"><thead><tr><th>Name</th><th>ID</th><th>Dept</th><th>Status</th><th></th></tr></thead>
+            <tbody id="roster-tbody"><tr><td colspan="5" style="text-align:center;color:var(--text-3);padding:24px">Loading…</td></tr></tbody></table>
           </div>
         </div>
       </div>
@@ -466,19 +483,96 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
       <!-- TAB: SCHEDULES -->
       <div class="tab-pane" id="tab-schedules">
         <div class="panel gap">
-          <div class="panel-title">Set Agent Schedule</div>
-          <div class="frow">
-            <div class="field"><label>Agent</label><select id="sch-agent"><option value="">— Select —</option></select></div>
-            <div class="field"><label>Date</label><input type="date" id="sch-date"/></div>
-            <div class="field"><label>Shift Start</label><input type="time" id="sch-start"/></div>
-            <div class="field"><label>Shift End</label><input type="time" id="sch-end"/></div>
+          <div class="panel-title">Bulk Schedule Builder</div>
+          <!-- Step 1: Agent + Month -->
+          <div class="frow" style="margin-bottom:16px">
+            <div class="field"><label>Agent</label><select id="sch-agent"><option value="">— Select Agent —</option></select></div>
+            <div class="field"><label>View Month</label><input type="month" id="sch-month"/></div>
+            <div style="display:flex;align-items:flex-end;padding-bottom:14px">
+              <button class="btn btn-g btn-sm" onclick="loadBulkCal()">Load Calendar</button>
+            </div>
           </div>
-          <button class="btn btn-p" onclick="saveSchedule()">Save Schedule</button>
+
+          <!-- Mode tabs -->
+          <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+            <button class="btn btn-p btn-sm" id="mode-click" onclick="setBulkMode('click')">☑ Click Days</button>
+            <button class="btn btn-g btn-sm" id="mode-pattern" onclick="setBulkMode('pattern')">📅 Day Pattern</button>
+            <button class="btn btn-g btn-sm" id="mode-range" onclick="setBulkMode('range')">↔ Date Range</button>
+          </div>
+
+          <!-- MODE: CLICK TO SELECT -->
+          <div id="bulk-click-mode">
+            <div style="font-size:12px;color:var(--text-2);margin-bottom:8px">Click days to select/deselect. Selected days shown in blue.</div>
+            <div id="bulk-cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:12px"></div>
+            <div id="bulk-selected-count" style="font-size:12px;color:var(--text-2);margin-bottom:12px">0 days selected</div>
+          </div>
+
+          <!-- MODE: DAY PATTERN -->
+          <div id="bulk-pattern-mode" style="display:none">
+            <div style="font-size:12px;color:var(--text-2);margin-bottom:10px">Select which days of the week, then choose a date range to apply the pattern.</div>
+            <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap">
+              ${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((d,i)=>`
+                <button class="btn btn-g btn-sm dow-btn" data-dow="${i}" onclick="toggleDow(${i},this)" style="min-width:44px">${d}</button>
+              `).join('')}
+            </div>
+            <div class="frow">
+              <div class="field"><label>From Date</label><input type="date" id="pat-from"/></div>
+              <div class="field"><label>To Date</label><input type="date" id="pat-to"/></div>
+            </div>
+            <button class="btn btn-g btn-sm" onclick="applyPattern()" style="margin-bottom:12px">Generate Selected Days</button>
+            <div id="pattern-preview" style="font-size:12px;color:var(--text-2)"></div>
+          </div>
+
+          <!-- MODE: DATE RANGE -->
+          <div id="bulk-range-mode" style="display:none">
+            <div style="font-size:12px;color:var(--text-2);margin-bottom:10px">Select a start and end date. Optionally exclude weekends.</div>
+            <div class="frow">
+              <div class="field"><label>From Date</label><input type="date" id="rng-from"/></div>
+              <div class="field"><label>To Date</label><input type="date" id="rng-to"/></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer">
+                <input type="checkbox" id="rng-skip-weekends" checked/> Skip weekends
+              </label>
+            </div>
+            <button class="btn btn-g btn-sm" onclick="applyRange()">Generate Selected Days</button>
+            <div id="range-preview" style="font-size:12px;color:var(--text-2);margin-top:8px"></div>
+          </div>
+
+          <hr style="border:none;border-top:1px solid var(--border);margin:16px 0"/>
+
+          <!-- Shift Details (shared across all modes) -->
+          <div style="font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:12px">Shift Details</div>
+          <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+            <button class="btn btn-g btn-sm" onclick="applyShiftPreset('8-5')">8am–5pm</button>
+            <button class="btn btn-g btn-sm" onclick="applyShiftPreset('9-6')">9am–6pm</button>
+            <button class="btn btn-g btn-sm" onclick="applyShiftPreset('7-4')">7am–4pm</button>
+            <button class="btn btn-g btn-sm" onclick="applyShiftPreset('off')">Day Off</button>
+          </div>
+          <div id="shift-detail-fields">
+            <div class="frow">
+              <div class="field"><label>Shift Start</label><input type="time" id="bs-start" value="08:00"/></div>
+              <div class="field"><label>Shift End</label><input type="time" id="bs-end" value="17:00"/></div>
+              <div class="field"><label>Lunch Start</label><input type="time" id="bs-lunch-s" value="12:00"/></div>
+              <div class="field"><label>Lunch End</label><input type="time" id="bs-lunch-e" value="13:00"/></div>
+            </div>
+            <div class="frow">
+              <div class="field"><label>Break 1</label><input type="time" id="bs-brk1" value="10:00"/></div>
+              <div class="field"><label>Break 2</label><input type="time" id="bs-brk2" value="15:00"/></div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
+            <button class="btn btn-p" onclick="applyBulkSchedule()" style="flex:1">Apply to Selected Days</button>
+            <button class="btn btn-g btn-sm" onclick="clearBulkSelection()">Clear</button>
+          </div>
+          <div id="bulk-result" style="margin-top:10px;font-size:13px"></div>
         </div>
+
         <div class="panel">
           <div class="panel-hdr"><div class="panel-title">Schedule Log</div><button class="bicon" onclick="loadSchedules()">↻</button></div>
-          <table class="dt"><thead><tr><th>Agent</th><th>Date</th><th>Start</th><th>End</th><th>Hours</th><th></th></tr></thead>
-          <tbody id="sch-tbody"><tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:24px">No schedules yet.</td></tr></tbody></table>
+          <table class="dt"><thead><tr><th>Agent</th><th>Date</th><th>Start</th><th>End</th><th>Lunch</th><th>Hours</th><th></th></tr></thead>
+          <tbody id="sch-tbody"><tr><td colspan="7" style="text-align:center;color:var(--text-3);padding:24px">No schedules yet.</td></tr></tbody></table>
         </div>
       </div>
 
@@ -974,11 +1068,12 @@ function importCSV(input){
 }
 
 /* ── ADMIN AUTH ── */
-// Passwords stored in Supabase app_settings table.
-// Fallback to defaults if table not yet seeded.
 let adminSession = null; // null | 'admin' | 'superadmin'
+let adminUsername = '';
 
-const DEFAULT_PASSWORDS = { admin: 'admin', superadmin: 'superadmin' };
+// Hardcoded Super Admin — ID: 0001, password: admin1
+const SUPER_ADMIN_ID = '0001';
+const SUPER_ADMIN_PW = 'admin1';
 
 async function getPasswords(){
   try{
@@ -986,34 +1081,66 @@ async function getPasswords(){
     const map = {};
     rows.forEach(r => map[r.key] = r.value);
     return {
-      admin:      map['admin_password']      || DEFAULT_PASSWORDS.admin,
-      superadmin: map['superadmin_password'] || DEFAULT_PASSWORDS.superadmin
+      admin:      map['admin_password']      || 'admin',
+      superadmin: map['superadmin_password'] || 'superadmin'
     };
   } catch(e){
-    return DEFAULT_PASSWORDS;
+    return { admin: 'admin', superadmin: 'superadmin' };
   }
 }
 
 async function attemptAdminLogin(){
-  const pw = document.getElementById('admin-pw-input').value;
+  const user = (document.getElementById('admin-user-input')?.value||'').trim();
+  const pw   = (document.getElementById('admin-pw-input')?.value||'').trim();
   const errEl = document.getElementById('admin-lock-error');
   errEl.style.display = 'none';
-  if(!pw){ errEl.textContent='Please enter a password.'; errEl.style.display='block'; return; }
 
+  if(!user || !pw){
+    errEl.textContent = 'Please enter your username and password.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  // Hardcoded Super Admin check (ID 0001 / admin1)
+  if(user === SUPER_ADMIN_ID && pw === SUPER_ADMIN_PW){
+    adminSession  = 'superadmin';
+    adminUsername = 'Super Admin (0001)';
+    document.getElementById('admin-user-input').value = '';
+    document.getElementById('admin-pw-input').value   = '';
+    showAdminPanel();
+    return;
+  }
+
+  // Check against Supabase managers table
+  try{
+    const rows = await GET('managers', `username=eq.${encodeURIComponent(user)}&select=*`);
+    if(rows && rows.length && rows[0].pin_hash === pw){
+      adminSession  = rows[0].role || 'admin';
+      adminUsername = rows[0].full_name || user;
+      document.getElementById('admin-user-input').value = '';
+      document.getElementById('admin-pw-input').value   = '';
+      showAdminPanel();
+      return;
+    }
+  } catch(e){ console.error('Manager lookup error:', e); }
+
+  // Fallback: check app_settings passwords (legacy)
   const passwords = await getPasswords();
-
   if(pw === passwords.superadmin){
-    adminSession = 'superadmin';
+    adminSession  = 'superadmin';
+    adminUsername = user;
   } else if(pw === passwords.admin){
-    adminSession = 'admin';
+    adminSession  = 'admin';
+    adminUsername = user;
   } else {
-    errEl.textContent = 'Incorrect password. Try again.';
+    errEl.textContent = 'Incorrect credentials. Try again.';
     errEl.style.display = 'block';
     document.getElementById('admin-pw-input').value = '';
     return;
   }
 
-  document.getElementById('admin-pw-input').value = '';
+  document.getElementById('admin-user-input').value = '';
+  document.getElementById('admin-pw-input').value   = '';
   showAdminPanel();
 }
 
@@ -1021,26 +1148,29 @@ function showAdminPanel(){
   document.getElementById('admin-lock').style.display = 'none';
   document.getElementById('admin-panel').style.display = 'block';
 
-  // Set role badge
   const isSuperAdmin = adminSession === 'superadmin';
   const badge = document.getElementById('admin-role-badge');
   const label = document.getElementById('admin-role-label');
   if(isSuperAdmin){
     badge.className = 'pill p-purple';
     badge.innerHTML = '<span class="pdot"></span>Super Admin';
-    label.textContent = 'Super Admin';
+    label.textContent = adminUsername || 'Super Admin';
   } else {
     badge.className = 'pill p-blue';
     badge.innerHTML = '<span class="pdot"></span>Admin';
-    label.textContent = 'Admin';
+    label.textContent = adminUsername || 'Admin';
   }
 
-  // Show/hide Super Admin only tabs
   document.querySelectorAll('.super-only').forEach(el => {
     el.style.display = isSuperAdmin ? '' : 'none';
   });
 
-  // Load data
+  // Set schedule month picker to current month
+  const now = new Date();
+  const monthStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  const schMonth = document.getElementById('sch-month');
+  if(schMonth) schMonth.value = monthStr;
+
   loadRoster();
   loadSchedules();
   if(isSuperAdmin) loadManagers();
@@ -1078,22 +1208,39 @@ async function changePassword(role){
 
 /* ── ADMIN: AGENTS ── */
 async function addAgent(){
-  const name=document.getElementById('ag-name').value.trim();
-  const id=document.getElementById('ag-id').value.trim();
-  const btn=document.getElementById('btn-add-ag');
+  const name  = document.getElementById('ag-name').value.trim();
+  const id    = document.getElementById('ag-id').value.trim();
+  const dept  = document.getElementById('ag-dept').value.trim();
+  const hire  = document.getElementById('ag-hire').value;
+  const phone = document.getElementById('ag-phone').value.trim();
+  const weekly= parseFloat(document.getElementById('ag-weekly').value)||40;
+  const btn   = document.getElementById('btn-add-ag');
   if(!name||!id){toast('Name and ID required','error');return;}
   if(!/^\d{4,8}$/.test(id)){toast('ID must be 4–8 digits','error');return;}
-  btn.disabled=true;btn.textContent='Adding…';
+  btn.disabled=true; btn.textContent='Adding…';
   try{
-    await POST('profiles',{employee_id:id,full_name:name,current_state:'OUT'});
+    await POST('profiles',{
+      employee_id:   id,
+      full_name:     name,
+      current_state: 'OUT',
+      department:    dept||null,
+      hire_date:     hire||null,
+      phone:         phone||null,
+      weekly_hours:  weekly,
+      role:          'agent'
+    });
     toast(`✓ ${name} added`);
-    document.getElementById('ag-name').value='';document.getElementById('ag-id').value='';
-    loadRoster();loadFloor();
+    document.getElementById('ag-name').value  = '';
+    document.getElementById('ag-id').value    = '';
+    document.getElementById('ag-dept').value  = '';
+    document.getElementById('ag-hire').value  = '';
+    document.getElementById('ag-phone').value = '';
+    loadRoster(); loadFloor();
     const sel=document.getElementById('cs-agent');
-    if(sel)loadAgentCalls();
+    if(sel) loadAgentCalls();
   }catch(e){
     toast((e.message||'').includes('duplicate')?`ID ${id} already exists`:'Error adding agent','error');
-  }finally{btn.disabled=false;btn.textContent='Add Agent';}
+  }finally{btn.disabled=false; btn.textContent='Add Agent';}
 }
 
 async function loadRoster(){
@@ -1101,17 +1248,24 @@ async function loadRoster(){
   if(!tbody) return;
   try{
     agents=await GET('profiles','select=*&order=full_name.asc');
-    const sch=document.getElementById('sch-agent');
-    if(sch){sch.innerHTML='<option value="">— Select Agent —</option>'+agents.map(a=>`<option value="${eh(a.employee_id)}">${eh(a.full_name)}</option>`).join('');}
-    tbody.innerHTML=agents.length?agents.map(a=>`
-      <tr>
-        <td><button onclick="openProfile('${es(a.employee_id)}')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:13px;font-weight:600;padding:0;text-align:left">${eh(a.full_name)}</button></td>
+    // Populate all agent selects
+    ['sch-agent','cs-agent'].forEach(selId=>{
+      const el=document.getElementById(selId);
+      if(el) el.innerHTML='<option value="">— Select Agent —</option>'+agents.map(a=>`<option value="${eh(a.employee_id)}">${eh(a.full_name)}</option>`).join('');
+    });
+    tbody.innerHTML=agents.length?agents.map(a=>{
+      const roleLabel = a.role==='superadmin'?'<span class="pill p-purple" style="padding:1px 6px;font-size:10px"><span class="pdot"></span>Super</span>':
+                        a.role==='admin'?'<span class="pill p-blue" style="padding:1px 6px;font-size:10px"><span class="pdot"></span>Admin</span>':'';
+      return `<tr>
+        <td><button onclick="openProfile('${es(a.employee_id)}')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:13px;font-weight:600;padding:0;text-align:left">${eh(a.full_name)}</button> ${roleLabel}</td>
         <td><span class="mono">${eh(a.employee_id)}</span></td>
+        <td style="color:var(--text-2)">${eh(a.department||'—')}</td>
         <td>${spill(a.current_state)}</td>
         <td><button class="btn btn-d btn-sm" onclick="delAgent('${es(a.employee_id)}','${es(a.full_name)}')">✕</button></td>
-      </tr>`).join(''):
-    '<tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:24px">No agents yet.</td></tr>';
-  }catch(e){tbody.innerHTML='<tr><td colspan="4" style="color:var(--red);padding:16px">Error loading roster.</td></tr>';}
+      </tr>`;
+    }).join(''):
+    '<tr><td colspan="5" style="text-align:center;color:var(--text-3);padding:24px">No agents yet.</td></tr>';
+  }catch(e){tbody.innerHTML='<tr><td colspan="5" style="color:var(--red);padding:16px">Error loading roster.</td></tr>';}
 }
 
 async function delAgent(id,name){
@@ -1167,28 +1321,258 @@ async function delManager(id,name){
   });
 }
 
-/* ── ADMIN: SCHEDULES ── */
-async function saveSchedule(){
-  const id=document.getElementById('sch-agent').value;
-  const d=document.getElementById('sch-date').value;
-  const s=document.getElementById('sch-start').value;
-  const en=document.getElementById('sch-end').value;
-  if(!id||!d||!s||!en){toast('All schedule fields required','error');return;}
-  try{await POST('schedules',{employee_id:id,date:d,shift_start:s,shift_end:en});toast('Schedule saved');loadSchedules();}
-  catch(e){toast('Error saving schedule','error');console.error(e);}
+/* ── BULK SCHEDULER ── */
+let bulkSelectedDates = new Set();
+let bulkMode = 'click';
+let selectedDows = new Set();
+
+function setBulkMode(mode){
+  bulkMode = mode;
+  ['click','pattern','range'].forEach(m=>{
+    document.getElementById(`bulk-${m}-mode`).style.display = m===mode?'block':'none';
+    document.getElementById(`mode-${m}`).className = m===mode?'btn btn-p btn-sm':'btn btn-g btn-sm';
+  });
 }
+
+function loadBulkCal(){
+  const agId = document.getElementById('sch-agent').value;
+  const monthVal = document.getElementById('sch-month').value;
+  if(!agId||!monthVal){ toast('Select an agent and month first','error'); return; }
+  bulkSelectedDates.clear();
+  renderBulkCal(monthVal);
+  updateBulkCount();
+}
+
+function renderBulkCal(monthVal){
+  const [yr,mo] = monthVal.split('-').map(Number);
+  const firstDay = new Date(yr, mo-1, 1);
+  const lastDay  = new Date(yr, mo, 0);
+  const todayStr = today();
+  let html = '';
+
+  // Day headers
+  ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d=>{
+    html += `<div style="font-size:10px;font-weight:600;color:var(--text-3);text-align:center;padding:4px 0;text-transform:uppercase">${d}</div>`;
+  });
+
+  // Leading blanks
+  for(let i=0;i<firstDay.getDay();i++) html += '<div></div>';
+
+  for(let d=1;d<=lastDay.getDate();d++){
+    const ds = `${yr}-${String(mo).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isSel = bulkSelectedDates.has(ds);
+    const isToday = ds===todayStr;
+    html += `<div onclick="toggleBulkDay('${ds}',this)"
+      style="background:${isSel?'var(--accent)':isToday?'var(--accent-dim)':'var(--surface2)'};
+             border:1px solid ${isSel?'var(--accent)':isToday?'var(--accent)':'var(--border)'};
+             border-radius:4px;padding:6px 4px;text-align:center;cursor:pointer;font-size:12px;
+             font-weight:${isSel?'700':'400'};color:${isSel?'#fff':isToday?'var(--accent)':'var(--text-2)'};
+             transition:all 0.1s" data-date="${ds}">${d}</div>`;
+  }
+
+  document.getElementById('bulk-cal-grid').innerHTML = html;
+}
+
+function toggleBulkDay(dateStr, el){
+  if(bulkSelectedDates.has(dateStr)){
+    bulkSelectedDates.delete(dateStr);
+    el.style.background = 'var(--surface2)';
+    el.style.borderColor = 'var(--border)';
+    el.style.color = 'var(--text-2)';
+    el.style.fontWeight = '400';
+  } else {
+    bulkSelectedDates.add(dateStr);
+    el.style.background = 'var(--accent)';
+    el.style.borderColor = 'var(--accent)';
+    el.style.color = '#fff';
+    el.style.fontWeight = '700';
+  }
+  updateBulkCount();
+}
+
+function updateBulkCount(){
+  const el = document.getElementById('bulk-selected-count');
+  if(el) el.textContent = `${bulkSelectedDates.size} day${bulkSelectedDates.size!==1?'s':''} selected`;
+}
+
+function toggleDow(dow, btn){
+  if(selectedDows.has(dow)){
+    selectedDows.delete(dow);
+    btn.className = 'btn btn-g btn-sm dow-btn';
+  } else {
+    selectedDows.add(dow);
+    btn.className = 'btn btn-p btn-sm dow-btn';
+  }
+}
+
+function applyPattern(){
+  const from = document.getElementById('pat-from').value;
+  const to   = document.getElementById('pat-to').value;
+  if(!from||!to||selectedDows.size===0){ toast('Select days of week and a date range','error'); return; }
+  bulkSelectedDates.clear();
+  let cur = new Date(from+'T12:00:00');
+  const end = new Date(to+'T12:00:00');
+  while(cur<=end){
+    if(selectedDows.has(cur.getDay())){
+      bulkSelectedDates.add(cur.toISOString().slice(0,10));
+    }
+    cur.setDate(cur.getDate()+1);
+  }
+  document.getElementById('pattern-preview').textContent = `${bulkSelectedDates.size} days selected`;
+  updateBulkCount();
+  toast(`${bulkSelectedDates.size} days selected`);
+}
+
+function applyRange(){
+  const from    = document.getElementById('rng-from').value;
+  const to      = document.getElementById('rng-to').value;
+  const skipWE  = document.getElementById('rng-skip-weekends').checked;
+  if(!from||!to){ toast('Select a date range','error'); return; }
+  bulkSelectedDates.clear();
+  let cur = new Date(from+'T12:00:00');
+  const end = new Date(to+'T12:00:00');
+  while(cur<=end){
+    const dow = cur.getDay();
+    if(!skipWE || (dow!==0&&dow!==6)){
+      bulkSelectedDates.add(cur.toISOString().slice(0,10));
+    }
+    cur.setDate(cur.getDate()+1);
+  }
+  document.getElementById('range-preview').textContent = `${bulkSelectedDates.size} days selected`;
+  updateBulkCount();
+  toast(`${bulkSelectedDates.size} days selected`);
+}
+
+function applyShiftPreset(preset){
+  const presets = {
+    '8-5':  {s:'08:00',e:'17:00',ls:'12:00',le:'13:00',b1:'10:00',b2:'15:00'},
+    '9-6':  {s:'09:00',e:'18:00',ls:'13:00',le:'14:00',b1:'11:00',b2:'16:00'},
+    '7-4':  {s:'07:00',e:'16:00',ls:'11:00',le:'12:00',b1:'09:00',b2:'14:00'},
+    'off':  null
+  };
+  const p = presets[preset];
+  const fields = document.getElementById('shift-detail-fields');
+  if(!p){
+    fields.style.opacity='0.4'; fields.style.pointerEvents='none';
+    return;
+  }
+  fields.style.opacity='1'; fields.style.pointerEvents='';
+  document.getElementById('bs-start').value   = p.s;
+  document.getElementById('bs-end').value     = p.e;
+  document.getElementById('bs-lunch-s').value = p.ls;
+  document.getElementById('bs-lunch-e').value = p.le;
+  document.getElementById('bs-brk1').value    = p.b1;
+  document.getElementById('bs-brk2').value    = p.b2;
+}
+
+function clearBulkSelection(){
+  bulkSelectedDates.clear();
+  updateBulkCount();
+  const monthVal = document.getElementById('sch-month')?.value;
+  if(monthVal) renderBulkCal(monthVal);
+  document.getElementById('bulk-result').textContent='';
+}
+
+async function applyBulkSchedule(){
+  const agId = document.getElementById('sch-agent').value;
+  if(!agId){ toast('Select an agent first','error'); return; }
+  if(bulkSelectedDates.size===0){ toast('Select at least one day','error'); return; }
+
+  const isOff   = document.getElementById('shift-detail-fields').style.opacity==='0.4';
+  const start   = document.getElementById('bs-start').value;
+  const end     = document.getElementById('bs-end').value;
+  const lunchS  = document.getElementById('bs-lunch-s').value;
+  const lunchE  = document.getElementById('bs-lunch-e').value;
+  const brk1    = document.getElementById('bs-brk1').value;
+  const brk2    = document.getElementById('bs-brk2').value;
+
+  const dates = [...bulkSelectedDates].sort();
+  const resultEl = document.getElementById('bulk-result');
+  resultEl.innerHTML = `<span style="color:var(--text-2)">Saving ${dates.length} entries…</span>`;
+
+  let saved=0, skipped=0, overwritten=0;
+
+  // Check existing schedules
+  const existing = await GET('schedules', `employee_id=eq.${encodeURIComponent(agId)}&date=in.(${dates.join(',')})&select=date`).catch(()=>[]);
+  const existingDates = new Set(existing.map(e=>e.date));
+
+  if(existingDates.size>0){
+    const confirmed = confirm(`${existingDates.size} of the selected dates already have a schedule.\n\nClick OK to overwrite them, or Cancel to skip them.`);
+    if(!confirmed){
+      // Skip existing
+      const datesToSave = dates.filter(d=>!existingDates.has(d));
+      skipped = existingDates.size;
+      for(const d of datesToSave){
+        try{
+          await POST('schedules',{employee_id:agId,date:d,
+            shift_start:isOff?'OFF':start, shift_end:isOff?'OFF':end,
+            lunch_start:isOff?null:lunchS, lunch_end:isOff?null:lunchE,
+            break1_time:isOff?null:brk1,  break2_time:isOff?null:brk2});
+          saved++;
+        }catch(e){console.error(e);}
+      }
+    } else {
+      // Overwrite all
+      for(const d of dates){
+        try{
+          if(existingDates.has(d)){
+            await PATCH('schedules',`employee_id=eq.${encodeURIComponent(agId)}&date=eq.${d}`,{
+              shift_start:isOff?'OFF':start, shift_end:isOff?'OFF':end,
+              lunch_start:isOff?null:lunchS, lunch_end:isOff?null:lunchE,
+              break1_time:isOff?null:brk1,  break2_time:isOff?null:brk2});
+            overwritten++;
+          } else {
+            await POST('schedules',{employee_id:agId,date:d,
+              shift_start:isOff?'OFF':start, shift_end:isOff?'OFF':end,
+              lunch_start:isOff?null:lunchS, lunch_end:isOff?null:lunchE,
+              break1_time:isOff?null:brk1,  break2_time:isOff?null:brk2});
+            saved++;
+          }
+        }catch(e){console.error(e);}
+      }
+    }
+  } else {
+    for(const d of dates){
+      try{
+        await POST('schedules',{employee_id:agId,date:d,
+          shift_start:isOff?'OFF':start, shift_end:isOff?'OFF':end,
+          lunch_start:isOff?null:lunchS, lunch_end:isOff?null:lunchE,
+          break1_time:isOff?null:brk1,  break2_time:isOff?null:brk2});
+        saved++;
+      }catch(e){console.error(e);}
+    }
+  }
+
+  const parts=[];
+  if(saved)       parts.push(`<span style="color:var(--green)">✓ ${saved} saved</span>`);
+  if(overwritten) parts.push(`<span style="color:var(--yellow)">↻ ${overwritten} updated</span>`);
+  if(skipped)     parts.push(`<span style="color:var(--text-2)">${skipped} skipped</span>`);
+  resultEl.innerHTML = parts.join(' · ');
+  toast(`Schedule applied to ${saved+overwritten} days`);
+  clearBulkSelection();
+  loadSchedules();
+}
+
+async function saveSchedule(){ /* legacy single-save kept for profile drawer */ }
 
 async function loadSchedules(){
   const tbody=document.getElementById('sch-tbody');
   if(!tbody) return;
   try{
-    const rows=await GET('schedules','select=*,profiles(full_name)&order=date.desc,shift_start.asc&limit=100');
+    const rows=await GET('schedules','select=*,profiles(full_name)&order=date.desc,shift_start.asc&limit=200');
     tbody.innerHTML=rows.length?rows.map(r=>{
-      const hrs=((new Date('2000T'+r.shift_end)-new Date('2000T'+r.shift_start))/3600000).toFixed(1);
-      return `<tr><td>${eh(r.profiles?.full_name||r.employee_id)}</td><td>${fmtD(r.date+'T12:00:00')}</td>
-        <td><span class="mono">${r.shift_start}</span></td><td><span class="mono">${r.shift_end}</span></td><td>${hrs}h</td>
-        <td><button class="btn btn-d btn-sm" onclick="delSchedule('${es(r.id)}')">✕</button></td></tr>`;
-    }).join(''):'<tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:24px">No schedules yet.</td></tr>';
+      const isOff = r.shift_start==='OFF';
+      const hrs = isOff ? '—' : ((new Date('2000T'+r.shift_end)-new Date('2000T'+r.shift_start))/3600000).toFixed(1)+'h';
+      return `<tr>
+        <td><button onclick="openProfile('${es(r.employee_id)}')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:13px;font-weight:500;padding:0">${eh(r.profiles?.full_name||r.employee_id)}</button></td>
+        <td>${fmtD(r.date+'T12:00:00')}</td>
+        <td>${isOff?'<span class="pill p-red"><span class="pdot"></span>Day Off</span>':`<span class="mono">${r.shift_start}</span>`}</td>
+        <td>${isOff?'—':`<span class="mono">${r.shift_end}</span>`}</td>
+        <td>${r.lunch_start?`<span class="mono">${r.lunch_start}–${r.lunch_end}</span>`:'—'}</td>
+        <td>${hrs}</td>
+        <td><button class="btn btn-d btn-sm" onclick="delSchedule('${es(r.id)}')">✕</button></td>
+      </tr>`;
+    }).join(''):'<tr><td colspan="7" style="text-align:center;color:var(--text-3);padding:24px">No schedules yet.</td></tr>';
   }catch(e){console.error(e);}
 }
 
@@ -1729,16 +2113,29 @@ async function toggleSuperRole(id, makeSuper){
 // { "date": "2026-06-25", "hour": 14, "total_calls": 52,
 //   "handled": 48, "abandoned": 4, "avg_handle_time": 4.2 }
 // Set up the Edge Function in Supabase Dashboard → Edge Functions.
+
+/* ── INIT ── */
 document.addEventListener('DOMContentLoaded',()=>{
   populateHours('fc-hour','fc-act-hour','cs-hour');
-  document.getElementById('fc-date').value=today();
-  document.getElementById('fc-act-date').value=today();
-  document.getElementById('cs-date').value=today();
-  document.getElementById('cs-ag-date').value=today();
-  document.getElementById('sch-date').value=today();
-  document.getElementById('thresh-late').value=threshLate;
-  document.getElementById('thresh-break').value=threshBreak;
+  const todayStr = today();
+  const nowMonth = todayStr.slice(0,7);
+  document.getElementById('fc-date').value     = todayStr;
+  document.getElementById('fc-act-date').value = todayStr;
+  document.getElementById('cs-date').value     = todayStr;
+  document.getElementById('cs-ag-date').value  = todayStr;
+  const schMonth = document.getElementById('sch-month');
+  if(schMonth) schMonth.value = nowMonth;
+  document.getElementById('thresh-late').value  = threshLate;
+  document.getElementById('thresh-break').value = threshBreak;
   document.getElementById('id-inp').addEventListener('keydown',e=>{if(e.key==='Enter')lookupEmployee();});
+  document.getElementById('admin-user-input')?.addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('admin-pw-input')?.focus();});
+  // Pre-set date range pickers
+  const nextMonthDate = new Date();
+  nextMonthDate.setMonth(nextMonthDate.getMonth()+1);
+  const endOfNextMonth = new Date(nextMonthDate.getFullYear(),nextMonthDate.getMonth()+1,0);
+  const endStr = endOfNextMonth.toISOString().slice(0,10);
+  ['pat-from','rng-from'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=todayStr;});
+  ['pat-to','rng-to'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=endStr;});
   loadFloor();
   setInterval(checkDeviations,120000);
   setInterval(loadFloor,60000);
