@@ -1,2307 +1,1150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Signal Restore – Business Phone System Support</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg-dark: #03070d;
-      --card-dark: #07111f;
-      --text: #ffffff;
-      --muted: #b8c0cc;
-      --cyan: #25bcc0;
-      --orange: #f98f21;
-      --pink: #e4007c;
-      --navy: #0d1829;
-      --navy-mid: #111827;
-      --light-bg: #f5f5f0;
-      --light-card: #ffffff;
-      --light-border: #e2e4e8;
-      --shadow: 0 20px 48px rgba(0,0,0,0.12);
-      --shadow-sm: 0 4px 16px rgba(0,0,0,0.07);
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg-dark);
-      color: var(--text);
-      line-height: 1.6;
-    }
-
-    img { max-width: 100%; display: block; }
-    a { text-decoration: none; color: inherit; }
-
-    .container {
-      width: min(1320px, 92%);
-      margin: 0 auto;
-    }
-
-    /* ─── TOPBAR ─── */
-
-    .hero-wrap {
-      background: #02060c;
-      padding: 26px 0 72px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-wrap::before {
-      content: '';
-      position: absolute;
-      top: -120px; right: -80px;
-      width: 520px; height: 520px;
-      background: radial-gradient(circle, rgba(37,188,192,0.10) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 60px;
-      position: relative;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 800;
-      letter-spacing: 0.09em;
-      font-size: 1.1rem;
-    }
-
-    .brand .restore { color: var(--orange); }
-
-    .nav-links {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      font-weight: 500;
-      color: #c8d2e0;
-      font-size: 0.93rem;
-    }
-
-    .nav-links a {
-      padding: 8px 14px;
-      border-radius: 8px;
-      transition: background 0.2s, color 0.2s;
-    }
-
-    .nav-links a:hover { background: rgba(255,255,255,0.07); color: #fff; }
-
-    .nav-cta {
-      background: var(--orange) !important;
-      color: #000 !important;
-      font-weight: 700 !important;
-      padding: 9px 18px !important;
-    }
-
-    .menu-toggle {
-      display: none;
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.8rem;
-      cursor: pointer;
-    }
-
-    /* ─── HERO ─── */
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 48px;
-      align-items: center;
-    }
-
-    h1 {
-      font-size: clamp(2.6rem, 4.5vw, 4.6rem);
-      line-height: 1.06;
-      font-weight: 800;
-      margin-bottom: 20px;
-      letter-spacing: -0.02em;
-    }
-
-    .cyan { color: var(--cyan); }
-    .orange { color: var(--orange); }
-    .pink { color: var(--pink); }
-
-    .hero-copy > p {
-      color: #b8c6d8;
-      font-size: 1.15rem;
-      max-width: 560px;
-      margin-bottom: 32px;
-      line-height: 1.7;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      min-height: 54px;
-      padding: 0 28px;
-      border-radius: 10px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 1rem;
-      transition: transform 0.15s, box-shadow 0.15s;
-      cursor: pointer;
-      border: none;
-      font-family: 'DM Sans', sans-serif;
-    }
-
-    .btn:hover { transform: translateY(-2px); }
-
-    .btn-primary {
-      background: var(--orange);
-      color: #000;
-    }
-
-    .btn-secondary {
-      border: 1.5px solid var(--cyan);
-      color: var(--cyan);
-      background: transparent;
-    }
-
-    .btn-ghost {
-      border: 1.5px solid rgba(255,255,255,0.2);
-      color: #fff;
-      background: transparent;
-    }
-
-    .hero-stat-row {
-      display: flex;
-      gap: 32px;
-      margin-top: 42px;
-      padding-top: 42px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .hero-stat { text-align: left; }
-    .hero-stat .num {
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: var(--cyan);
-      line-height: 1;
-    }
-    .hero-stat .label {
-      font-size: 0.82rem;
-      color: #7a8fa8;
-      margin-top: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .hero-phone-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(37,188,192,0.18);
-      border-radius: 20px;
-      padding: 32px;
-    }
-
-    .phone-card-title {
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--cyan);
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
-
-    .phone-alert {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 14px 16px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      font-size: 0.88rem;
-      line-height: 1.4;
-    }
-
-    .phone-alert.warn {
-      background: rgba(249,143,33,0.12);
-      border: 1px solid rgba(249,143,33,0.25);
-      color: #f9b96a;
-    }
-
-    .phone-alert.danger {
-      background: rgba(228,0,124,0.10);
-      border: 1px solid rgba(228,0,124,0.22);
-      color: #f06dba;
-    }
-
-    .phone-alert.ok {
-      background: rgba(37,188,192,0.10);
-      border: 1px solid rgba(37,188,192,0.22);
-      color: #5ee3e7;
-    }
-
-    .phone-alert .icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
-
-    .alert-cta {
-      display: block;
-      margin-top: 20px;
-      text-align: center;
-      background: var(--orange);
-      color: #000;
-      font-weight: 800;
-      padding: 14px;
-      border-radius: 10px;
-      font-size: 0.95rem;
-    }
-
-    /* ─── SHARED SECTION STYLES ─── */
-
-    section { position: relative; }
-
-    .section-light {
-      background: var(--light-bg);
-      color: var(--navy);
-      padding: 88px 0;
-    }
-
-    .section-dark {
-      background: #040b14;
-      color: var(--text);
-      padding: 88px 0;
-    }
-
-    .section-navy {
-      background: var(--navy);
-      color: var(--text);
-      padding: 88px 0;
-    }
-
-    .eyebrow {
-      font-size: 0.78rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--orange);
-      margin-bottom: 12px;
-    }
-
-    .eyebrow.cyan { color: var(--cyan); }
-    .eyebrow.pink { color: var(--pink); }
-
-    h2 {
-      font-size: clamp(2rem, 3.5vw, 3.4rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-      margin-bottom: 16px;
-    }
-
-    .section-intro {
-      font-size: 1.15rem;
-      color: #5a6680;
-      max-width: 680px;
-      margin-bottom: 52px;
-      line-height: 1.7;
-    }
-
-    .section-intro.light { color: #8ca4c0; }
-
-    /* ─── SERVICES GRID ─── */
-
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
-
-    .service-card {
-      background: var(--light-card);
-      padding: 32px;
-      border-radius: 18px;
-      border: 1px solid var(--light-border);
-    }
-
-    .service-card .icon-wrap {
-      width: 48px; height: 48px;
-      border-radius: 12px;
-      background: rgba(37,188,192,0.10);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem;
-      margin-bottom: 18px;
-    }
-
-    .service-card h3 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: var(--navy);
-    }
-
-    .service-card p { color: #5f6e80; font-size: 0.95rem; line-height: 1.6; }
-
-    /* ─── INTAKE FORM ─── */
-
-    .intake-wrap {
-      background: #040c18;
-      border: 1px solid rgba(37,188,192,0.15);
-      border-radius: 24px;
-      padding: 52px;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .intake-steps {
-      display: flex;
-      gap: 0;
-      margin-bottom: 44px;
-      position: relative;
-    }
-
-    .intake-steps::before {
-      content: '';
-      position: absolute;
-      top: 16px; left: 0; right: 0;
-      height: 2px;
-      background: rgba(255,255,255,0.08);
-    }
-
-    .step-dot {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      flex: 1;
-      position: relative;
-      z-index: 1;
-    }
-
-    .step-dot .dot {
-      width: 32px; height: 32px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.07);
-      border: 2px solid rgba(255,255,255,0.12);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: #6a7a8f;
-      transition: all 0.3s;
-    }
-
-    .step-dot.active .dot {
-      background: var(--cyan);
-      border-color: var(--cyan);
-      color: #000;
-    }
-
-    .step-dot.done .dot {
-      background: rgba(37,188,192,0.2);
-      border-color: var(--cyan);
-      color: var(--cyan);
-    }
-
-    .step-dot .label {
-      font-size: 0.72rem;
-      color: #5a6880;
-      text-align: center;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-    }
-
-    .step-dot.active .label { color: var(--cyan); }
-
-    .form-page { display: none; }
-    .form-page.active { display: block; }
-
-    .form-title {
-      font-size: 1.35rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .form-sub {
-      color: #6a7e98;
-      font-size: 0.92rem;
-      margin-bottom: 32px;
-    }
-
-    .form-field {
-      margin-bottom: 20px;
-    }
-
-    .form-field label {
-      display: block;
-      font-size: 0.84rem;
-      font-weight: 600;
-      color: #8fa3ba;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .form-field input,
-    .form-field select,
-    .form-field textarea {
-      width: 100%;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 10px;
-      padding: 13px 16px;
-      color: #fff;
-      font-size: 0.98rem;
-      font-family: 'DM Sans', sans-serif;
-      transition: border-color 0.2s;
-    }
-
-    .form-field input:focus,
-    .form-field select:focus,
-    .form-field textarea:focus {
-      outline: none;
-      border-color: var(--cyan);
-    }
-
-    .form-field select option { background: #0d1829; }
-
-    .form-field textarea { min-height: 110px; resize: vertical; }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .choice-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 4px;
-    }
-
-    .choice-card {
-      background: rgba(255,255,255,0.04);
-      border: 1.5px solid rgba(255,255,255,0.10);
-      border-radius: 12px;
-      padding: 16px 18px;
-      cursor: pointer;
-      transition: all 0.2s;
-      user-select: none;
-    }
-
-    .choice-card:hover { border-color: rgba(37,188,192,0.4); background: rgba(37,188,192,0.05); }
-
-    .choice-card.selected {
-      border-color: var(--cyan);
-      background: rgba(37,188,192,0.10);
-    }
-
-    .choice-card .choice-icon { font-size: 1.4rem; margin-bottom: 8px; }
-    .choice-card .choice-label { font-size: 0.88rem; font-weight: 600; color: #d0dde8; }
-    .choice-card .choice-desc { font-size: 0.78rem; color: #5a6e82; margin-top: 3px; line-height: 1.4; }
-
-    .form-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 36px;
-      padding-top: 28px;
-      border-top: 1px solid rgba(255,255,255,0.07);
-    }
-
-    .result-box {
-      background: rgba(37,188,192,0.08);
-      border: 1px solid rgba(37,188,192,0.25);
-      border-radius: 16px;
-      padding: 32px;
-      margin-top: 24px;
-    }
-
-    .result-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--cyan);
-      margin-bottom: 12px;
-    }
-
-    .result-item {
-      display: flex;
-      gap: 12px;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      font-size: 0.92rem;
-      color: #c0d0e0;
-    }
-
-    .result-item:last-child { border-bottom: none; }
-    .result-item .ri-icon { color: var(--cyan); font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
-
-    /* ─── INDUSTRY NEWS ─── */
-
-    .news-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      margin-top: 8px;
-    }
-
-    .news-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 18px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .news-tag {
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      padding: 5px 10px;
-      border-radius: 6px;
-      display: inline-block;
-      margin-bottom: 12px;
-    }
-
-    .news-tag.cyan { background: rgba(37,188,192,0.15); color: var(--cyan); }
-    .news-tag.orange { background: rgba(249,143,33,0.15); color: var(--orange); }
-    .news-tag.pink { background: rgba(228,0,124,0.15); color: #f06dba; }
-
-    .news-body { padding: 24px; flex: 1; }
-
-    .news-date {
-      font-size: 0.75rem;
-      color: #4a5a6e;
-      font-family: 'DM Mono', monospace;
-      margin-bottom: 10px;
-    }
-
-    .news-card h3 {
-      font-size: 1.02rem;
-      font-weight: 700;
-      color: #e8f0f8;
-      margin-bottom: 10px;
-      line-height: 1.4;
-    }
-
-    .news-card p { font-size: 0.88rem; color: #6a7e98; line-height: 1.6; }
-
-    .news-footer {
-      padding: 16px 24px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      font-size: 0.8rem;
-      color: #4a5a6e;
-    }
-
-    .trend-strip {
-      display: flex;
-      gap: 16px;
-      margin-top: 40px;
-      overflow-x: auto;
-      padding-bottom: 8px;
-    }
-
-    .trend-chip {
-      flex-shrink: 0;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 100px;
-      padding: 8px 18px;
-      font-size: 0.82rem;
-      color: #8fa3ba;
-      font-weight: 500;
-      white-space: nowrap;
-    }
-
-    .trend-chip span { color: var(--cyan); font-weight: 700; }
-
-    /* ─── HISTORY TIMELINE ─── */
-
-    .timeline {
-      position: relative;
-      padding-left: 40px;
-    }
-
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 12px; top: 0; bottom: 0;
-      width: 2px;
-      background: linear-gradient(180deg, var(--cyan), var(--orange), var(--pink));
-    }
-
-    .timeline-entry {
-      position: relative;
-      margin-bottom: 44px;
-    }
-
-    .timeline-entry::before {
-      content: '';
-      position: absolute;
-      left: -34px; top: 6px;
-      width: 12px; height: 12px;
-      border-radius: 50%;
-      background: var(--cyan);
-      border: 2px solid #040b14;
-    }
-
-    .timeline-entry.era-analog::before { background: var(--orange); }
-    .timeline-entry.era-digital::before { background: var(--cyan); }
-    .timeline-entry.era-voip::before { background: var(--pink); }
-    .timeline-entry.era-cloud::before { background: #a855f7; }
-
-    .t-year {
-      font-size: 0.75rem;
-      font-family: 'DM Mono', monospace;
-      color: var(--cyan);
-      font-weight: 500;
-      margin-bottom: 4px;
-    }
-
-    .timeline-entry.era-analog .t-year { color: var(--orange); }
-    .timeline-entry.era-voip .t-year { color: var(--pink); }
-    .timeline-entry.era-cloud .t-year { color: #a855f7; }
-
-    .timeline-entry h3 {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #e2eaf4;
-      margin-bottom: 6px;
-    }
-
-    .timeline-entry p {
-      font-size: 0.9rem;
-      color: #6a7e98;
-      line-height: 1.6;
-      max-width: 680px;
-    }
-
-    .t-impact {
-      display: inline-block;
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-top: 8px;
-      padding: 3px 10px;
-      border-radius: 6px;
-      background: rgba(37,188,192,0.12);
-      color: var(--cyan);
-    }
-
-    .timeline-entry.era-analog .t-impact { background: rgba(249,143,33,0.12); color: var(--orange); }
-    .timeline-entry.era-voip .t-impact { background: rgba(228,0,124,0.12); color: #f06dba; }
-    .timeline-entry.era-cloud .t-impact { background: rgba(168,85,247,0.12); color: #c084fc; }
-
-    .era-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin: 52px 0 32px;
-    }
-
-    .era-header:first-child { margin-top: 0; }
-
-    .era-label {
-      font-size: 0.78rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      padding: 6px 16px;
-      border-radius: 100px;
-    }
-
-    .era-label.analog { background: rgba(249,143,33,0.15); color: var(--orange); }
-    .era-label.digital { background: rgba(37,188,192,0.15); color: var(--cyan); }
-    .era-label.voip { background: rgba(228,0,124,0.15); color: #f06dba; }
-    .era-label.cloud { background: rgba(168,85,247,0.15); color: #c084fc; }
-
-    .era-line { flex: 1; height: 1px; background: rgba(255,255,255,0.07); }
-
-    /* ─── ARCHITECTURE / BLUEPRINTS ─── */
-
-    .arch-tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 36px;
-      flex-wrap: wrap;
-    }
-
-    .arch-tab {
-      padding: 10px 22px;
-      border-radius: 100px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      cursor: pointer;
-      border: 1.5px solid rgba(255,255,255,0.12);
-      color: #7a8fa8;
-      background: transparent;
-      font-family: 'DM Sans', sans-serif;
-      transition: all 0.2s;
-    }
-
-    .arch-tab:hover { border-color: var(--cyan); color: var(--cyan); }
-    .arch-tab.active { background: var(--cyan); color: #000; border-color: var(--cyan); font-weight: 800; }
-
-    .arch-panel { display: none; }
-    .arch-panel.active { display: block; }
-
-    .blueprint {
-      background: #010c18;
-      border: 1.5px solid rgba(37,188,192,0.2);
-      border-radius: 20px;
-      padding: 40px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .blueprint::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(37,188,192,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(37,188,192,0.04) 1px, transparent 1px);
-      background-size: 40px 40px;
-      pointer-events: none;
-    }
-
-    .bp-title {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: rgba(37,188,192,0.6);
-      font-family: 'DM Mono', monospace;
-      margin-bottom: 32px;
-    }
-
-    .bp-diagram {
-      position: relative;
-      z-index: 1;
-    }
-
-    /* SVG diagram node styles */
-    .bp-svg {
-      width: 100%;
-      height: auto;
-    }
-
-    .bp-desc {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-top: 32px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .bp-desc-item {
-      padding: 16px;
-      background: rgba(37,188,192,0.06);
-      border: 1px solid rgba(37,188,192,0.12);
-      border-radius: 12px;
-    }
-
-    .bp-desc-item .key {
-      font-size: 0.75rem;
-      color: var(--cyan);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      margin-bottom: 5px;
-    }
-
-    .bp-desc-item .val {
-      font-size: 0.85rem;
-      color: #7a90a8;
-      line-height: 1.5;
-    }
-
-    /* ─── INDUSTRIES ─── */
-
-    .industries-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .industry-card {
-      background: white;
-      border: 1px solid var(--light-border);
-      border-radius: 18px;
-      padding: 28px;
-    }
-
-    .industry-card .ind-icon {
-      font-size: 2rem;
-      margin-bottom: 14px;
-    }
-
-    .industry-card h3 {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--navy);
-      margin-bottom: 8px;
-    }
-
-    .industry-card p { color: #5f6e82; font-size: 0.9rem; line-height: 1.6; }
-
-    .callout-banner {
-      margin-top: 40px;
-      padding: 30px 36px;
-      border-radius: 20px;
-      background: linear-gradient(90deg, #07111f, #0d1f38);
-      color: white;
-      text-align: center;
-      font-size: 1.8rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-
-    /* ─── FOOTER CTA ─── */
-
-    .footer-cta {
-      background: #02060c;
-      padding: 100px 0 60px;
-      text-align: center;
-      border-top: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .footer-cta h2 { margin-bottom: 20px; }
-
-    .contact-lines {
-      margin: 28px 0 36px;
-    }
-
-    .contact-lines p {
-      font-size: 1.1rem;
-      color: #7a8fa8;
-      margin-bottom: 8px;
-    }
-
-    .contact-lines span {
-      color: var(--cyan);
-      font-weight: 600;
-    }
-
-    .footer-actions {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .footer-bottom {
-      margin-top: 72px;
-      padding-top: 28px;
-      border-top: 1px solid rgba(255,255,255,0.05);
-      font-size: 0.82rem;
-      color: #364454;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    /* ─── MOBILE ─── */
-
-    @media (max-width: 960px) {
-      .menu-toggle { display: block; }
-
-      .nav-links {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: #07111f;
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 16px;
-        box-shadow: var(--shadow);
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.35s ease;
-        z-index: 100;
-        padding: 0;
-      }
-
-      .nav-links a {
-        width: 100%;
-        padding: 14px 20px;
-        border-bottom: 1px solid rgba(255,255,255,0.06);
-        border-radius: 0;
-      }
-
-      .nav-links.active { max-height: 500px; }
-
-      .hero-grid { grid-template-columns: 1fr; }
-      .hero-phone-card { display: none; }
-      .hero-stat-row { gap: 24px; }
-
-      .services-grid,
-      .industries-grid,
-      .news-grid { grid-template-columns: 1fr; }
-
-      .form-row { grid-template-columns: 1fr; }
-      .choice-grid { grid-template-columns: 1fr; }
-
-      .bp-desc { grid-template-columns: 1fr; }
-
-      .intake-wrap { padding: 28px 20px; }
-      .blueprint { padding: 24px 16px; }
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Command Center — Call Center Manager Dashboard</title>
+<style>
+:root {
+  --bg:#080b10;--surface:#0e1219;--surface2:#151c26;--surface3:#1c2535;
+  --border:rgba(99,149,255,0.1);--border-em:rgba(99,149,255,0.22);
+  --text:#dce8ff;--text-2:#7a94bb;--text-3:#3d5070;
+  --accent:#3f7fff;--accent-dim:rgba(63,127,255,0.12);
+  --green:#22d47a;--green-dim:rgba(34,212,122,0.13);
+  --yellow:#f5c842;--yellow-dim:rgba(245,200,66,0.13);
+  --red:#f05050;--red-dim:rgba(240,80,80,0.13);
+  --blue:#3f7fff;--blue-dim:rgba(63,127,255,0.13);
+  --orange:#f07830;--orange-dim:rgba(240,120,48,0.13);
+  --purple:#a855f7;--purple-dim:rgba(168,85,247,0.13);
+  --cyan:#22d4d4;--cyan-dim:rgba(34,212,212,0.13);
+  --r:10px;--r-sm:6px;
+  --mono:'JetBrains Mono','Fira Code',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;font-size:14px}
+#shell{display:flex;flex:1;height:100vh;overflow:hidden}
+#sidebar{width:220px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+.sidebar-brand{padding:20px 16px 16px;border-bottom:1px solid var(--border)}
+.brand-name{font-size:15px;font-weight:700;letter-spacing:-0.3px}
+.brand-sub{font-size:11px;color:var(--text-3);margin-top:2px;letter-spacing:0.3px;text-transform:uppercase}
+.sidebar-nav{flex:1;padding:10px 8px;display:flex;flex-direction:column;gap:2px;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--r-sm);cursor:pointer;color:var(--text-2);font-size:13px;font-weight:500;transition:all 0.15s;border:none;background:none;width:100%;text-align:left}
+.nav-item:hover{background:var(--surface2);color:var(--text)}
+.nav-item.active{background:var(--accent-dim);color:var(--accent)}
+.nav-icon{font-size:15px;width:18px;text-align:center;flex-shrink:0}
+.nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:10px;min-width:18px;text-align:center;display:none}
+.nav-badge.show{display:inline-block}
+.sidebar-footer{padding:12px 8px;border-top:1px solid var(--border)}
+.sidebar-clock{font-family:var(--mono);font-size:20px;font-weight:600;padding:8px 10px;letter-spacing:1px}
+.sidebar-date{font-size:11px;color:var(--text-3);padding:0 10px 8px;letter-spacing:0.3px}
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:52px;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0}
+.topbar-title{font-size:15px;font-weight:600}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
+.view{display:none;flex:1;overflow-y:auto;padding:24px}
+.view.active{display:block}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px}
+.panel-title{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:16px}
+.panel-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.panel-hdr .panel-title{margin-bottom:0}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.gap{margin-bottom:20px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px}
+.stat-lbl{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px}
+.stat-val{font-size:26px;font-weight:700;font-family:var(--mono);letter-spacing:-1px}
+.stat-sub{font-size:12px;color:var(--text-2);margin-top:4px}
+.green .stat-val{color:var(--green)}.yellow .stat-val{color:var(--yellow)}.red .stat-val{color:var(--red)}.blue .stat-val{color:var(--blue)}.purple .stat-val{color:var(--purple)}
+.dt{width:100%;border-collapse:collapse;font-size:13px}
+.dt th{text-align:left;padding:8px 12px;font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border)}
+.dt td{padding:11px 12px;border-bottom:1px solid var(--border)}
+.dt tr:last-child td{border-bottom:none}
+.dt tbody tr:hover td{background:rgba(255,255,255,0.02)}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.pdot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.p-green{background:var(--green-dim);color:var(--green)}
+.p-yellow{background:var(--yellow-dim);color:var(--yellow)}
+.p-red{background:var(--red-dim);color:var(--red)}
+.p-blue{background:var(--blue-dim);color:var(--blue)}
+.p-orange{background:var(--orange-dim);color:var(--orange)}
+.p-gray{background:var(--surface3);color:var(--text-2)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 11px;font-size:13px;color:var(--text);outline:none;transition:border-color 0.15s;font-family:inherit}
+.field input:focus,.field select:focus{border-color:var(--accent)}
+.field select option{background:var(--surface2)}
+.frow{display:flex;gap:8px}
+.frow .field{flex:1;margin-bottom:0}
+.btn{padding:8px 16px;border-radius:var(--r-sm);border:none;font-size:13px;font-weight:600;cursor:pointer;transition:opacity 0.15s;font-family:inherit}
+.btn:hover{opacity:0.85}.btn:disabled{opacity:0.4;cursor:default}
+.btn-p{background:var(--accent);color:#fff}
+.btn-g{background:transparent;border:1px solid var(--border-em);color:var(--text-2)}
+.btn-g:hover{color:var(--text);background:var(--surface2)}
+.btn-d{background:var(--red-dim);color:var(--red);border:1px solid rgba(240,80,80,0.2)}
+.btn-sm{padding:5px 11px;font-size:12px}
+.bicon{padding:6px 8px;border-radius:var(--r-sm);border:1px solid var(--border);background:transparent;color:var(--text-2);cursor:pointer;font-size:14px;line-height:1;transition:all 0.15s}
+.bicon:hover{border-color:var(--border-em);color:var(--text);background:var(--surface2)}
+.mono{font-family:var(--mono);font-size:12px;color:var(--text-2);background:var(--surface2);padding:2px 7px;border-radius:4px}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.pulse{animation:pulse 1.4s ease-in-out infinite}
+.btn-act{width:100%;padding:14px;border-radius:var(--r-sm);border:none;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-act:active{transform:scale(0.98)}.btn-act:disabled{opacity:0.4;cursor:default}
+.b-start{background:var(--green);color:#000}.b-break{background:var(--yellow);color:#000}
+.b-return{background:var(--blue);color:#fff}.b-end{background:var(--red);color:#fff}
+.kiosk-wrap{max-width:420px;margin:60px auto}
+.kiosk-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:28px}
+.id-grp{display:flex;gap:8px}
+.id-inp{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:13px 16px;font-size:22px;font-family:var(--mono);font-weight:600;letter-spacing:4px;color:var(--text);text-align:center;outline:none;transition:border-color 0.15s}
+.id-inp:focus{border-color:var(--accent)}
+.id-inp::placeholder{letter-spacing:2px;font-size:13px;font-weight:400;color:var(--text-3)}
+.kstatus{margin-top:20px;min-height:130px;display:flex;align-items:center;justify-content:center}
+.kname{font-size:20px;font-weight:700;text-align:center;margin-bottom:6px}
+.kbadge{display:flex;justify-content:center;margin-bottom:20px}
+.kbtns{display:flex;flex-direction:column;gap:8px}
+.denied{text-align:center}
+.spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--surface);border:1px solid var(--border-em);border-radius:var(--r);padding:12px 20px;font-size:13px;font-weight:500;color:var(--text);opacity:0;transition:all 0.22s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;z-index:9999;max-width:360px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.5)}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.success{border-color:var(--green);color:var(--green)}
+#toast.error{border-color:var(--red);color:var(--red)}
+#toast.warn{border-color:var(--yellow);color:var(--yellow)}
+#moverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:1000;align-items:center;justify-content:center}
+#moverlay.open{display:flex}
+#modal{background:var(--surface);border:1px solid var(--border-em);border-radius:var(--r);padding:28px;width:100%;max-width:440px}
+#modal h3{font-size:15px;font-weight:700;margin-bottom:18px}
+.mfooter{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+.agent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px}
+.acard{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:16px;text-align:center;transition:border-color 0.2s}
+.acard.alarm{border-color:var(--red)}
+.avatar{width:44px;height:44px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:#fff}
+.aname{font-size:13px;font-weight:600;margin-bottom:6px}
+.atime{font-family:var(--mono);font-size:11px;color:var(--text-2);margin-top:6px}
+.alarm-row{display:flex;align-items:flex-start;gap:12px;padding:12px;background:var(--red-dim);border:1px solid rgba(240,80,80,0.25);border-radius:var(--r-sm);margin-bottom:8px}
+.alarm-title{font-size:13px;font-weight:600;color:var(--red)}
+.alarm-detail{font-size:12px;color:var(--text-2);margin-top:2px}
+.alarm-ts{font-family:var(--mono);font-size:11px;color:var(--text-3);white-space:nowrap;margin-left:auto;flex-shrink:0}
+.fc-chart{display:flex;align-items:flex-end;gap:6px;height:100px;padding-top:8px}
+.fb-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.fb{width:100%;border-radius:3px 3px 0 0;min-height:4px}
+.fl{font-size:10px;color:var(--text-3)}.fv{font-size:10px;font-family:var(--mono);color:var(--text-2)}
+.tab-bar{display:flex;gap:4px;border-bottom:1px solid var(--border);padding-bottom:0;margin-bottom:20px}
+.tab-btn{padding:8px 16px;border:none;background:none;color:var(--text-2);font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.15s}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-pane{display:none}.tab-pane.active{display:block}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:2px}
+@media(max-width:768px){#sidebar{display:none}.g4,.g3{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
-
-<!-- ══════════════ HERO ══════════════ -->
-<section class="hero-wrap">
-  <div class="container">
-
-    <div class="topbar">
-      <div class="brand">SIGNAL <span class="restore">RESTORE</span></div>
-
-      <button class="menu-toggle" id="menuToggle" aria-label="Open Menu">☰</button>
-
-      <nav class="nav-links" id="navLinks">
-        <a href="#services">Services</a>
-        <a href="#intake">Diagnostics</a>
-        <a href="#industries">Industries</a>
-        <a href="#news">Industry News</a>
-        <a href="#history">History</a>
-        <a href="#architecture">Blueprints</a>
-        <a href="#contact" class="nav-cta">Get Help</a>
-      </nav>
-    </div>
-
-    <div class="hero-grid">
-      <div class="hero-copy">
-        <h1>Local Support for <span class="cyan">Your Business</span> Phone Systems</h1>
-        <p>We help small to mid-sized businesses set up, fix, and manage cloud phone systems—so you can stay connected, serve customers, and stop losing calls.</p>
-        <div class="hero-actions">
-          <a href="tel:+19519000067" class="btn btn-primary">📞 Call 951-900-0067</a>
-          <a href="#intake" class="btn btn-secondary">Free System Diagnosis</a>
-        </div>
-
-        <div class="hero-stat-row">
-          <div class="hero-stat">
-            <div class="num">24h</div>
-            <div class="label">Avg Response Time</div>
-          </div>
-          <div class="hero-stat">
-            <div class="num">IE / SoCal</div>
-            <div class="label">Local Coverage</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="hero-phone-card">
-        <div class="phone-card-title">⚡ Common Issues We Solve Today</div>
-        <div class="phone-alert warn">
-          <span class="icon">⚠️</span>
-          <div><strong>Choppy or dropped calls</strong> — Often a QoS or bandwidth issue on your network. Fixable without replacing equipment.</div>
-        </div>
-        <div class="phone-alert danger">
-          <span class="icon">🔴</span>
-          <div><strong>POTS line shutdown</strong> — AT&amp;T and other carriers are sunsetting copper lines. Migration planning is urgent.</div>
-        </div>
-        <div class="phone-alert ok">
-          <span class="icon">✅</span>
-          <div><strong>New VoIP provider setup</strong> — We configure call flows, voicemail, and extensions correctly the first time.</div>
-        </div>
-        <a href="#intake" class="alert-cta">Run Free Diagnostic →</a>
-      </div>
-    </div>
-
+<div id="shell">
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-name">Command Center</div>
+    <div class="brand-sub">Call Center Manager</div>
   </div>
-</section>
+  <nav class="sidebar-nav">
+    <button class="nav-item active" data-view="floor" onclick="gotoView('floor')"><span class="nav-icon">🗺</span>Floor Story</button>
+    <button class="nav-item" data-view="kiosk" onclick="gotoView('kiosk')"><span class="nav-icon">🕐</span>Agent Login Kiosk</button>
+    <button class="nav-item" data-view="breaks" onclick="gotoView('breaks')"><span class="nav-icon">☕</span>Break &amp; Lunch</button>
+    <button class="nav-item" data-view="alarms" onclick="gotoView('alarms')"><span class="nav-icon">🔔</span>Deviation Alarms<span class="nav-badge" id="alarm-badge">0</span></button>
+    <button class="nav-item" data-view="shrinkage" onclick="gotoView('shrinkage')"><span class="nav-icon">📉</span>Shrinkage</button>
+    <button class="nav-item" data-view="forecast" onclick="gotoView('forecast')"><span class="nav-icon">📈</span>Forecast</button>
+    <button class="nav-item" data-view="calls" onclick="gotoView('calls')"><span class="nav-icon">📞</span>Call Summary</button>
+    <button class="nav-item" data-view="admin" onclick="gotoView('admin')"><span class="nav-icon">⚙</span>Admin</button>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-clock" id="live-clock">--:--</div>
+    <div class="sidebar-date" id="live-date"></div>
+  </div>
+</aside>
 
-<!-- ══════════════ SERVICES ══════════════ -->
-<section class="section-light" id="services">
-  <div class="container">
-    <p class="eyebrow">How We Help</p>
-    <h2>Support Across Your Entire Phone System</h2>
-    <p class="section-intro">From fixing a broken auto-attendant to migrating your whole office off copper lines—we handle the technical side so you don't have to.</p>
+<!-- MAIN -->
+<div id="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">Floor Story</div>
+    <div class="topbar-right">
+      <div class="live-dot"></div>
+      <span style="font-size:12px;color:var(--text-2)">Live</span>
+      <button class="btn btn-g btn-sm" onclick="refreshAll()">↻ Refresh</button>
+    </div>
+  </div>
 
-    <div class="services-grid">
-      <div class="service-card">
-        <div class="icon-wrap">🔧</div>
-        <h3>Existing Phone System Repairs</h3>
-        <p>Call quality issues, broken routing, voicemail problems, and day-to-day system fixes handled fast—often same day.</p>
+  <!-- FLOOR STORY -->
+  <div class="view active" id="view-floor">
+    <div class="g4 gap">
+      <div class="stat green"><div class="stat-lbl">On Shift</div><div class="stat-val" id="fs-on">0</div><div class="stat-sub">clocked in</div></div>
+      <div class="stat yellow"><div class="stat-lbl">On Break</div><div class="stat-val" id="fs-break">0</div><div class="stat-sub">on break now</div></div>
+      <div class="stat"><div class="stat-lbl">Clocked Out</div><div class="stat-val" id="fs-out">0</div><div class="stat-sub">not yet in</div></div>
+      <div class="stat red"><div class="stat-lbl">Active Alarms</div><div class="stat-val" id="fs-alarms">0</div><div class="stat-sub">need attention</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-hdr"><div class="panel-title">Live Agent Status</div><button class="bicon" onclick="loadFloor()">↻</button></div>
+      <div class="agent-grid" id="agent-grid"><div style="color:var(--text-3);font-size:13px;grid-column:1/-1;text-align:center;padding:40px">Loading agents…</div></div>
+    </div>
+  </div>
+
+  <!-- KIOSK -->
+  <div class="view" id="view-kiosk">
+    <div class="kiosk-wrap">
+      <div style="text-align:center;margin-bottom:32px">
+        <div style="font-size:24px;font-weight:700;letter-spacing:-0.5px">Clock In / Out</div>
+        <div style="color:var(--text-2);font-size:13px;margin-top:4px">Enter your Employee ID to continue</div>
       </div>
-      <div class="service-card">
-        <div class="icon-wrap">☁️</div>
-        <h3>POTS to Cloud Migration</h3>
-        <p>Move old lines, alarms, fax lines, and legacy infrastructure to modern cloud service before carrier deadlines hit.</p>
-      </div>
-      <div class="service-card">
-        <div class="icon-wrap">📱</div>
-        <h3>VoIP and UCaaS Setup</h3>
-        <p>Desk phones, mobile apps, softphones, call flows, and admin portal setup done right the first time.</p>
-      </div>
-      <div class="service-card">
-        <div class="icon-wrap">🤝</div>
-        <h3>Vendor Coordination</h3>
-        <p>We manage providers, carriers, MSPs, and internal teams—so nothing falls through the cracks between parties.</p>
-      </div>
-      <div class="service-card">
-        <div class="icon-wrap">📊</div>
-        <h3>Call Flow Design</h3>
-        <p>We map, document, and build your IVR menus, hunt groups, ring queues, and after-hours routing from scratch.</p>
-      </div>
-      <div class="service-card">
-        <div class="icon-wrap">🛡️</div>
-        <h3>Ongoing Managed Support</h3>
-        <p>Monthly check-ins, proactive monitoring, and a local contact who actually knows your system.</p>
+      <div class="kiosk-card">
+        <div class="id-grp">
+          <input id="id-inp" class="id-inp" type="text" inputmode="numeric" maxlength="6" placeholder="ID" autocomplete="off"/>
+          <button class="btn btn-p" id="btn-lookup" onclick="lookupEmployee()" style="padding:0 20px">Look Up</button>
+        </div>
+        <div class="kstatus" id="kstatus"></div>
       </div>
     </div>
   </div>
-</section>
 
-<!-- ══════════════ INTAKE FORM / DIAGNOSTIC ══════════════ -->
-<section class="section-dark" id="intake">
-  <div class="container">
-    <p class="eyebrow cyan">Free Diagnostic Tool</p>
-    <h2>What's Your Phone System Situation?</h2>
-    <p class="section-intro light">Answer a few quick questions and we'll identify your system type, flag issues, and recommend next steps—no obligation.</p>
+  <!-- BREAK & LUNCH -->
+  <div class="view" id="view-breaks">
+    <div class="g3 gap">
+      <div class="stat yellow"><div class="stat-lbl">On Break Now</div><div class="stat-val" id="bl-now">0</div></div>
+      <div class="stat"><div class="stat-lbl">Avg Break (Today)</div><div class="stat-val" id="bl-avg">--</div><div class="stat-sub">minutes</div></div>
+      <div class="stat red"><div class="stat-lbl">Overdue (&gt;threshold)</div><div class="stat-val" id="bl-over">0</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-hdr"><div class="panel-title">Today's Break Activity</div><button class="bicon" onclick="loadBreaks()">↻</button></div>
+      <table class="dt"><thead><tr><th>Agent</th><th>Started</th><th>Duration</th><th>Status</th></tr></thead>
+      <tbody id="breaks-tbody"><tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:32px">Loading…</td></tr></tbody></table>
+    </div>
+  </div>
 
-    <div class="intake-wrap">
-      <div class="intake-steps">
-        <div class="step-dot active" id="step-indicator-1">
-          <div class="dot">1</div>
-          <div class="label">Business</div>
-        </div>
-        <div class="step-dot" id="step-indicator-2">
-          <div class="dot">2</div>
-          <div class="label">System Type</div>
-        </div>
-        <div class="step-dot" id="step-indicator-3">
-          <div class="dot">3</div>
-          <div class="label">Issues</div>
-        </div>
-        <div class="step-dot" id="step-indicator-4">
-          <div class="dot">4</div>
-          <div class="label">Goals</div>
-        </div>
-        <div class="step-dot" id="step-indicator-5">
-          <div class="dot">5</div>
-          <div class="label">Results</div>
+  <!-- DEVIATION ALARMS -->
+  <div class="view" id="view-alarms">
+    <div class="g3 gap">
+      <div class="stat red"><div class="stat-lbl">Active Alarms</div><div class="stat-val" id="al-count">0</div></div>
+      <div class="stat yellow"><div class="stat-lbl">Late Arrivals</div><div class="stat-val" id="al-late">0</div></div>
+      <div class="stat"><div class="stat-lbl">Break Overruns</div><div class="stat-val" id="al-brk">0</div></div>
+    </div>
+    <div class="panel gap">
+      <div class="panel-hdr">
+        <div class="panel-title">Alarm Feed</div>
+        <div style="display:flex;gap:8px"><button class="btn btn-g btn-sm" onclick="clearAlarms()">Clear All</button><button class="bicon" onclick="checkDeviations()">↻</button></div>
+      </div>
+      <div id="alarm-feed"><div style="color:var(--text-3);font-size:13px;text-align:center;padding:40px">No active alarms.</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Alarm Thresholds</div>
+      <div class="g2">
+        <div class="field"><label>Late Arrival Threshold (min)</label><input type="number" id="thresh-late" value="5" min="1" max="60"/></div>
+        <div class="field"><label>Break Overrun Threshold (min)</label><input type="number" id="thresh-break" value="15" min="5" max="60"/></div>
+      </div>
+      <button class="btn btn-p" onclick="saveThresholds()">Save Thresholds</button>
+    </div>
+  </div>
+
+  <!-- SHRINKAGE -->
+  <div class="view" id="view-shrinkage">
+    <div class="g2 gap">
+      <div class="panel" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px">
+        <div class="panel-title" style="text-align:center">Today's Shrinkage Rate</div>
+        <div id="shrink-pct" style="font-family:var(--mono);font-size:48px;font-weight:700;letter-spacing:-2px;color:var(--yellow)">--%</div>
+        <div style="font-size:12px;color:var(--text-2);margin-top:6px;text-align:center">Unplanned time lost ÷ Scheduled time</div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Breakdown</div>
+        <table class="dt"><thead><tr><th>Category</th><th>Minutes Lost</th><th>% of Schedule</th></tr></thead>
+        <tbody id="shrink-breakdown"></tbody></table>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-hdr"><div class="panel-title">By Agent — Today</div><button class="bicon" onclick="loadShrinkage()">↻</button></div>
+      <table class="dt"><thead><tr><th>Agent</th><th>Scheduled (h)</th><th>Time Lost (min)</th><th>Shrinkage %</th><th>Rating</th></tr></thead>
+      <tbody id="shrink-agents"></tbody></table>
+    </div>
+  </div>
+
+  <!-- FORECAST -->
+  <div class="view" id="view-forecast">
+    <div class="g2 gap">
+      <div class="panel">
+        <div class="panel-title">Forecast vs Actual — Today</div>
+        <div class="fc-chart" id="fc-chart"><div style="color:var(--text-3);font-size:12px;margin:auto">No forecast data yet.</div></div>
+        <div style="display:flex;gap:16px;margin-top:10px">
+          <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-2)"><span style="width:10px;height:10px;border-radius:2px;background:var(--accent);display:inline-block"></span>Forecasted</span>
+          <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-2)"><span style="width:10px;height:10px;border-radius:2px;background:var(--green);display:inline-block"></span>Actual</span>
         </div>
       </div>
-
-      <!-- Step 1: Business Info -->
-      <div class="form-page active" id="form-page-1">
-        <div class="form-title">Tell us about your business</div>
-        <div class="form-sub">We'll use this to tailor our recommendations to your industry and size.</div>
-
-        <div class="form-row">
-          <div class="form-field">
-            <label>Business Name</label>
-            <input type="text" id="biz-name" placeholder="Acme Medical Group">
-          </div>
-          <div class="form-field">
-            <label>Industry</label>
-            <select id="biz-industry">
-              <option value="">Select your industry…</option>
-              <option value="healthcare">Healthcare / Medical</option>
-              <option value="legal">Law Office / Legal</option>
-              <option value="financial">Financial / Insurance</option>
-              <option value="retail">Retail / Customer-Facing</option>
-              <option value="franchise">Franchise / Multi-Location</option>
-              <option value="realestate">Real Estate</option>
-              <option value="auto">Auto Dealership / Service</option>
-              <option value="contractor">Contractor / Trades</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
+      <div class="panel">
+        <div class="panel-title">Add Forecast Entry</div>
+        <div class="field"><label>Date</label><input type="date" id="fc-date"/></div>
+        <div class="frow">
+          <div class="field"><label>Hour</label><select id="fc-hour"></select></div>
+          <div class="field"><label>Forecasted Calls</label><input type="number" id="fc-calls" placeholder="e.g. 45" min="0"/></div>
+          <div class="field"><label>Agents Needed</label><input type="number" id="fc-agents" placeholder="e.g. 4" min="1"/></div>
         </div>
-
-        <div class="form-row">
-          <div class="form-field">
-            <label>Number of Employees</label>
-            <select id="biz-size">
-              <option value="">Select…</option>
-              <option value="1-5">1–5</option>
-              <option value="6-25">6–25</option>
-              <option value="26-100">26–100</option>
-              <option value="101+">101+</option>
-            </select>
+        <button class="btn btn-p" onclick="saveForecast()" style="width:100%">Save Entry</button>
+        <div style="margin-top:12px">
+          <div class="panel-title">Update Actual Calls</div>
+          <div class="frow">
+            <div class="field"><label>Date</label><input type="date" id="fc-act-date"/></div>
+            <div class="field"><label>Hour</label><select id="fc-act-hour"></select></div>
+            <div class="field"><label>Actual Calls</label><input type="number" id="fc-actual" placeholder="e.g. 41" min="0"/></div>
           </div>
-          <div class="form-field">
-            <label>Number of Locations</label>
-            <select id="biz-locations">
-              <option value="">Select…</option>
-              <option value="1">1</option>
-              <option value="2-5">2–5</option>
-              <option value="6+">6 or more</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-field">
-          <label>Contact Email (optional)</label>
-          <input type="email" id="biz-email" placeholder="you@yourcompany.com">
-        </div>
-
-        <div class="form-nav">
-          <span></span>
-          <button class="btn btn-primary" onclick="goStep(2)">Next: Identify Your System →</button>
+          <button class="btn btn-g btn-sm" onclick="saveActual()" style="width:100%">Update Actual</button>
         </div>
       </div>
+    </div>
+    <div class="panel">
+      <div class="panel-hdr"><div class="panel-title">Forecast Log</div><button class="bicon" onclick="loadForecast()">↻</button></div>
+      <table class="dt"><thead><tr><th>Date</th><th>Hour</th><th>Forecasted</th><th>Agents Needed</th><th>Actual</th><th>Variance</th></tr></thead>
+      <tbody id="fc-tbody"></tbody></table>
+    </div>
+  </div>
 
-      <!-- Step 2: System Type -->
-      <div class="form-page" id="form-page-2">
-        <div class="form-title">What kind of phone system do you currently use?</div>
-        <div class="form-sub">Choose the one that best describes your setup. Not sure? Pick the closest match.</div>
-
-        <div class="choice-grid" id="system-type-choices">
-          <div class="choice-card" onclick="selectChoice(this, 'system-type', 'pots')">
-            <div class="choice-icon">☎️</div>
-            <div class="choice-label">Traditional Landlines (POTS)</div>
-            <div class="choice-desc">Old copper lines from AT&amp;T or similar. Desk phones, no apps. May have an older PBX box.</div>
-          </div>
-          <div class="choice-card" onclick="selectChoice(this, 'system-type', 'onprem-pbx')">
-            <div class="choice-icon">🖥️</div>
-            <div class="choice-label">On-Premise PBX</div>
-            <div class="choice-desc">A physical server or hardware box on-site (Cisco, Avaya, NEC, Mitel, FreePBX). May connect to VoIP or analog lines.</div>
-          </div>
-          <div class="choice-card" onclick="selectChoice(this, 'system-type', 'cloud-voip')">
-            <div class="choice-icon">☁️</div>
-            <div class="choice-label">Cloud / Hosted VoIP</div>
-            <div class="choice-desc">You pay a monthly fee to a provider like RingCentral, Vonage, 8x8, Nextiva, Zoom Phone, or similar.</div>
-          </div>
-          <div class="choice-card" onclick="selectChoice(this, 'system-type', 'hybrid')">
-            <div class="choice-icon">🔀</div>
-            <div class="choice-label">Hybrid (Mix of Both)</div>
-            <div class="choice-desc">Some locations on cloud, others on legacy. Or an on-prem PBX with SIP trunking. Complicated setup.</div>
-          </div>
-          <div class="choice-card" onclick="selectChoice(this, 'system-type', 'mobile')">
-            <div class="choice-icon">📱</div>
-            <div class="choice-label">Mobile / Softphones Only</div>
-            <div class="choice-desc">Your team uses cell phones, apps, or browser-based calling. No desk phones.</div>
-          </div>
-          <div class="choice-card" onclick="selectChoice(this, 'system-type', 'unsure')">
-            <div class="choice-icon">🤷</div>
-            <div class="choice-label">I'm Not Sure</div>
-            <div class="choice-desc">You're not sure what you have. That's exactly why we're here—we'll figure it out together.</div>
-          </div>
+  <!-- CALL SUMMARY -->
+  <div class="view" id="view-calls">
+    <div class="g4 gap">
+      <div class="stat blue"><div class="stat-lbl">Total Calls</div><div class="stat-val" id="cs-total">0</div></div>
+      <div class="stat green"><div class="stat-lbl">Handled</div><div class="stat-val" id="cs-handled">0</div></div>
+      <div class="stat red"><div class="stat-lbl">Abandoned</div><div class="stat-val" id="cs-aband">0</div></div>
+      <div class="stat yellow"><div class="stat-lbl">Avg Handle Time</div><div class="stat-val" id="cs-aht">--</div><div class="stat-sub">minutes</div></div>
+    </div>
+    <div class="g2 gap">
+      <div class="panel">
+        <div class="panel-title">Log Call Summary (Hourly)</div>
+        <div class="frow"><div class="field"><label>Date</label><input type="date" id="cs-date"/></div><div class="field"><label>Hour</label><select id="cs-hour"></select></div></div>
+        <div class="frow">
+          <div class="field"><label>Total Calls</label><input type="number" id="cs-in-total" min="0" placeholder="0"/></div>
+          <div class="field"><label>Handled</label><input type="number" id="cs-in-handled" min="0" placeholder="0"/></div>
         </div>
-
-        <div class="form-nav">
-          <button class="btn btn-ghost" onclick="goStep(1)">← Back</button>
-          <button class="btn btn-primary" onclick="goStep(3)">Next: Your Issues →</button>
+        <div class="frow">
+          <div class="field"><label>Abandoned</label><input type="number" id="cs-in-aband" min="0" placeholder="0"/></div>
+          <div class="field"><label>AHT (min)</label><input type="number" id="cs-in-aht" min="0" step="0.1" placeholder="0.0"/></div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-p" style="flex:1" onclick="saveCallSummary()">Save Entry</button>
+          <label class="btn btn-g" style="cursor:pointer">📂 CSV<input type="file" accept=".csv" style="display:none" onchange="importCSV(this)"/></label>
         </div>
       </div>
-
-      <!-- Step 3: Issues -->
-      <div class="form-page" id="form-page-3">
-        <div class="form-title">What problems are you experiencing?</div>
-        <div class="form-sub">Select all that apply. This helps us prioritize what to look at first.</div>
-
-        <div class="choice-grid" id="issues-choices">
-          <div class="choice-card multi" onclick="toggleChoice(this)">
-            <div class="choice-icon">📉</div>
-            <div class="choice-label">Poor Call Quality</div>
-            <div class="choice-desc">Choppy, robotic, echoing, or dropped calls.</div>
-          </div>
-          <div class="choice-card multi" onclick="toggleChoice(this)">
-            <div class="choice-icon">📵</div>
-            <div class="choice-label">Missed or Lost Calls</div>
-            <div class="choice-desc">Calls going to voicemail, wrong extension, or dead air.</div>
-          </div>
-          <div class="choice-card multi" onclick="toggleChoice(this)">
-            <div class="choice-icon">🔀</div>
-            <div class="choice-label">Broken Call Routing</div>
-            <div class="choice-desc">Auto-attendant menus, ring groups, or transfers not working correctly.</div>
-          </div>
-          <div class="choice-card multi" onclick="toggleChoice(this)">
-            <div class="choice-icon">📬</div>
-            <div class="choice-label">Voicemail Problems</div>
-            <div class="choice-desc">Voicemails not delivering, full mailboxes, or missing notifications.</div>
-          </div>
-          <div class="choice-card multi" onclick="toggleChoice(this)">
-            <div class="choice-icon">⚠️</div>
-            <div class="choice-label">POTS / Copper Line Shutdown Notice</div>
-            <div class="choice-desc">Received notice your analog service is being discontinued.</div>
-          </div>
-          <div class="choice-card multi" onclick="toggleChoice(this)">
-            <div class="choice-icon">💸</div>
-            <div class="choice-label">Overpaying for Phone Service</div>
-            <div class="choice-desc">Your bill feels too high and you're not sure what you're paying for.</div>
-          </div>
-          <div class="choice-card multi" onclick="toggleChoice(this)">
-            <div class="choice-icon">🔌</div>
-            <div class="choice-label">Fax Line or Alarm Line Issue</div>
-            <div class="choice-desc">Fax machine, security alarm, elevator phone, or door buzzer needs separate line.</div>
-          </div>
-          <div class="choice-card multi" onclick="toggleChoice(this)">
-            <div class="choice-icon">🏢</div>
-            <div class="choice-label">Adding a New Location</div>
-            <div class="choice-desc">Expanding and need to extend your phone system to a new site.</div>
-          </div>
+      <div class="panel">
+        <div class="panel-title">Per-Agent Call Log</div>
+        <div class="field"><label>Agent</label><select id="cs-agent"></select></div>
+        <div class="frow">
+          <div class="field"><label>Date</label><input type="date" id="cs-ag-date"/></div>
+          <div class="field"><label>Calls Handled</label><input type="number" id="cs-ag-calls" min="0" placeholder="0"/></div>
+          <div class="field"><label>AHT (min)</label><input type="number" id="cs-ag-aht" min="0" step="0.1" placeholder="0"/></div>
         </div>
-
-        <div class="form-nav">
-          <button class="btn btn-ghost" onclick="goStep(2)">← Back</button>
-          <button class="btn btn-primary" onclick="goStep(4)">Next: Your Goals →</button>
+        <button class="btn btn-p" onclick="saveAgentCalls()" style="width:100%">Log Agent Calls</button>
+        <div style="margin-top:16px">
+          <div class="panel-title">Agent Call History</div>
+          <table class="dt"><thead><tr><th>Agent</th><th>Date</th><th>Calls</th><th>AHT</th></tr></thead>
+          <tbody id="ag-calls-tbody"><tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:16px">No data</td></tr></tbody></table>
         </div>
       </div>
+    </div>
+    <div class="panel">
+      <div class="panel-hdr"><div class="panel-title">Hourly Call Log</div><button class="bicon" onclick="loadCalls()">↻</button></div>
+      <table class="dt"><thead><tr><th>Date</th><th>Hour</th><th>Total</th><th>Handled</th><th>Abandoned</th><th>AHT</th><th>Abandon %</th></tr></thead>
+      <tbody id="cs-tbody"><tr><td colspan="7" style="text-align:center;color:var(--text-3);padding:32px">No call data yet.</td></tr></tbody></table>
+    </div>
+  </div>
 
-      <!-- Step 4: Goals -->
-      <div class="form-page" id="form-page-4">
-        <div class="form-title">What are you hoping to accomplish?</div>
-        <div class="form-sub">Are you troubleshooting an existing problem, or evaluating a new provider?</div>
+  <!-- ADMIN: LOCK SCREEN -->
+  <div class="view" id="view-admin">
 
-        <div class="form-field" style="margin-bottom:24px;">
-          <label>Primary Goal</label>
-          <div class="choice-grid" id="goal-choices" style="margin-top:8px;">
-            <div class="choice-card" onclick="selectChoice(this, 'goal', 'fix')">
-              <div class="choice-icon">🔧</div>
-              <div class="choice-label">Fix What I Have</div>
-              <div class="choice-desc">My current system just needs to work better. I don't want to switch providers right now.</div>
+    <!-- LOCK SCREEN (shown when logged out) -->
+    <div id="admin-lock" style="display:flex;align-items:center;justify-content:center;min-height:70vh">
+      <div style="width:100%;max-width:360px">
+        <div style="text-align:center;margin-bottom:32px">
+          <div style="font-size:40px;margin-bottom:12px">🔒</div>
+          <div style="font-size:20px;font-weight:700;letter-spacing:-0.3px">Admin Access</div>
+          <div style="color:var(--text-2);font-size:13px;margin-top:6px">Enter your password to continue</div>
+        </div>
+        <div class="panel">
+          <div class="field"><label>Password</label>
+            <input id="admin-pw-input" type="password" placeholder="Enter password" autocomplete="current-password"
+              onkeydown="if(event.key==='Enter')attemptAdminLogin()"/>
+          </div>
+          <div id="admin-lock-error" style="color:var(--red);font-size:12px;margin-bottom:12px;display:none">Incorrect password. Try again.</div>
+          <button class="btn btn-p" onclick="attemptAdminLogin()" style="width:100%">Unlock</button>
+          <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);font-size:12px;color:var(--text-3);text-align:center">
+            Default: <span style="font-family:var(--mono)">admin</span> · Super Admin: <span style="font-family:var(--mono)">superadmin</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMIN PANEL (shown when unlocked) -->
+    <div id="admin-panel" style="display:none">
+
+      <!-- Session bar -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm)">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span id="admin-role-badge" class="pill p-blue"><span class="pdot"></span>Admin</span>
+          <span style="font-size:13px;color:var(--text-2)">Logged in as <strong id="admin-role-label" style="color:var(--text)">Admin</strong></span>
+        </div>
+        <button class="btn btn-g btn-sm" onclick="adminLogout()">🔒 Lock</button>
+      </div>
+
+      <!-- TABS — Super Admin sees extra tab -->
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab(event,'tab-agents')">👤 Agents</button>
+        <button class="tab-btn" onclick="switchTab(event,'tab-schedules')">📅 Schedules</button>
+        <button class="tab-btn super-only" onclick="switchTab(event,'tab-users')" style="display:none">🛡 Admin Users</button>
+        <button class="tab-btn super-only" onclick="switchTab(event,'tab-settings')" style="display:none">⚙ Settings</button>
+      </div>
+
+      <!-- TAB: AGENTS -->
+      <div class="tab-pane active" id="tab-agents">
+        <div class="g2">
+          <div class="panel">
+            <div class="panel-title">Add Agent</div>
+            <div class="field"><label>Full Name</label><input id="ag-name" type="text" placeholder="Jane Smith"/></div>
+            <div class="field"><label>Employee ID</label>
+              <div class="frow"><input id="ag-id" type="text" inputmode="numeric" maxlength="6" placeholder="e.g. 482910" style="flex:1"/><button class="btn btn-g btn-sm" onclick="genPIN('ag-id')">⚄ Random</button></div>
             </div>
-            <div class="choice-card" onclick="selectChoice(this, 'goal', 'migrate')">
-              <div class="choice-icon">🚀</div>
-              <div class="choice-label">Move to the Cloud</div>
-              <div class="choice-desc">I'm ready to leave POTS or my old PBX behind and switch to a hosted VoIP solution.</div>
+            <button class="btn btn-p" id="btn-add-ag" onclick="addAgent()" style="width:100%">Add Agent</button>
+          </div>
+          <div class="panel">
+            <div class="panel-hdr"><div class="panel-title">Agent Roster</div><button class="bicon" onclick="loadRoster()">↻</button></div>
+            <table class="dt"><thead><tr><th>Name</th><th>ID</th><th>Status</th><th></th></tr></thead>
+            <tbody id="roster-tbody"><tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:24px">Loading…</td></tr></tbody></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: SCHEDULES -->
+      <div class="tab-pane" id="tab-schedules">
+        <div class="panel gap">
+          <div class="panel-title">Set Agent Schedule</div>
+          <div class="frow">
+            <div class="field"><label>Agent</label><select id="sch-agent"><option value="">— Select —</option></select></div>
+            <div class="field"><label>Date</label><input type="date" id="sch-date"/></div>
+            <div class="field"><label>Shift Start</label><input type="time" id="sch-start"/></div>
+            <div class="field"><label>Shift End</label><input type="time" id="sch-end"/></div>
+          </div>
+          <button class="btn btn-p" onclick="saveSchedule()">Save Schedule</button>
+        </div>
+        <div class="panel">
+          <div class="panel-hdr"><div class="panel-title">Schedule Log</div><button class="bicon" onclick="loadSchedules()">↻</button></div>
+          <table class="dt"><thead><tr><th>Agent</th><th>Date</th><th>Start</th><th>End</th><th>Hours</th><th></th></tr></thead>
+          <tbody id="sch-tbody"><tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:24px">No schedules yet.</td></tr></tbody></table>
+        </div>
+      </div>
+
+      <!-- TAB: ADMIN USERS (Super Admin only) -->
+      <div class="tab-pane" id="tab-users">
+        <div class="g2">
+          <div class="panel">
+            <div class="panel-title">Add Admin User</div>
+            <div class="field"><label>Full Name</label><input id="mgr-name" type="text" placeholder="John Manager"/></div>
+            <div class="field"><label>Username</label><input id="mgr-user" type="text" placeholder="john@company.com"/></div>
+            <div class="field"><label>Password</label>
+              <div class="frow"><input id="mgr-pw" type="text" placeholder="Set a password" style="flex:1"/><button class="btn btn-g btn-sm" onclick="genPIN('mgr-pw')">⚄ Random</button></div>
             </div>
-            <div class="choice-card" onclick="selectChoice(this, 'goal', 'shop')">
-              <div class="choice-icon">🛒</div>
-              <div class="choice-label">Shop for a New Provider</div>
-              <div class="choice-desc">I want unbiased guidance on which VoIP or UCaaS provider fits my business best.</div>
+            <div class="field"><label>Role</label>
+              <select id="mgr-role">
+                <option value="admin">Admin — Can manage agents, schedules, calls</option>
+                <option value="superadmin">Super Admin — Full access including user management</option>
+              </select>
             </div>
-            <div class="choice-card" onclick="selectChoice(this, 'goal', 'optimize')">
-              <div class="choice-icon">📈</div>
-              <div class="choice-label">Optimize &amp; Reduce Cost</div>
-              <div class="choice-desc">I'm already on VoIP but want to streamline, cut costs, or improve call handling.</div>
+            <button class="btn btn-p" onclick="addManager()" style="width:100%">Add Admin User</button>
+          </div>
+          <div class="panel">
+            <div class="panel-hdr"><div class="panel-title">Admin Users</div><button class="bicon" onclick="loadManagers()">↻</button></div>
+            <table class="dt"><thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Added</th><th></th></tr></thead>
+            <tbody id="mgr-tbody"><tr><td colspan="5" style="text-align:center;color:var(--text-3);padding:24px">Loading…</td></tr></tbody></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: SETTINGS (Super Admin only) -->
+      <div class="tab-pane" id="tab-settings">
+        <div class="g2">
+          <div class="panel">
+            <div class="panel-title">Change Admin Password</div>
+            <div style="background:var(--yellow-dim);border:1px solid rgba(245,200,66,0.2);border-radius:var(--r-sm);padding:12px;margin-bottom:16px;font-size:12px;color:var(--yellow)">
+              ⚠ This changes the password for the <strong>Admin</strong> role. Super Admin password is changed separately below.
             </div>
+            <div class="field"><label>New Admin Password</label><input id="set-admin-pw" type="text" placeholder="New password"/></div>
+            <button class="btn btn-p" onclick="changePassword('admin')" style="width:100%">Update Admin Password</button>
+          </div>
+          <div class="panel">
+            <div class="panel-title">Change Super Admin Password</div>
+            <div style="background:var(--red-dim);border:1px solid rgba(240,80,80,0.2);border-radius:var(--r-sm);padding:12px;margin-bottom:16px;font-size:12px;color:var(--red)">
+              🔴 Changing this locks out all Super Admins using the old password.
+            </div>
+            <div class="field"><label>New Super Admin Password</label><input id="set-super-pw" type="text" placeholder="New password"/></div>
+            <button class="btn btn-p" onclick="changePassword('superadmin')" style="width:100%">Update Super Admin Password</button>
           </div>
         </div>
-
-        <div class="form-field">
-          <label>Timeline / Urgency</label>
-          <select id="timeline">
-            <option value="">Select…</option>
-            <option value="urgent">Urgent – calls affected right now</option>
-            <option value="soon">Within the next 2–4 weeks</option>
-            <option value="planning">Planning for the next 1–3 months</option>
-            <option value="exploring">Just exploring options</option>
-          </select>
-        </div>
-
-        <div class="form-field">
-          <label>Anything else we should know?</label>
-          <textarea id="extra-notes" placeholder="Describe your situation, specific requirements, or questions…"></textarea>
-        </div>
-
-        <div class="form-nav">
-          <button class="btn btn-ghost" onclick="goStep(3)">← Back</button>
-          <button class="btn btn-primary" onclick="showResults()">See My Recommendations →</button>
+        <div class="panel" style="margin-top:16px">
+          <div class="panel-title">Alarm Thresholds</div>
+          <div class="g2">
+            <div class="field"><label>Late Arrival Threshold (min)</label><input type="number" id="thresh-late" value="5" min="1" max="60"/></div>
+            <div class="field"><label>Break Overrun Threshold (min)</label><input type="number" id="thresh-break" value="15" min="5" max="60"/></div>
+          </div>
+          <button class="btn btn-p" onclick="saveThresholds()">Save Thresholds</button>
         </div>
       </div>
 
-      <!-- Step 5: Results -->
-      <div class="form-page" id="form-page-5">
-        <div class="form-title">Here's what we recommend</div>
-        <div class="form-sub">Based on your answers, here's a personalized diagnostic summary and suggested next steps.</div>
+    </div><!-- /admin-panel -->
+  </div><!-- /view-admin -->
 
-        <div class="result-box" id="results-output">
-          <!-- Populated by JS -->
-        </div>
+</div><!-- /main -->
+</div><!-- /shell -->
 
-        <div style="margin-top:28px; text-align:center;">
-          <p style="color:#6a7e98; font-size:0.9rem; margin-bottom:16px;">Ready to take the next step? Reach out directly—no automated call centers.</p>
-          <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
-            <a href="tel:+19519000067" class="btn btn-primary">📞 Call 951-900-0067</a>
-            <a href="mailto:support@signal-restore.com" class="btn btn-secondary">Email Us</a>
-          </div>
-          <br>
-          <button onclick="resetForm()" style="background:none;border:none;color:#4a5a6e;font-size:0.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline;">Start Over</button>
-        </div>
-      </div>
+<div id="toast"></div>
+<div id="moverlay" onclick="if(event.target===this)closeModal()">
+  <div id="modal">
+    <h3 id="modal-title"></h3>
+    <div id="modal-body"></div>
+    <div class="mfooter">
+      <button class="btn btn-g" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-p" id="modal-ok">Confirm</button>
     </div>
   </div>
-</section>
-
-<!-- ══════════════ INDUSTRIES ══════════════ -->
-<section class="section-light" id="industries">
-  <div class="container">
-    <p class="eyebrow">Who We Serve</p>
-    <h2>Businesses Where Missed Calls Mean Missed Revenue</h2>
-    <p class="section-intro">Every industry has different call handling needs. Here's how we support each one.</p>
-
-    <div class="industries-grid">
-      <div class="industry-card">
-        <div class="ind-icon">🏥</div>
-        <h3>Healthcare &amp; Medical Practices</h3>
-        <p>Queue design, escalation paths, call recording settings, and smoother front-desk workflows for clinics and call centers.</p>
-      </div>
-      <div class="industry-card">
-        <div class="ind-icon">⚖️</div>
-        <h3>Law Offices</h3>
-        <p>Call routing by practice area or attorney, intake team queues, consultation scheduling lines, and urgent after-hours overflow.</p>
-      </div>
-      <div class="industry-card">
-        <div class="ind-icon">💼</div>
-        <h3>Financial &amp; Insurance Offices</h3>
-        <p>Priority routing for advisors and service teams, compliance-friendly call recording, and reliable after-hours voicemail handling.</p>
-      </div>
-      <div class="industry-card">
-        <div class="ind-icon">🏬</div>
-        <h3>Retail &amp; Customer-Facing Businesses</h3>
-        <p>Reliable inbound call handling, front desk routing, voicemail cleanup, and fewer calls going unanswered during busy periods.</p>
-      </div>
-      <div class="industry-card">
-        <div class="ind-icon">🏢</div>
-        <h3>Franchises &amp; Multi-Location</h3>
-        <p>Consistent routing, provider management, and standardized communication setups replicated cleanly across every location.</p>
-      </div>
-      <div class="industry-card">
-        <div class="ind-icon">📡</div>
-        <h3>Businesses with Legacy Systems</h3>
-        <p>Older analog systems, copper lines, outdated PBX hardware—we modernize without disrupting your operations mid-transition.</p>
-      </div>
-    </div>
-
-    <div class="callout-banner">
-      Better <span style="color:var(--pink);">communication.</span>
-      <span style="color:var(--cyan);">Stronger</span> business.
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ INDUSTRY NEWS ══════════════ -->
-<section class="section-dark" id="news">
-  <div class="container">
-    <p class="eyebrow">Industry Pulse</p>
-    <h2>Where Business Phone Technology Is Heading</h2>
-    <p class="section-intro light">The telecom industry is changing fast. Here's what business owners need to know right now.</p>
-
-    <div class="news-grid">
-      <div class="news-card">
-        <div class="news-body">
-          <div class="news-tag orange">Urgent: Infrastructure</div>
-          <div class="news-date">2024–2025</div>
-          <h3>POTS Is Being Shut Down Nationwide</h3>
-          <p>The FCC's Order 19-72 allowed carriers to sunset copper POTS lines. AT&amp;T, Lumen, and others are actively discontinuing analog service—businesses on old landlines need a migration plan now or risk losing phone service with little warning.</p>
-        </div>
-        <div class="news-footer">📍 Affects every business still on copper landlines</div>
-      </div>
-
-      <div class="news-card">
-        <div class="news-body">
-          <div class="news-tag cyan">AI &amp; Automation</div>
-          <div class="news-date">Trend: 2024–2026</div>
-          <h3>AI Receptionists Are Entering the SMB Market</h3>
-          <p>Platforms like RingCentral RingSense, Zoom Phone AI, and Dialpad AI now offer automated call summaries, live transcription, and AI-assisted routing at small business price points. Understanding which features actually help—vs. create complexity—matters.</p>
-        </div>
-        <div class="news-footer">📍 Affects businesses fielding high call volume</div>
-      </div>
-
-      <div class="news-card">
-        <div class="news-body">
-          <div class="news-tag pink">Market Shift</div>
-          <div class="news-date">2023–2025</div>
-          <h3>UCaaS Consolidation: Fewer, Bigger Providers</h3>
-          <p>The hosted voice market is consolidating rapidly. Smaller providers are being acquired (e.g., Vonage by Ericsson, Fuze by 8x8). Businesses locked into long-term contracts with mid-tier vendors may find themselves migrated to new platforms mid-contract.</p>
-        </div>
-        <div class="news-footer">📍 Affects businesses on 2–3 year UCaaS contracts</div>
-      </div>
-
-      <div class="news-card">
-        <div class="news-body">
-          <div class="news-tag cyan">Technology</div>
-          <div class="news-date">Growing: 2024+</div>
-          <h3>WebRTC Makes Browser-Based Calling the New Normal</h3>
-          <p>WebRTC (Web Real-Time Communication) allows high-quality voice and video calls directly in a browser with no plugin—and it's now standard in platforms like Zoom, Teams, and most UCaaS portals. This is reshaping what "a phone" even means for office workers.</p>
-        </div>
-        <div class="news-footer">📍 Relevant for remote &amp; hybrid teams</div>
-      </div>
-
-      <div class="news-card">
-        <div class="news-body">
-          <div class="news-tag orange">Compliance</div>
-          <div class="news-date">Effective 2024</div>
-          <h3>10DLC Registration Now Required for Business SMS</h3>
-          <p>If your business sends text messages from a 10-digit number, carriers now require 10DLC (10-Digit Long Code) registration—or your messages get filtered as spam. Many businesses are unaware and seeing SMS deliverability issues as a result.</p>
-        </div>
-        <div class="news-footer">📍 Affects any business texting customers</div>
-      </div>
-
-      <div class="news-card">
-        <div class="news-body">
-          <div class="news-tag pink">Cost Trend</div>
-          <div class="news-date">Ongoing</div>
-          <h3>Legacy PBX Maintenance Costs Are Climbing</h3>
-          <p>Parts and support for on-premise PBX systems (Avaya, NEC, Mitel) are becoming harder to find as manufacturers shift focus to cloud. Businesses holding onto aging hardware are paying more per incident repair—and facing longer downtimes when issues arise.</p>
-        </div>
-        <div class="news-footer">📍 Affects businesses with physical PBX servers</div>
-      </div>
-    </div>
-
-    <div class="trend-strip">
-      <div class="trend-chip">📈 VoIP market: <span>$102B by 2026</span></div>
-      <div class="trend-chip">☁️ UCaaS adoption up <span>28% YoY</span></div>
-      <div class="trend-chip">📵 POTS lines: <span>sunset accelerating</span></div>
-      <div class="trend-chip">🤖 AI call routing: <span>now in SMB tier</span></div>
-      <div class="trend-chip">🔒 10DLC compliance: <span>mandatory 2024</span></div>
-      <div class="trend-chip">💰 Avg VoIP savings vs POTS: <span>30–50%</span></div>
-      <div class="trend-chip">📊 SIP trunking growth: <span>17% annually</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ TELECOM HISTORY ══════════════ -->
-<section class="section-navy" id="history">
-  <div class="container">
-    <p class="eyebrow">Context Matters</p>
-    <h2>A Brief History of Business Telecommunications</h2>
-    <p class="section-intro light">Understanding how we got here helps explain why so many businesses are stuck with outdated systems—and why now is the right time to modernize.</p>
-
-    <div class="timeline">
-
-      <div class="era-header">
-        <span class="era-label analog">🕰️ Analog Era</span>
-        <div class="era-line"></div>
-      </div>
-
-      <div class="timeline-entry era-analog">
-        <div class="t-year">1876 – 1934</div>
-        <h3>The Bell Telephone Monopoly</h3>
-        <p>Alexander Graham Bell's patent gave AT&amp;T a legal monopoly over telephone service in the United States. The Bell System became the backbone of American communication—a single company controlling local and long-distance phone service for nearly a century. Businesses had no choice: one provider, one set of rates, one infrastructure.</p>
-        <span class="t-impact">Impact: Monopoly established the POTS foundation still in use today</span>
-      </div>
-
-      <div class="timeline-entry era-analog">
-        <div class="t-year">1968 – Carterfone Decision</div>
-        <h3>The FCC Opens the Network</h3>
-        <p>The FCC ruled that Tom Carter's Carterfone device—which connected private radio systems to the telephone network—was legal. This cracked open AT&amp;T's monopoly on equipment and laid the foundation for third-party devices connecting to the phone network. Without Carterfone, there would be no VoIP adapters, no modems, no third-party phones.</p>
-        <span class="t-impact">Impact: First crack in AT&T's equipment monopoly</span>
-      </div>
-
-      <div class="timeline-entry era-analog">
-        <div class="t-year">1982 – United States v. AT&amp;T</div>
-        <h3>The Breakup of the Bell System</h3>
-        <p>The Department of Justice filed an antitrust suit against AT&amp;T, resulting in a consent decree that broke the Bell System into AT&amp;T (long distance) and seven regional "Baby Bells." This was the most significant structural change in U.S. telecom history. It introduced competition to local phone markets and eventually enabled independent carriers—setting the stage for the VoIP revolution two decades later.</p>
-        <span class="t-impact">Impact: Created the competitive telecom market businesses operate in today</span>
-      </div>
-
-      <div class="timeline-entry era-analog">
-        <div class="t-year">1980s–1990s</div>
-        <h3>The Rise of On-Premise PBX Systems</h3>
-        <p>Private Branch Exchange (PBX) systems—from manufacturers like Avaya, Nortel, Mitel, NEC, and Cisco—became the standard for medium and large businesses. A PBX let a company run dozens or hundreds of internal extensions off a single set of outside lines, with features like transfer, hold, and voicemail managed on-site. These systems cost tens of thousands of dollars and required on-site technicians.</p>
-        <span class="t-impact">Impact: On-prem PBX became the dominant business phone model for 30+ years</span>
-      </div>
-
-      <div class="era-header">
-        <span class="era-label digital">💻 Digital Era</span>
-        <div class="era-line"></div>
-      </div>
-
-      <div class="timeline-entry era-digital">
-        <div class="t-year">1996 – Telecom Act</div>
-        <h3>Telecommunications Act of 1996</h3>
-        <p>The first major overhaul of U.S. telecom law since 1934. It required Baby Bells to open their infrastructure to competitors, deregulated cable TV, and tried to create a more competitive marketplace. It didn't fully succeed in creating local competition, but it accelerated the conditions for internet-based communication to compete with traditional carriers.</p>
-        <span class="t-impact">Impact: Opened doors for ISPs, competitive carriers, and eventually VoIP</span>
-      </div>
-
-      <div class="timeline-entry era-digital">
-        <div class="t-year">1990s–2000s</div>
-        <h3>ISDN, T1 Lines, and Digital PBX</h3>
-        <p>Businesses upgrading from analog POTS adopted ISDN (Integrated Services Digital Network) and T1 circuits—digital connections that delivered higher-quality voice and data over the same infrastructure. Digital PBX systems replaced older analog models, offering better call management, voicemail integration, and ACD (Automatic Call Distribution) for call centers.</p>
-        <span class="t-impact">Impact: Digitized business voice; still the basis for many legacy systems today</span>
-      </div>
-
-      <div class="era-header">
-        <span class="era-label voip">📡 VoIP Revolution</span>
-        <div class="era-line"></div>
-      </div>
-
-      <div class="timeline-entry era-voip">
-        <div class="t-year">1995 – VocalTec VoIP</div>
-        <h3>Voice Over IP Is Born</h3>
-        <p>VocalTec Communications released the first commercial VoIP product—software that let users make phone calls over the internet. Quality was poor, latency was high, and broadband barely existed. But the concept was proven: voice could travel as data packets, bypassing the PSTN (Public Switched Telephone Network) and the per-minute charges of traditional carriers.</p>
-        <span class="t-impact">Impact: Proved that voice and data could share the same network</span>
-      </div>
-
-      <div class="timeline-entry era-voip">
-        <div class="t-year">2003 – Skype &amp; SIP Trunking</div>
-        <h3>VoIP Hits the Mainstream</h3>
-        <p>Skype launched in 2003, bringing free PC-to-PC calling to millions. Simultaneously, SIP (Session Initiation Protocol) trunking emerged as a way for businesses to replace expensive T1/PRI lines with internet-based voice channels—dramatically cutting per-minute and per-line costs. SIP trunks became the bridge between legacy on-prem PBX systems and the internet.</p>
-        <span class="t-impact">Impact: Businesses could now cut phone bills 40–60% using SIP trunks</span>
-      </div>
-
-      <div class="timeline-entry era-voip">
-        <div class="t-year">2004 – Asterisk &amp; Open Source PBX</div>
-        <h3>FreePBX and Open-Source Telephony</h3>
-        <p>Digium's Asterisk platform (and later FreePBX) let technically capable businesses build their own PBX systems on commodity hardware—for free. This democratized business phone systems and created a thriving ecosystem of VoIP hardware, developers, and managed service providers. Many regional IT shops built their practices around Asterisk.</p>
-        <span class="t-impact">Impact: Lowered the barrier to entry for businesses to adopt VoIP</span>
-      </div>
-
-      <div class="timeline-entry era-voip">
-        <div class="t-year">2006 – RingCentral Founded</div>
-        <h3>The Hosted PBX / UCaaS Market Emerges</h3>
-        <p>Companies like RingCentral, 8x8, and Vonage began offering fully hosted phone systems—no hardware to buy, no servers to manage. Pay a monthly per-user fee and get a business phone system in the cloud. This became known as UCaaS (Unified Communications as a Service) and would eventually replace on-premise PBX for most small and mid-sized businesses.</p>
-        <span class="t-impact">Impact: Created the modern cloud phone market now used by millions of SMBs</span>
-      </div>
-
-      <div class="era-header">
-        <span class="era-label cloud">☁️ Cloud &amp; AI Era</span>
-        <div class="era-line"></div>
-      </div>
-
-      <div class="timeline-entry era-cloud">
-        <div class="t-year">2013–2019</div>
-        <h3>UCaaS Goes Mainstream</h3>
-        <p>As internet infrastructure improved and smartphone adoption exploded, cloud phone systems became the default for new businesses. Mobile apps, softphones, video conferencing, team messaging, and CRM integrations all merged into single UCaaS platforms. Microsoft Teams and Zoom Phone brought enterprise-grade voice into tools employees already used daily.</p>
-        <span class="t-impact">Impact: Blurred the line between "phone system" and "communication platform"</span>
-      </div>
-
-      <div class="timeline-entry era-cloud">
-        <div class="t-year">2019 – FCC Order 19-72</div>
-        <h3>The POTS Sunset Begins</h3>
-        <p>The FCC granted carriers the right to retire copper POTS infrastructure, removing the obligation to maintain legacy analog service. AT&amp;T, Lumen, and others began actively discontinuing service in many areas. Businesses still on analog lines—especially those with fax machines, alarm systems, or elevator phones on copper—face forced migrations with limited notice.</p>
-        <span class="t-impact">Impact: Created an urgent migration crisis for businesses still on analog</span>
-      </div>
-
-      <div class="timeline-entry era-cloud">
-        <div class="t-year">2023–Present</div>
-        <h3>AI Enters the Phone System</h3>
-        <p>Generative AI is being embedded directly into UCaaS platforms: real-time call transcription, AI-generated summaries, sentiment analysis, intelligent routing based on caller intent, and virtual receptionists that can handle common inquiries without human intervention. What was a $50,000 call center feature in 2015 is now a $30/month add-on for SMBs.</p>
-        <span class="t-impact">Impact: Reshaping what's possible for small business call handling</span>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ SYSTEM ARCHITECTURE / BLUEPRINTS ══════════════ -->
-<section class="section-dark" id="architecture">
-  <div class="container">
-    <p class="eyebrow cyan">System Architecture</p>
-    <h2>Phone System Blueprints by Industry</h2>
-    <p class="section-intro light">Real-world call flow diagrams showing how properly designed phone systems are structured for different business types.</p>
-
-    <div class="arch-tabs">
-      <button class="arch-tab active" onclick="switchArch('law')">Law Office</button>
-      <button class="arch-tab" onclick="switchArch('medical')">Medical Practice</button>
-      <button class="arch-tab" onclick="switchArch('retail')">Retail / Multi-Location</button>
-      <button class="arch-tab" onclick="switchArch('callcenter')">Call Center / UCaaS</button>
-      <button class="arch-tab" onclick="switchArch('hybrid')">POTS-to-Cloud Hybrid</button>
-    </div>
-
-    <!-- LAW OFFICE -->
-    <div class="arch-panel active" id="arch-law">
-      <div class="blueprint">
-        <div class="bp-title">DIAGRAM 01 — LAW OFFICE CALL FLOW ARCHITECTURE</div>
-        <div class="bp-diagram">
-          <svg class="bp-svg" viewBox="0 0 860 420" xmlns="http://www.w3.org/2000/svg" font-family="DM Mono, monospace">
-            <!-- Caller -->
-            <rect x="10" y="170" width="110" height="56" rx="10" fill="rgba(37,188,192,0.12)" stroke="#25bcc0" stroke-width="1.5"/>
-            <text x="65" y="196" text-anchor="middle" fill="#25bcc0" font-size="10" font-weight="700">INBOUND</text>
-            <text x="65" y="213" text-anchor="middle" fill="#25bcc0" font-size="10">CALLER</text>
-
-            <!-- Arrow -->
-            <line x1="120" y1="198" x2="148" y2="198" stroke="#25bcc0" stroke-width="1.5" marker-end="url(#arrow-c)"/>
-
-            <!-- Auto Attendant -->
-            <rect x="150" y="155" width="130" height="86" rx="10" fill="rgba(249,143,33,0.10)" stroke="#f98f21" stroke-width="1.5"/>
-            <text x="215" y="185" text-anchor="middle" fill="#f98f21" font-size="10" font-weight="700">AUTO</text>
-            <text x="215" y="200" text-anchor="middle" fill="#f98f21" font-size="10" font-weight="700">ATTENDANT</text>
-            <text x="215" y="220" text-anchor="middle" fill="#8a6030" font-size="9">"Thank you for calling…"</text>
-            <text x="215" y="232" text-anchor="middle" fill="#8a6030" font-size="9">Press 1–4 to route</text>
-
-            <!-- Branches -->
-            <line x1="280" y1="190" x2="308" y2="140" stroke="#f98f21" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-o)"/>
-            <line x1="280" y1="198" x2="308" y2="198" stroke="#f98f21" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-o)"/>
-            <line x1="280" y1="198" x2="308" y2="256" stroke="#f98f21" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-o)"/>
-            <line x1="280" y1="198" x2="308" y2="314" stroke="#f98f21" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-o)"/>
-
-            <!-- Branch 1: Intake -->
-            <rect x="310" y="110" width="130" height="56" rx="8" fill="rgba(228,0,124,0.10)" stroke="#e4007c" stroke-width="1.5"/>
-            <text x="375" y="134" text-anchor="middle" fill="#e4007c" font-size="10" font-weight="700">INTAKE QUEUE</text>
-            <text x="375" y="150" text-anchor="middle" fill="#8a3060" font-size="9">New client calls</text>
-            <text x="375" y="161" text-anchor="middle" fill="#8a3060" font-size="9">Screening / consult sched.</text>
-
-            <!-- Branch 2: Attorneys -->
-            <rect x="310" y="170" width="130" height="56" rx="8" fill="rgba(168,85,247,0.12)" stroke="#a855f7" stroke-width="1.5"/>
-            <text x="375" y="194" text-anchor="middle" fill="#c084fc" font-size="10" font-weight="700">ATTORNEY DIRECT</text>
-            <text x="375" y="210" text-anchor="middle" fill="#7a50a0" font-size="9">Ring ext. → mobile</text>
-            <text x="375" y="222" text-anchor="middle" fill="#7a50a0" font-size="9">→ voicemail w/ email</text>
-
-            <!-- Branch 3: Billing -->
-            <rect x="310" y="230" width="130" height="56" rx="8" fill="rgba(37,188,192,0.10)" stroke="#25bcc0" stroke-width="1.5"/>
-            <text x="375" y="254" text-anchor="middle" fill="#25bcc0" font-size="10" font-weight="700">BILLING / ACCOUNTS</text>
-            <text x="375" y="270" text-anchor="middle" fill="#3a7070" font-size="9">Ring group: billing team</text>
-            <text x="375" y="282" text-anchor="middle" fill="#3a7070" font-size="9">→ shared voicemail</text>
-
-            <!-- Branch 4: After Hours -->
-            <rect x="310" y="290" width="130" height="56" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
-            <text x="375" y="314" text-anchor="middle" fill="#8fa3ba" font-size="10" font-weight="700">AFTER HOURS / URGENT</text>
-            <text x="375" y="330" text-anchor="middle" fill="#4a5a6e" font-size="9">Schedule → message</text>
-            <text x="375" y="342" text-anchor="middle" fill="#4a5a6e" font-size="9">Urgent page to attorney</text>
-
-            <!-- Arrows to overflow -->
-            <line x1="440" y1="138" x2="480" y2="138" stroke="rgba(255,255,255,0.2)" stroke-width="1" marker-end="url(#arrow-w)"/>
-            <line x1="440" y1="198" x2="480" y2="198" stroke="rgba(255,255,255,0.2)" stroke-width="1" marker-end="url(#arrow-w)"/>
-            <line x1="440" y1="258" x2="480" y2="258" stroke="rgba(255,255,255,0.2)" stroke-width="1" marker-end="url(#arrow-w)"/>
-            <line x1="440" y1="318" x2="480" y2="318" stroke="rgba(255,255,255,0.2)" stroke-width="1" marker-end="url(#arrow-w)"/>
-
-            <!-- Overflow / Voicemail column -->
-            <rect x="482" y="110" width="120" height="56" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
-            <text x="542" y="132" text-anchor="middle" fill="#6a7e98" font-size="9" font-weight="700">NO ANSWER?</text>
-            <text x="542" y="147" text-anchor="middle" fill="#4a5a6e" font-size="9">→ Voicemail + email</text>
-            <text x="542" y="158" text-anchor="middle" fill="#4a5a6e" font-size="9">notification to staff</text>
-
-            <rect x="482" y="170" width="120" height="56" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
-            <text x="542" y="192" text-anchor="middle" fill="#6a7e98" font-size="9" font-weight="700">MOBILE FAILOVER</text>
-            <text x="542" y="207" text-anchor="middle" fill="#4a5a6e" font-size="9">Desk → Cell → VM</text>
-            <text x="542" y="218" text-anchor="middle" fill="#4a5a6e" font-size="9">Simultaneous ring opt.</text>
-
-            <rect x="482" y="230" width="120" height="56" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
-            <text x="542" y="252" text-anchor="middle" fill="#6a7e98" font-size="9" font-weight="700">SHARED MAILBOX</text>
-            <text x="542" y="267" text-anchor="middle" fill="#4a5a6e" font-size="9">Team voicemail box</text>
-            <text x="542" y="278" text-anchor="middle" fill="#4a5a6e" font-size="9">Email transcription</text>
-
-            <rect x="482" y="290" width="120" height="56" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
-            <text x="542" y="312" text-anchor="middle" fill="#6a7e98" font-size="9" font-weight="700">AFTER-HRS MSG</text>
-            <text x="542" y="327" text-anchor="middle" fill="#4a5a6e" font-size="9">Custom recording</text>
-            <text x="542" y="338" text-anchor="middle" fill="#4a5a6e" font-size="9">+ callback request</text>
-
-            <!-- CRM Integration -->
-            <rect x="640" y="155" width="130" height="86" rx="10" fill="rgba(168,85,247,0.08)" stroke="#a855f7" stroke-width="1.5" stroke-dasharray="6,3"/>
-            <text x="705" y="185" text-anchor="middle" fill="#a855f7" font-size="10" font-weight="700">CRM INTEGRATION</text>
-            <text x="705" y="202" text-anchor="middle" fill="#7050a0" font-size="9">Screen-pop on inbound</text>
-            <text x="705" y="215" text-anchor="middle" fill="#7050a0" font-size="9">Call log → matter record</text>
-            <text x="705" y="228" text-anchor="middle" fill="#7050a0" font-size="9">(Clio, MyCase, etc.)</text>
-
-            <line x1="602" y1="198" x2="638" y2="198" stroke="#a855f7" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-p)"/>
-
-            <!-- Legend area -->
-            <text x="10" y="390" fill="#3a4a5a" font-size="8.5">LEGEND:</text>
-            <rect x="62" y="381" width="10" height="10" rx="2" fill="rgba(37,188,192,0.15)" stroke="#25bcc0" stroke-width="1"/>
-            <text x="76" y="390" fill="#3a4a5a" font-size="8.5">Entry Point</text>
-            <rect x="140" y="381" width="10" height="10" rx="2" fill="rgba(249,143,33,0.10)" stroke="#f98f21" stroke-width="1"/>
-            <text x="154" y="390" fill="#3a4a5a" font-size="8.5">IVR / Routing</text>
-            <rect x="230" y="381" width="10" height="10" rx="2" fill="rgba(228,0,124,0.10)" stroke="#e4007c" stroke-width="1"/>
-            <text x="244" y="390" fill="#3a4a5a" font-size="8.5">Queue / Team</text>
-            <rect x="322" y="381" width="10" height="10" rx="2" fill="rgba(168,85,247,0.12)" stroke="#a855f7" stroke-width="1" stroke-dasharray="4,2"/>
-            <text x="336" y="390" fill="#3a4a5a" font-size="8.5">Integration (optional)</text>
-
-            <!-- Arrow markers -->
-            <defs>
-              <marker id="arrow-c" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-                <path d="M0,0 L0,6 L8,3 z" fill="#25bcc0"/>
-              </marker>
-              <marker id="arrow-o" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-                <path d="M0,0 L0,6 L8,3 z" fill="#f98f21"/>
-              </marker>
-              <marker id="arrow-w" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-                <path d="M0,0 L0,6 L8,3 z" fill="rgba(255,255,255,0.2)"/>
-              </marker>
-              <marker id="arrow-p" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-                <path d="M0,0 L0,6 L8,3 z" fill="#a855f7"/>
-              </marker>
-            </defs>
-          </svg>
-        </div>
-        <div class="bp-desc">
-          <div class="bp-desc-item">
-            <div class="key">Main Number</div>
-            <div class="val">Single DID routes all calls. Auto-attendant plays business greeting 24/7 and routes by department or time of day.</div>
-          </div>
-          <div class="bp-desc-item">
-            <div class="key">Intake Handling</div>
-            <div class="val">New client calls reach a dedicated queue—screened before reaching attorneys. Essential for managing consultation scheduling.</div>
-          </div>
-          <div class="bp-desc-item">
-            <div class="key">After-Hours Logic</div>
-            <div class="val">Outside business hours, calls auto-route to custom greeting + message option. Urgent matters can page on-call attorney via SMS.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- MEDICAL PRACTICE -->
-    <div class="arch-panel" id="arch-medical">
-      <div class="blueprint">
-        <div class="bp-title">DIAGRAM 02 — MEDICAL PRACTICE CALL FLOW ARCHITECTURE</div>
-        <div class="bp-diagram">
-          <svg class="bp-svg" viewBox="0 0 860 400" xmlns="http://www.w3.org/2000/svg" font-family="DM Mono, monospace">
-            <defs>
-              <marker id="arrow-c2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-                <path d="M0,0 L0,6 L8,3 z" fill="#25bcc0"/>
-              </marker>
-              <marker id="arrow-o2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-                <path d="M0,0 L0,6 L8,3 z" fill="#f98f21"/>
-              </marker>
-              <marker id="arrow-r2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-                <path d="M0,0 L0,6 L8,3 z" fill="#e4007c"/>
-              </marker>
-            </defs>
-
-            <!-- Inbound -->
-            <rect x="10" y="170" width="110" height="56" rx="10" fill="rgba(37,188,192,0.12)" stroke="#25bcc0" stroke-width="1.5"/>
-            <text x="65" y="196" text-anchor="middle" fill="#25bcc0" font-size="10" font-weight="700">PATIENT</text>
-            <text x="65" y="213" text-anchor="middle" fill="#25bcc0" font-size="10">INBOUND CALL</text>
-
-            <line x1="120" y1="198" x2="148" y2="198" stroke="#25bcc0" stroke-width="1.5" marker-end="url(#arrow-c2)"/>
-
-            <!-- IVR -->
-            <rect x="150" y="148" width="130" height="100" rx="10" fill="rgba(249,143,33,0.10)" stroke="#f98f21" stroke-width="1.5"/>
-            <text x="215" y="174" text-anchor="middle" fill="#f98f21" font-size="10" font-weight="700">IVR MENU</text>
-            <text x="215" y="191" text-anchor="middle" fill="#8a6030" font-size="8.5">1 – Schedule appt.</text>
-            <text x="215" y="204" text-anchor="middle" fill="#8a6030" font-size="8.5">2 – Rx refill request</text>
-            <text x="215" y="217" text-anchor="middle" fill="#8a6030" font-size="8.5">3 – Lab results</text>
-            <text x="215" y="230" text-anchor="middle" fill="#8a6030" font-size="8.5">0 – Urgent / Operator</text>
-
-            <!-- Routing branches -->
-            <line x1="280" y1="178" x2="308" y2="120" stroke="#f98f21" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-o2)"/>
-            <line x1="280" y1="190" x2="308" y2="178" stroke="#f98f21" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-o2)"/>
-            <line x1="280" y1="210" x2="308" y2="236" stroke="#f98f21" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-o2)"/>
-            <line x1="280" y1="225" x2="308" y2="294" stroke="#f98f21" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-o2)"/>
-
-            <rect x="310" y="92" width="130" height="56" rx="8" fill="rgba(37,188,192,0.10)" stroke="#25bcc0" stroke-width="1.5"/>
-            <text x="375" y="116" text-anchor="middle" fill="#25bcc0" font-size="10" font-weight="700">SCHEDULING QUEUE</text>
-            <text x="375" y="133" text-anchor="middle" fill="#3a7070" font-size="9">Front desk ring group</text>
-            <text x="375" y="145" text-anchor="middle" fill="#3a7070" font-size="9">→ EHR integration</text>
-
-            <rect x="310" y="152" width="130" height="56" rx="8" fill="rgba(168,85,247,0.12)" stroke="#a855f7" stroke-width="1.5"/>
-            <text x="375" y="176" text-anchor="middle" fill="#c084fc" font-size="10" font-weight="700">RX REFILL LINE</text>
-            <text x="375" y="193" text-anchor="middle" fill="#7050a0" font-size="9">Nurse/MA voicemail</text>
-            <text x="375" y="205" text-anchor="middle" fill="#7050a0" font-size="9">Email alert to clinical</text>
-
-            <rect x="310" y="210" width="130" height="56" rx="8" fill="rgba(37,188,192,0.10)" stroke="#25bcc0" stroke-width="1.5"/>
-            <text x="375" y="234" text-anchor="middle" fill="#25bcc0" font-size="10" font-weight="700">LAB RESULTS</text>
-            <text x="375" y="251" text-anchor="middle" fill="#3a7070" font-size="9">→ Nurse station queue</text>
-            <text x="375" y="263" text-anchor="middle" fill="#3a7070" font-size="9">Hold music + position</text>
-
-            <rect x="310" y="268" width="130" height="56" rx="8" fill="rgba(228,0,124,0.12)" stroke="#e4007c" stroke-width="1.5"/>
-            <text x="375" y="291" text-anchor="middle" fill="#e4007c" font-size="10" font-weight="700">URGENT / OPERATOR</text>
-            <text x="375" y="308" text-anchor="middle" fill="#8a3060" font-size="9">Direct to front desk</text>
-            <text x="375" y="319" text-anchor="middle" fill="#8a3060" font-size="9">Escalation if no answer</text>
-
-            <!-- After hours box -->
-            <rect x="482" y="268" width="130" height="90" rx="10" fill="rgba(228,0,124,0.08)" stroke="#e4007c" stroke-width="1.5" stroke-dasharray="5,3"/>
-            <text x="547" y="296" text-anchor="middle" fill="#e4007c" font-size="10" font-weight="700">AFTER HOURS</text>
-            <text x="547" y="313" text-anchor="middle" fill="#8a3060" font-size="9">On-call physician</text>
-            <text x="547" y="326" text-anchor="middle" fill="#8a3060" font-size="9">answering service</text>
-            <text x="547" y="339" text-anchor="middle" fill="#8a3060" font-size="9">or answering machine</text>
-
-            <line x1="440" y1="296" x2="480" y2="296" stroke="#e4007c" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-r2)"/>
-
-
-          </svg>
-        </div>
-        <div class="bp-desc">
-          <div class="bp-desc-item">
-            <div class="key">Patient Routing</div>
-            <div class="val">IVR segments call types—scheduling, refills, lab results—so each reaches the right team without being transferred multiple times.</div>
-          </div>
-          <div class="bp-desc-item">
-            <div class="key">Call Volume Management</div>
-            <div class="val">Medical offices often have peak call times at open and just before close. Queue design and hold messaging keep patients informed instead of hanging up.</div>
-          </div>
-          <div class="bp-desc-item">
-            <div class="key">After-Hours Coverage</div>
-            <div class="val">Critical for medical offices—urgent calls must reach an on-call provider or qualified answering service, never a dead voicemail box.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- RETAIL / MULTI-LOCATION -->
-    <div class="arch-panel" id="arch-retail">
-      <div class="blueprint">
-        <div class="bp-title">DIAGRAM 03 — RETAIL / MULTI-LOCATION CALL FLOW ARCHITECTURE</div>
-        <div class="bp-diagram">
-          <svg class="bp-svg" viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg" font-family="DM Mono, monospace">
-            <defs>
-              <marker id="arr-c3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#25bcc0"/></marker>
-              <marker id="arr-o3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f98f21"/></marker>
-            </defs>
-
-            <!-- Central Number -->
-            <rect x="10" y="155" width="130" height="70" rx="10" fill="rgba(249,143,33,0.10)" stroke="#f98f21" stroke-width="1.5"/>
-            <text x="75" y="181" text-anchor="middle" fill="#f98f21" font-size="10" font-weight="700">MAIN BRAND</text>
-            <text x="75" y="196" text-anchor="middle" fill="#f98f21" font-size="10" font-weight="700">NUMBER</text>
-            <text x="75" y="213" text-anchor="middle" fill="#8a6030" font-size="8.5">Toll-free or local DID</text>
-
-            <line x1="140" y1="190" x2="168" y2="190" stroke="#f98f21" stroke-width="1.5" marker-end="url(#arr-o3)"/>
-
-            <!-- Geo-routing -->
-            <rect x="170" y="148" width="140" height="84" rx="10" fill="rgba(37,188,192,0.10)" stroke="#25bcc0" stroke-width="1.5"/>
-            <text x="240" y="174" text-anchor="middle" fill="#25bcc0" font-size="10" font-weight="700">GEO-ROUTING</text>
-            <text x="240" y="190" text-anchor="middle" fill="#3a7070" font-size="9">Caller ID area code</text>
-            <text x="240" y="204" text-anchor="middle" fill="#3a7070" font-size="9">→ nearest location</text>
-            <text x="240" y="218" text-anchor="middle" fill="#3a7070" font-size="9">or IVR location select</text>
-
-            <line x1="310" y1="170" x2="338" y2="100" stroke="#25bcc0" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-c3)"/>
-            <line x1="310" y1="190" x2="338" y2="190" stroke="#25bcc0" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-c3)"/>
-            <line x1="310" y1="210" x2="338" y2="280" stroke="#25bcc0" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-c3)"/>
-
-            <!-- Location A -->
-            <rect x="340" y="72" width="140" height="56" rx="8" fill="rgba(168,85,247,0.12)" stroke="#a855f7" stroke-width="1.5"/>
-            <text x="410" y="96" text-anchor="middle" fill="#c084fc" font-size="10" font-weight="700">LOCATION A</text>
-            <text x="410" y="112" text-anchor="middle" fill="#7050a0" font-size="9">Riverside – ext. 100–110</text>
-            <text x="410" y="123" text-anchor="middle" fill="#7050a0" font-size="9">Local ring group</text>
-
-            <!-- Location B -->
-            <rect x="340" y="162" width="140" height="56" rx="8" fill="rgba(168,85,247,0.12)" stroke="#a855f7" stroke-width="1.5"/>
-            <text x="410" y="186" text-anchor="middle" fill="#c084fc" font-size="10" font-weight="700">LOCATION B</text>
-            <text x="410" y="202" text-anchor="middle" fill="#7050a0" font-size="9">Ontario – ext. 200–210</text>
-            <text x="410" y="213" text-anchor="middle" fill="#7050a0" font-size="9">Local ring group</text>
-
-            <!-- Location C -->
-            <rect x="340" y="252" width="140" height="56" rx="8" fill="rgba(168,85,247,0.12)" stroke="#a855f7" stroke-width="1.5"/>
-            <text x="410" y="276" text-anchor="middle" fill="#c084fc" font-size="10" font-weight="700">LOCATION C</text>
-            <text x="410" y="292" text-anchor="middle" fill="#7050a0" font-size="9">Temecula – ext. 300–310</text>
-            <text x="410" y="303" text-anchor="middle" fill="#7050a0" font-size="9">Local ring group</text>
-
-            <!-- Shared services -->
-            <line x1="480" y1="100" x2="514" y2="190" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
-            <line x1="480" y1="190" x2="514" y2="190" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
-            <line x1="480" y1="280" x2="514" y2="190" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
-
-            <rect x="516" y="148" width="150" height="84" rx="10" fill="rgba(37,188,192,0.08)" stroke="#25bcc0" stroke-width="1.5" stroke-dasharray="6,3"/>
-            <text x="591" y="174" text-anchor="middle" fill="#25bcc0" font-size="10" font-weight="700">SHARED SERVICES</text>
-            <text x="591" y="191" text-anchor="middle" fill="#3a7070" font-size="9">Overflow: any location</text>
-            <text x="591" y="205" text-anchor="middle" fill="#3a7070" font-size="9">can handle overflow calls</text>
-            <text x="591" y="220" text-anchor="middle" fill="#3a7070" font-size="9">Shared voicemail box</text>
-
-            <!-- Reporting -->
-            <rect x="690" y="100" width="158" height="180" rx="10" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-            <text x="769" y="124" text-anchor="middle" fill="#6a7e98" font-size="9" font-weight="700">ADMIN PORTAL</text>
-            <text x="769" y="142" text-anchor="middle" fill="#3a4a5a" font-size="8.5">• Single dashboard</text>
-            <text x="769" y="158" text-anchor="middle" fill="#3a4a5a" font-size="8.5">• Per-location call reports</text>
-            <text x="769" y="174" text-anchor="middle" fill="#3a4a5a" font-size="8.5">• Missed call alerts</text>
-            <text x="769" y="190" text-anchor="middle" fill="#3a4a5a" font-size="8.5">• Add/remove users</text>
-            <text x="769" y="206" text-anchor="middle" fill="#3a4a5a" font-size="8.5">• Holiday schedules</text>
-            <text x="769" y="222" text-anchor="middle" fill="#3a4a5a" font-size="8.5">• One carrier/contract</text>
-            <text x="769" y="240" text-anchor="middle" fill="#3a4a5a" font-size="8.5">• Number porting control</text>
-
-            <line x1="666" y1="190" x2="688" y2="190" stroke="rgba(255,255,255,0.15)" stroke-width="1" marker-end="url(#arr-c3)"/>
-          </svg>
-        </div>
-        <div class="bp-desc">
-          <div class="bp-desc-item">
-            <div class="key">Geo-Routing</div>
-            <div class="val">One main number routes callers to their nearest location automatically—or lets them choose via IVR. No more callers being told "wrong number, call our other location."</div>
-          </div>
-          <div class="bp-desc-item">
-            <div class="key">Overflow Sharing</div>
-            <div class="val">If Location A is busy, calls overflow to Location B or C. No lost calls during peak hours—revenue is protected across all sites.</div>
-          </div>
-          <div class="bp-desc-item">
-            <div class="key">Unified Management</div>
-            <div class="val">One admin portal controls all locations. Add a user, change hours, update routing—done once, applied everywhere. No per-location phone company relationships.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CALL CENTER -->
-    <div class="arch-panel" id="arch-callcenter">
-      <div class="blueprint">
-        <div class="bp-title">DIAGRAM 04 — CLOUD CALL CENTER / UCaaS ARCHITECTURE</div>
-        <div class="bp-diagram">
-          <svg class="bp-svg" viewBox="0 0 860 400" xmlns="http://www.w3.org/2000/svg" font-family="DM Mono, monospace">
-            <defs>
-              <marker id="arr-c4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#25bcc0"/></marker>
-              <marker id="arr-o4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f98f21"/></marker>
-              <marker id="arr-p4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#a855f7"/></marker>
-            </defs>
-
-            <!-- PSTN / Internet -->
-            <rect x="10" y="30" width="120" height="44" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
-            <text x="70" y="50" text-anchor="middle" fill="#6a7e98" font-size="9" font-weight="700">PSTN / INTERNET</text>
-            <text x="70" y="65" text-anchor="middle" fill="#3a4a5a" font-size="8.5">Inbound calls / SIP</text>
-
-            <line x1="130" y1="52" x2="158" y2="52" stroke="#25bcc0" stroke-width="1.5" marker-end="url(#arr-c4)"/>
-
-            <!-- UCaaS Cloud Platform -->
-            <rect x="160" y="14" width="200" height="340" rx="14" fill="rgba(37,188,192,0.06)" stroke="#25bcc0" stroke-width="1.5"/>
-            <text x="260" y="40" text-anchor="middle" fill="#25bcc0" font-size="10" font-weight="700">UCaaS CLOUD PLATFORM</text>
-            <text x="260" y="56" text-anchor="middle" fill="#3a7070" font-size="8.5">(RingCentral / 8x8 / Zoom Phone)</text>
-
-            <rect x="178" y="68" width="164" height="40" rx="6" fill="rgba(249,143,33,0.12)" stroke="#f98f21" stroke-width="1"/>
-            <text x="260" y="84" text-anchor="middle" fill="#f98f21" font-size="9" font-weight="700">SIP PROXY / CALL CONTROLLER</text>
-            <text x="260" y="98" text-anchor="middle" fill="#7a5020" font-size="8">Handles routing, auth, failover</text>
-
-            <rect x="178" y="118" width="164" height="40" rx="6" fill="rgba(37,188,192,0.12)" stroke="#25bcc0" stroke-width="1"/>
-            <text x="260" y="134" text-anchor="middle" fill="#25bcc0" font-size="9" font-weight="700">ACD / CALL QUEUE ENGINE</text>
-            <text x="260" y="148" text-anchor="middle" fill="#3a7070" font-size="8">Skill-based, priority, FIFO</text>
-
-            <rect x="178" y="168" width="164" height="40" rx="6" fill="rgba(168,85,247,0.12)" stroke="#a855f7" stroke-width="1"/>
-            <text x="260" y="184" text-anchor="middle" fill="#c084fc" font-size="9" font-weight="700">IVR / CALL FLOW DESIGNER</text>
-            <text x="260" y="198" text-anchor="middle" fill="#7050a0" font-size="8">Visual drag-drop or XML config</text>
-
-            <rect x="178" y="218" width="164" height="40" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
-            <text x="260" y="234" text-anchor="middle" fill="#8a9aaa" font-size="9" font-weight="700">VOICEMAIL / FAX / SMS</text>
-            <text x="260" y="248" text-anchor="middle" fill="#4a5a6e" font-size="8">Unified message store</text>
-
-            <rect x="178" y="268" width="164" height="40" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
-            <text x="260" y="284" text-anchor="middle" fill="#8a9aaa" font-size="9" font-weight="700">ANALYTICS &amp; REPORTING</text>
-            <text x="260" y="298" text-anchor="middle" fill="#4a5a6e" font-size="8">Real-time dashboards, call logs</text>
-
-            <!-- Endpoints column -->
-            <text x="430" y="30" text-anchor="middle" fill="#6a7e98" font-size="9" font-weight="700">ENDPOINTS</text>
-            <line x1="360" y1="88" x2="388" y2="88" stroke="#f98f21" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-o4)"/>
-
-            <rect x="390" y="62" width="130" height="36" rx="6" fill="rgba(37,188,192,0.08)" stroke="#25bcc0" stroke-width="1"/>
-            <text x="455" y="77" text-anchor="middle" fill="#25bcc0" font-size="9" font-weight="700">IP DESK PHONES</text>
-            <text x="455" y="90" text-anchor="middle" fill="#3a7070" font-size="8">Polycom, Yealink, Cisco</text>
-
-            <rect x="390" y="108" width="130" height="36" rx="6" fill="rgba(37,188,192,0.08)" stroke="#25bcc0" stroke-width="1"/>
-            <text x="455" y="123" text-anchor="middle" fill="#25bcc0" font-size="9" font-weight="700">SOFTPHONE (PC/MAC)</text>
-            <text x="455" y="137" text-anchor="middle" fill="#3a7070" font-size="8">Desktop app, WebRTC browser</text>
-
-            <rect x="390" y="154" width="130" height="36" rx="6" fill="rgba(37,188,192,0.08)" stroke="#25bcc0" stroke-width="1"/>
-            <text x="455" y="169" text-anchor="middle" fill="#25bcc0" font-size="9" font-weight="700">MOBILE APP</text>
-            <text x="455" y="183" text-anchor="middle" fill="#3a7070" font-size="8">iOS / Android, same ext.</text>
-
-            <line x1="360" y1="138" x2="388" y2="126" stroke="#f98f21" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-o4)"/>
-            <line x1="360" y1="188" x2="388" y2="172" stroke="#f98f21" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-o4)"/>
-
-            <!-- Integrations column -->
-            <text x="640" y="30" text-anchor="middle" fill="#6a7e98" font-size="9" font-weight="700">INTEGRATIONS</text>
-
-            <rect x="546" y="62" width="148" height="36" rx="6" fill="rgba(168,85,247,0.10)" stroke="#a855f7" stroke-width="1" stroke-dasharray="5,3"/>
-            <text x="620" y="77" text-anchor="middle" fill="#c084fc" font-size="9" font-weight="700">CRM (Salesforce / HubSpot)</text>
-            <text x="620" y="91" text-anchor="middle" fill="#7050a0" font-size="8">Screen-pop, auto call log</text>
-
-            <rect x="546" y="108" width="148" height="36" rx="6" fill="rgba(168,85,247,0.10)" stroke="#a855f7" stroke-width="1" stroke-dasharray="5,3"/>
-            <text x="620" y="123" text-anchor="middle" fill="#c084fc" font-size="9" font-weight="700">HELPDESK (Zendesk)</text>
-            <text x="620" y="137" text-anchor="middle" fill="#7050a0" font-size="8">Auto-ticket on missed call</text>
-
-            <rect x="546" y="154" width="148" height="36" rx="6" fill="rgba(168,85,247,0.10)" stroke="#a855f7" stroke-width="1" stroke-dasharray="5,3"/>
-            <text x="620" y="169" text-anchor="middle" fill="#c084fc" font-size="9" font-weight="700">MS TEAMS / SLACK</text>
-            <text x="620" y="183" text-anchor="middle" fill="#7050a0" font-size="8">Voicemail notify, presence sync</text>
-
-            <line x1="522" y1="80" x2="544" y2="80" stroke="#a855f7" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-p4)"/>
-            <line x1="522" y1="126" x2="544" y2="126" stroke="#a855f7" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-p4)"/>
-            <line x1="522" y1="172" x2="544" y2="172" stroke="#a855f7" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr-p4)"/>
-
-            <!-- Network requirement note -->
-            <rect x="390" y="220" width="300" height="100" rx="10" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-            <text x="540" y="242" text-anchor="middle" fill="#6a7e98" font-size="9" font-weight="700">NETWORK REQUIREMENTS</text>
-            <text x="540" y="260" text-anchor="middle" fill="#3a4a5a" font-size="8.5">• QoS (Quality of Service) rules on router</text>
-            <text x="540" y="276" text-anchor="middle" fill="#3a4a5a" font-size="8.5">• 100 kbps per concurrent call (G.711)</text>
-            <text x="540" y="292" text-anchor="middle" fill="#3a4a5a" font-size="8.5">• VLAN separation: voice vs. data</text>
-            <text x="540" y="308" text-anchor="middle" fill="#3a4a5a" font-size="8.5">• Firewall: SIP ALG OFF, UDP 5060 open</text>
-          </svg>
-        </div>
-        <div class="bp-desc">
-          <div class="bp-desc-item">
-            <div class="key">Platform Layer</div>
-            <div class="val">All routing logic lives in the cloud—no on-site PBX server to maintain. The provider handles redundancy, updates, and uptime.</div>
-          </div>
-          <div class="bp-desc-item">
-            <div class="key">Endpoints</div>
-            <div class="val">Same extension works on desk phone, laptop app, and mobile simultaneously. Agents can work from any location without re-configuration.</div>
-          </div>
-          <div class="bp-desc-item">
-            <div class="key">Network Setup</div>
-            <div class="val">Often the hidden failure point. QoS rules, VLAN setup, and SIP ALG configuration on your firewall/router directly determine call quality.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- HYBRID / POTS TO CLOUD -->
-    <div class="arch-panel" id="arch-hybrid">
-      <div class="blueprint">
-        <div class="bp-title">DIAGRAM 05 — POTS-TO-CLOUD MIGRATION ARCHITECTURE</div>
-        <div class="bp-diagram">
-          <svg class="bp-svg" viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg" font-family="DM Mono, monospace">
-            <defs>
-              <marker id="arr-c5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#25bcc0"/></marker>
-              <marker id="arr-o5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f98f21"/></marker>
-              <marker id="arr-r5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#e4007c"/></marker>
-            </defs>
-
-            <!-- Phase label -->
-            <text x="60" y="20" text-anchor="middle" fill="#f98f21" font-size="8.5" font-weight="700">LEGACY (BEFORE)</text>
-            <text x="490" y="20" text-anchor="middle" fill="#25bcc0" font-size="8.5" font-weight="700">CLOUD (AFTER)</text>
-            <line x1="230" y1="14" x2="340" y2="14" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-            <line x1="350" y1="14" x2="370" y2="14" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-
-            <!-- Old side -->
-            <rect x="10" y="40" width="120" height="52" rx="8" fill="rgba(249,143,33,0.10)" stroke="#f98f21" stroke-width="1.5"/>
-            <text x="70" y="62" text-anchor="middle" fill="#f98f21" font-size="9" font-weight="700">AT&amp;T / CARRIER</text>
-            <text x="70" y="78" text-anchor="middle" fill="#8a6030" font-size="8.5">POTS copper lines</text>
-
-            <line x1="130" y1="66" x2="158" y2="66" stroke="#f98f21" stroke-width="1.5" marker-end="url(#arr-o5)"/>
-
-            <rect x="160" y="40" width="110" height="52" rx="8" fill="rgba(249,143,33,0.10)" stroke="#f98f21" stroke-width="1.5"/>
-            <text x="215" y="62" text-anchor="middle" fill="#f98f21" font-size="9" font-weight="700">ON-PREM PBX</text>
-            <text x="215" y="78" text-anchor="middle" fill="#8a6030" font-size="8.5">Analog port cards</text>
-
-            <!-- Separate analog lines below -->
-            <rect x="10" y="120" width="110" height="46" rx="8" fill="rgba(249,143,33,0.08)" stroke="rgba(249,143,33,0.3)" stroke-width="1"/>
-            <text x="65" y="139" text-anchor="middle" fill="#8a6030" font-size="8.5" font-weight="700">ALARM LINE</text>
-            <text x="65" y="154" text-anchor="middle" fill="#5a4020" font-size="8">Dedicated POTS</text>
-
-            <rect x="10" y="178" width="110" height="46" rx="8" fill="rgba(249,143,33,0.08)" stroke="rgba(249,143,33,0.3)" stroke-width="1"/>
-            <text x="65" y="197" text-anchor="middle" fill="#8a6030" font-size="8.5" font-weight="700">FAX LINE</text>
-            <text x="65" y="212" text-anchor="middle" fill="#5a4020" font-size="8">Dedicated POTS</text>
-
-            <rect x="10" y="236" width="110" height="46" rx="8" fill="rgba(249,143,33,0.08)" stroke="rgba(249,143,33,0.3)" stroke-width="1"/>
-            <text x="65" y="255" text-anchor="middle" fill="#8a6030" font-size="8.5" font-weight="700">ELEVATOR / DOOR</text>
-            <text x="65" y="270" text-anchor="middle" fill="#5a4020" font-size="8">Dedicated POTS</text>
-
-            <!-- Migration arrow block -->
-            <rect x="280" y="30" width="100" height="280" rx="14" fill="rgba(37,188,192,0.06)" stroke="rgba(37,188,192,0.2)" stroke-width="1.5"/>
-            <text x="330" y="100" text-anchor="middle" fill="#25bcc0" font-size="8.5" font-weight="700">MIGRATION</text>
-            <text x="330" y="118" text-anchor="middle" fill="#3a7070" font-size="8">Phase 1:</text>
-            <text x="330" y="132" text-anchor="middle" fill="#3a7070" font-size="8">Port numbers</text>
-            <text x="330" y="156" text-anchor="middle" fill="#3a7070" font-size="8">Phase 2:</text>
-            <text x="330" y="170" text-anchor="middle" fill="#3a7070" font-size="8">Install ATA</text>
-            <text x="330" y="184" text-anchor="middle" fill="#3a7070" font-size="8">adapters</text>
-            <text x="330" y="208" text-anchor="middle" fill="#3a7070" font-size="8">Phase 3:</text>
-            <text x="330" y="222" text-anchor="middle" fill="#3a7070" font-size="8">Test cutover</text>
-            <text x="330" y="246" text-anchor="middle" fill="#3a7070" font-size="8">Phase 4:</text>
-            <text x="330" y="260" text-anchor="middle" fill="#3a7070" font-size="8">Cancel POTS</text>
-            <text x="330" y="150" text-anchor="middle" fill="#25bcc0" font-size="18">→</text>
-
-            <!-- New cloud side -->
-            <rect x="400" y="40" width="140" height="270" rx="14" fill="rgba(37,188,192,0.07)" stroke="#25bcc0" stroke-width="1.5"/>
-            <text x="470" y="65" text-anchor="middle" fill="#25bcc0" font-size="10" font-weight="700">CLOUD VoIP</text>
-            <text x="470" y="82" text-anchor="middle" fill="#3a7070" font-size="8.5">Hosted provider</text>
-
-            <rect x="414" y="95" width="112" height="34" rx="6" fill="rgba(37,188,192,0.12)" stroke="#25bcc0" stroke-width="1"/>
-            <text x="470" y="110" text-anchor="middle" fill="#25bcc0" font-size="9" font-weight="700">VOICE CALLS</text>
-            <text x="470" y="123" text-anchor="middle" fill="#3a7070" font-size="8">Same numbers, ported</text>
-
-            <rect x="414" y="140" width="112" height="34" rx="6" fill="rgba(168,85,247,0.10)" stroke="#a855f7" stroke-width="1"/>
-            <text x="470" y="155" text-anchor="middle" fill="#c084fc" font-size="9" font-weight="700">ATA ADAPTER</text>
-            <text x="470" y="169" text-anchor="middle" fill="#7050a0" font-size="8">Alarm → SIP line</text>
-
-            <rect x="414" y="185" width="112" height="34" rx="6" fill="rgba(168,85,247,0.10)" stroke="#a855f7" stroke-width="1"/>
-            <text x="470" y="200" text-anchor="middle" fill="#c084fc" font-size="9" font-weight="700">eFAX / FAXBRIDGE</text>
-            <text x="470" y="214" text-anchor="middle" fill="#7050a0" font-size="8">Fax → email PDF</text>
-
-            <rect x="414" y="230" width="112" height="34" rx="6" fill="rgba(168,85,247,0.10)" stroke="#a855f7" stroke-width="1"/>
-            <text x="470" y="245" text-anchor="middle" fill="#c084fc" font-size="9" font-weight="700">POTS EMULATOR</text>
-            <text x="470" y="259" text-anchor="middle" fill="#7050a0" font-size="8">Elevator / door buzzer</text>
-
-            <!-- Outcome -->
-            <rect x="568" y="40" width="148" height="270" rx="14" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-            <text x="642" y="65" text-anchor="middle" fill="#6a7e98" font-size="9" font-weight="700">OUTCOMES</text>
-            <text x="642" y="90" text-anchor="middle" fill="#3a4a5a" font-size="8.5">✓ 30–50% lower bill</text>
-            <text x="642" y="112" text-anchor="middle" fill="#3a4a5a" font-size="8.5">✓ No more per-line fees</text>
-            <text x="642" y="134" text-anchor="middle" fill="#3a4a5a" font-size="8.5">✓ Alarm stays functional</text>
-            <text x="642" y="156" text-anchor="middle" fill="#3a4a5a" font-size="8.5">✓ Fax → email delivery</text>
-            <text x="642" y="178" text-anchor="middle" fill="#3a4a5a" font-size="8.5">✓ Same phone numbers</text>
-            <text x="642" y="200" text-anchor="middle" fill="#3a4a5a" font-size="8.5">✓ Mobile apps for staff</text>
-            <text x="642" y="222" text-anchor="middle" fill="#3a4a5a" font-size="8.5">✓ Voicemail to email</text>
-            <text x="642" y="244" text-anchor="middle" fill="#3a4a5a" font-size="8.5">✓ Easy add/remove users</text>
-            <text x="642" y="266" text-anchor="middle" fill="#3a4a5a" font-size="8.5">✓ No hardware to maintain</text>
-          </svg>
-        </div>
-        <div class="bp-desc">
-          <div class="bp-desc-item">
-            <div class="key">Keep Your Numbers</div>
-            <div class="val">All existing phone numbers port to the new cloud provider. No customer communication needed—calls continue uninterrupted on cutover day.</div>
-          </div>
-          <div class="bp-desc-item">
-            <div class="key">Analog Devices (Alarms, Fax)</div>
-            <div class="val">ATA (Analog Telephone Adapters) convert analog signals to SIP, keeping alarms and fax machines functional without a POTS line.</div>
-          </div>
-          <div class="bp-desc-item">
-            <div class="key">Phased Migration</div>
-            <div class="val">We never hard-cutover all at once. Port numbers in batches, run parallel for 30 days, confirm each device works before canceling the old line.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ══════════════ FOOTER CTA ══════════════ -->
-<section class="footer-cta" id="contact">
-  <div class="container">
-    <p class="eyebrow cyan" style="margin-bottom:16px;">Ready to Fix This?</p>
-    <h2>Let's Make Your Phone System <span class="cyan">Work for You</span></h2>
-    <p style="color:#5a6e88; font-size:1.05rem; margin-bottom:28px; max-width:560px; margin-left:auto; margin-right:auto;">No call centers. No tickets into the void. A local expert who knows your system, picks up the phone, and actually fixes things.</p>
-
-    <div class="contact-lines">
-      <p>Phone: <span>951-900-0067</span></p>
-      <p>Email: <span>support@signal-restore.com</span></p>
-      <p>Web: <span>signal-restore.com</span></p>
-    </div>
-
-    <div class="footer-actions">
-      <a href="tel:+19519000067" class="btn btn-primary">📞 Call Now</a>
-      <a href="#intake" class="btn btn-secondary">Run Free Diagnostic</a>
-    </div>
-
-    <div class="footer-bottom">
-      <span>© 2026 Signal Restore. Riverside, CA.</span>
-      <span>VoIP · UCaaS · POTS Migration · SMB Telecom Support</span>
-    </div>
-  </div>
-</section>
+</div>
 
 <script>
-  // Mobile menu
-  const menuToggle = document.getElementById('menuToggle');
-  const navLinks = document.getElementById('navLinks');
-  menuToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
+/* ── SUPABASE ── */
+const SB_URL = 'https://lcrqqbnvgadkluccnmja.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjcnFxYm52Z2Fka2x1Y2NubWphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwNjU0MTYsImV4cCI6MjA5NzY0MTQxNn0.Gq4nCyJAx7TmngqQLtlDN4BDpBJw3ZFatZbZphKDUI4';
+const BASE = SB_URL+'/rest/v1';
+const H = {'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=representation'};
 
-  // ─── INTAKE FORM LOGIC ───
-  let formData = { systemType: '', goal: '', issues: [] };
-  let currentStep = 1;
+async function GET(t,p=''){const r=await fetch(`${BASE}/${t}?${p}`,{headers:H});if(!r.ok)throw new Error(await r.text());return r.json();}
+async function POST(t,b){const r=await fetch(`${BASE}/${t}`,{method:'POST',headers:H,body:JSON.stringify(b)});if(!r.ok)throw new Error(await r.text());return r.json();}
+async function PATCH(t,p,b){const r=await fetch(`${BASE}/${t}?${p}`,{method:'PATCH',headers:H,body:JSON.stringify(b)});if(!r.ok)throw new Error(await r.text());return r.json();}
+async function DEL(t,p){const r=await fetch(`${BASE}/${t}?${p}`,{method:'DELETE',headers:H});if(!r.ok)throw new Error(await r.text());}
 
-  function goStep(step) {
-    document.getElementById('form-page-' + currentStep).classList.remove('active');
-    document.getElementById('step-indicator-' + currentStep).classList.remove('active');
-    document.getElementById('step-indicator-' + currentStep).classList.add('done');
-    currentStep = step;
-    document.getElementById('form-page-' + step).classList.add('active');
-    document.getElementById('step-indicator-' + step).classList.add('active');
-    document.getElementById('step-indicator-' + step).classList.remove('done');
-  }
+/* ── STATE ── */
+let agents=[], alarms=[];
+let threshLate  = +localStorage.getItem('tl')||5;
+let threshBreak = +localStorage.getItem('tb')||15;
 
-  function selectChoice(el, group, value) {
-    const parent = el.parentNode;
-    parent.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
-    formData[group === 'system-type' ? 'systemType' : 'goal'] = value;
-  }
+/* ── CLOCK ── */
+function tick(){
+  const n=new Date();
+  document.getElementById('live-clock').textContent=n.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('live-date').textContent=n.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'});
+}
+setInterval(tick,1000);tick();
 
-  function toggleChoice(el) {
-    el.classList.toggle('selected');
-  }
+/* ── NAV ── */
+const TITLES={floor:'Floor Story',kiosk:'Agent Login Kiosk',breaks:'Break & Lunch Tracking',alarms:'Deviation Alarms',shrinkage:'Shrinkage Calculator',forecast:'Forecast',calls:'Call Summary',admin:'Admin'};
+function gotoView(v){
+  document.querySelectorAll('.view').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  document.querySelector(`[data-view="${v}"]`)?.classList.add('active');
+  document.getElementById('topbar-title').textContent=TITLES[v]||v;
+  const loaders={floor:loadFloor,breaks:loadBreaks,alarms:()=>{checkDeviations();},shrinkage:loadShrinkage,forecast:()=>{loadForecast();populateHours('fc-hour','fc-act-hour');},calls:()=>{loadCalls();loadAgentCalls();populateHours('cs-hour');},admin:()=>{if(adminSession)showAdminPanel();},kiosk:resetKiosk};
+  loaders[v]?.();
+}
+function switchTab(e,id){
+  document.querySelectorAll('.tab-pane').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  e.target.classList.add('active');
+}
 
-  function showResults() {
-    goStep(5);
+/* ── TOAST ── */
+let _t;
+function toast(msg,type='success'){const el=document.getElementById('toast');clearTimeout(_t);el.textContent=msg;el.className=`show ${type}`;_t=setTimeout(()=>el.className='',3200);}
 
-    const systemLabels = {
-      'pots': 'Traditional POTS / Landlines',
-      'onprem-pbx': 'On-Premise PBX',
-      'cloud-voip': 'Cloud / Hosted VoIP',
-      'hybrid': 'Hybrid (Mixed)',
-      'mobile': 'Mobile / Softphones Only',
-      'unsure': 'Unknown / Not Sure'
-    };
+/* ── MODAL ── */
+function openModal(title,html,label,fn){
+  document.getElementById('modal-title').textContent=title;
+  document.getElementById('modal-body').innerHTML=html;
+  const ok=document.getElementById('modal-ok');ok.textContent=label;ok.onclick=fn;
+  document.getElementById('moverlay').classList.add('open');
+}
+function closeModal(){document.getElementById('moverlay').classList.remove('open');}
 
-    const goalLabels = {
-      'fix': 'Fix Existing System',
-      'migrate': 'Migrate to Cloud',
-      'shop': 'Shop for New Provider',
-      'optimize': 'Optimize & Reduce Cost'
-    };
+/* ── UTILS ── */
+function eh(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function es(s){return String(s).replace(/'/g,"\\'").replace(/"/g,'\\"');}
+function genPIN(id){document.getElementById(id).value=String(Math.floor(100000+Math.random()*900000));}
+function today(){return new Date().toISOString().slice(0,10);}
+function fmtT(iso){return new Date(iso).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
+function fmtD(iso){return new Date(iso).toLocaleDateString([],{month:'short',day:'numeric'});}
+function minSince(iso){return Math.floor((Date.now()-new Date(iso))/60000);}
+function populateHours(...ids){
+  ids.forEach(id=>{const el=document.getElementById(id);if(!el)return;el.innerHTML='';for(let h=0;h<24;h++){const l=new Date(2000,0,1,h).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});el.innerHTML+=`<option value="${h}">${l}</option>`;}el.value=new Date().getHours();});
+}
+function avatarColor(n){const c=['#3f7fff','#22d47a','#f07830','#a855f7','#22d4d4','#f5c842','#f05050'];let h=0;for(let x of n)h=(h*31+x.charCodeAt(0))%c.length;return c[h];}
+function spill(s){const m={OUT:{c:'p-gray',l:'Out'},IN:{c:'p-green',l:'On Shift'},ON_BREAK:{c:'p-yellow',l:'On Break'}};const p=m[s]||m.OUT;return `<span class="pill ${p.c}"><span class="pdot"></span>${p.l}</span>`;}
 
-    const selected = [...document.querySelectorAll('#issues-choices .choice-card.selected')];
-    const issueTexts = selected.map(c => c.querySelector('.choice-label').textContent);
+/* ── REFRESH ── */
+function refreshAll(){loadFloor();checkDeviations();toast('↻ Refreshed');}
 
-    const systemType = formData.systemType;
-    const goal = formData.goal;
-
-    let recs = [];
-
-    if (systemType === 'pots' || systemType === 'onprem-pbx') {
-      recs.push({ icon: '⚠️', text: 'Your current system is at or near end-of-life. Carrier copper shutdowns are accelerating—we recommend building a migration plan now.' });
-    }
-    if (systemType === 'cloud-voip') {
-      recs.push({ icon: '✅', text: 'You\'re already on a modern platform—great foundation. Our focus will be optimizing your call flows, fixing routing issues, and ensuring you\'re using the features you\'re paying for.' });
-    }
-    if (goal === 'migrate') {
-      recs.push({ icon: '☁️', text: 'Cloud migration is the right move. We\'ll assess your current setup, inventory all analog devices (alarms, fax), and build a phased cutover plan with zero downtime.' });
-    }
-    if (goal === 'shop') {
-      recs.push({ icon: '🛒', text: 'We\'ll help you compare providers based on your actual usage pattern—seats, call volume, integrations needed—not just price. We\'re vendor-neutral and won\'t push one platform over another.' });
-    }
-    if (issueTexts.includes('Poor Call Quality')) {
-      recs.push({ icon: '🔧', text: 'Call quality issues are almost always a network problem—QoS settings, router configuration, or bandwidth contention. We\'ll run a network assessment before touching your phone system.' });
-    }
-    if (issueTexts.includes('Broken Call Routing')) {
-      recs.push({ icon: '🔀', text: 'Routing issues are the #1 complaint we fix. We\'ll map your current call flows, identify every broken branch, and rebuild your IVR and ring groups from scratch if needed.' });
-    }
-    if (issueTexts.includes('POTS / Copper Line Shutdown Notice')) {
-      recs.push({ icon: '🚨', text: 'This is urgent. Once your carrier sets a disconnect date, it\'s typically 30 days. We\'ll prioritize getting you migrated before your service is interrupted.' });
-    }
-    if (issueTexts.includes('Fax Line or Alarm Line Issue')) {
-      recs.push({ icon: '📠', text: 'Fax and alarm lines need special handling during any cloud migration. We use ATA adapters and POTS emulators to keep these devices working without copper lines.' });
-    }
-    if (recs.length === 0) {
-      recs.push({ icon: '📞', text: 'Based on your answers, a quick 15-minute call with our team will give us everything we need to build a clear action plan for your situation.' });
-    }
-
-    recs.push({ icon: '📋', text: 'Next step: a free 30-minute consultation. We\'ll review your current setup, confirm our recommendations, and give you a clear scope and estimate before any work begins.' });
-
-    const bizName = document.getElementById('biz-name').value;
-    const industry = document.getElementById('biz-industry').value;
-    const size = document.getElementById('biz-size').value;
-
-    let html = '';
-    if (bizName) {
-      html += `<div style="margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid rgba(37,188,192,0.15);">
-        <div style="font-size:0.75rem;color:#3a7070;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">Assessment For</div>
-        <div style="font-weight:700;color:#e0eaf8;">${bizName}</div>
-        ${industry ? `<div style="font-size:0.82rem;color:#5a7080;">${industry}${size ? ' · ' + size + ' employees' : ''}</div>` : ''}
+/* ── FLOOR STORY ── */
+async function loadFloor(){
+  try{
+    agents=await GET('profiles','select=*&order=full_name.asc');
+    const on=agents.filter(a=>a.current_state==='IN').length;
+    const br=agents.filter(a=>a.current_state==='ON_BREAK').length;
+    const out=agents.filter(a=>a.current_state==='OUT').length;
+    document.getElementById('fs-on').textContent=on;
+    document.getElementById('fs-break').textContent=br;
+    document.getElementById('fs-out').textContent=out;
+    document.getElementById('fs-alarms').textContent=alarms.length;
+    const grid=document.getElementById('agent-grid');
+    if(!agents.length){grid.innerHTML='<div style="color:var(--text-3);font-size:13px;grid-column:1/-1;text-align:center;padding:40px">No agents yet. Add them in Admin.</div>';return;}
+    grid.innerHTML=agents.map(a=>{
+      const isAlarm=alarms.some(al=>al.aid===a.employee_id);
+      const col=avatarColor(a.full_name);
+      const init=a.full_name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+      const sc={IN:'p-green',ON_BREAK:'p-yellow',OUT:'p-gray'}[a.current_state];
+      const sl={IN:'On Shift',ON_BREAK:'On Break',OUT:'Clocked Out'}[a.current_state];
+      return `<div class="acard${isAlarm?' alarm':''}">
+        <div class="avatar" style="background:${col}">${eh(init)}</div>
+        <div class="aname">${eh(a.full_name)}</div>
+        <span class="pill ${sc}" style="margin:0 auto"><span class="pdot"></span>${sl}</span>
+        ${isAlarm?'<div style="color:var(--red);font-size:11px;margin-top:6px" class="pulse">⚠ Alarm</div>':''}
+        <div class="atime">ID: ${eh(a.employee_id)}</div>
       </div>`;
-    }
+    }).join('');
+  }catch(e){console.error('Floor error:',e);}
+}
 
-    html += `<div class="result-title">📊 Your Diagnostic Results</div>`;
+/* ── KIOSK ── */
+async function lookupEmployee(){
+  const inp=document.getElementById('id-inp'),st=document.getElementById('kstatus'),btn=document.getElementById('btn-lookup'),id=inp.value.trim();
+  if(!id)return;
+  btn.disabled=true;st.innerHTML='<div class="spinner"></div>';
+  try{
+    const rows=await GET('profiles',`employee_id=eq.${encodeURIComponent(id)}&select=full_name,current_state&limit=1`);
+    if(!rows||!rows.length)st.innerHTML='<div class="denied"><span style="font-size:36px;display:block;margin-bottom:10px">⛔</span><div style="color:var(--red);font-size:15px;font-weight:700">Access Denied: Unauthorized ID</div><div style="color:var(--text-2);font-size:13px;margin-top:4px">This ID is not registered.</div></div>';
+    else renderActions(st,id,rows[0].full_name,rows[0].current_state);
+  }catch(e){st.innerHTML='';toast('Connection error.','error');}
+  finally{btn.disabled=false;}
+}
 
-    if (systemType) {
-      html += `<div class="result-item"><span class="ri-icon">🖥️</span><div><strong>System Identified:</strong> ${systemLabels[systemType] || systemType}</div></div>`;
-    }
-    if (goal) {
-      html += `<div class="result-item"><span class="ri-icon">🎯</span><div><strong>Primary Goal:</strong> ${goalLabels[goal] || goal}</div></div>`;
-    }
-    if (issueTexts.length > 0) {
-      html += `<div class="result-item"><span class="ri-icon">⚠️</span><div><strong>Issues Flagged:</strong> ${issueTexts.join(', ')}</div></div>`;
-    }
+function renderActions(el,id,name,state){
+  const bc={OUT:'p-gray',IN:'p-green',ON_BREAK:'p-yellow'}[state];
+  const bl={OUT:'Clocked Out',IN:'On Shift',ON_BREAK:'On Break'}[state];
+  let btns='';
+  if(state==='OUT')btns=`<button class="btn-act b-start" onclick="punch('${es(id)}','${es(name)}','START_SHIFT','IN')">▶ Start Shift</button>`;
+  else if(state==='IN')btns=`<button class="btn-act b-break" onclick="punch('${es(id)}','${es(name)}','START_BREAK','ON_BREAK')">⏸ Take Break</button><button class="btn-act b-end" onclick="punch('${es(id)}','${es(name)}','END_SHIFT','OUT')">◼ End Shift</button>`;
+  else btns=`<button class="btn-act b-return" onclick="punch('${es(id)}','${es(name)}','RETURN_FROM_BREAK','IN')">↩ Return From Break</button><button class="btn-act b-end" onclick="punch('${es(id)}','${es(name)}','END_SHIFT','OUT')">◼ End Shift (Force Logout)</button>`;
+  el.innerHTML=`<div style="width:100%"><div class="kname">${eh(name)}</div><div class="kbadge"><span class="pill ${bc}"><span class="pdot"></span>${bl}</span></div><div class="kbtns">${btns}</div></div>`;
+}
 
-    html += `<div style="margin-top:20px; padding-top:16px; border-top:1px solid rgba(37,188,192,0.15);">
-      <div style="font-size:0.8rem;color:#25bcc0;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;">Recommendations</div>`;
+async function punch(id,name,action,newState){
+  document.querySelectorAll('.btn-act').forEach(b=>b.disabled=true);
+  try{
+    await POST('time_logs',{employee_id:id,action_type:action});
+    await PATCH('profiles',`employee_id=eq.${encodeURIComponent(id)}`,{current_state:newState});
+    const lb={START_SHIFT:'Start Shift',START_BREAK:'Break Started',RETURN_FROM_BREAK:'Returned From Break',END_SHIFT:'Shift Ended'};
+    toast(`✓ ${lb[action]} at ${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}`,'success');
+    resetKiosk();loadFloor();checkDeviations();
+  }catch(e){document.querySelectorAll('.btn-act').forEach(b=>b.disabled=false);toast('Error recording punch.','error');}
+}
 
-    recs.forEach(r => {
-      html += `<div class="result-item"><span class="ri-icon">${r.icon}</span><div>${r.text}</div></div>`;
+function resetKiosk(){
+  const i=document.getElementById('id-inp'),s=document.getElementById('kstatus');
+  if(i)i.value='';if(s)s.innerHTML='';
+  setTimeout(()=>document.getElementById('id-inp')?.focus(),100);
+}
+
+/* ── BREAKS ── */
+async function loadBreaks(){
+  const tbody=document.getElementById('breaks-tbody');
+  tbody.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:24px">Loading…</td></tr>';
+  try{
+    const logs=await GET('time_logs',`action_type=in.(START_BREAK,RETURN_FROM_BREAK,END_SHIFT)&logged_at=gte.${today()}T00:00:00&order=logged_at.desc&select=*,profiles(full_name)`);
+    const byAg={};
+    logs.forEach(l=>{
+      if(!byAg[l.employee_id])byAg[l.employee_id]={name:l.profiles?.full_name||l.employee_id,starts:[],ends:[]};
+      if(l.action_type==='START_BREAK')byAg[l.employee_id].starts.push(l.logged_at);
+      if(l.action_type==='RETURN_FROM_BREAK'||l.action_type==='END_SHIFT')byAg[l.employee_id].ends.push(l.logged_at);
     });
+    const sessions=[];let totalMin=0,bCount=0,overdue=0;
+    Object.values(byAg).forEach(ag=>{
+      ag.starts.forEach((s,i)=>{
+        const ended=ag.ends[i];
+        const dur=ended?Math.floor((new Date(ended)-new Date(s))/60000):minSince(s);
+        const ongoing=!ended;
+        if(!ongoing){totalMin+=dur;bCount++;}
+        if(dur>threshBreak)overdue++;
+        sessions.push({name:ag.name,start:s,dur,ongoing});
+      });
+    });
+    document.getElementById('bl-now').textContent=agents.filter(a=>a.current_state==='ON_BREAK').length;
+    document.getElementById('bl-avg').textContent=bCount?Math.round(totalMin/bCount):'--';
+    document.getElementById('bl-over').textContent=overdue;
+    tbody.innerHTML=sessions.length?sessions.map(s=>{
+      const cls=s.ongoing?'p-orange':s.dur>threshBreak?'p-red':'p-green';
+      const lbl=s.ongoing?'Ongoing':s.dur>threshBreak?'Overrun':'Returned';
+      return `<tr><td>${eh(s.name)}</td><td>${fmtT(s.start)}</td><td><span class="mono">${s.dur} min</span></td><td><span class="pill ${cls}"><span class="pdot"></span>${lbl}</span></td></tr>`;
+    }).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:32px">No break activity today.</td></tr>';
+  }catch(e){tbody.innerHTML='<tr><td colspan="4" style="color:var(--red);padding:16px">Error loading break data.</td></tr>';console.error(e);}
+}
 
-    html += `</div>`;
-
-    document.getElementById('results-output').innerHTML = html;
-  }
-
-  function resetForm() {
-    formData = { systemType: '', goal: '', issues: [] };
-    currentStep = 1;
-    for (let i = 1; i <= 5; i++) {
-      document.getElementById('form-page-' + i).classList.remove('active');
-      document.getElementById('step-indicator-' + i).classList.remove('active', 'done');
+/* ── DEVIATION ALARMS ── */
+async function checkDeviations(){
+  if(!agents.length){try{agents=await GET('profiles','select=*');}catch(e){return;}}
+  const logs=[];
+  try{const l=await GET('time_logs',`logged_at=gte.${today()}T00:00:00&order=logged_at.asc&select=*,profiles(full_name)`);logs.push(...l);}catch(e){return;}
+  const newAlarms=[];
+  // Break overruns
+  const brkStart={};
+  logs.forEach(l=>{
+    if(l.action_type==='START_BREAK')brkStart[l.employee_id]=l.logged_at;
+    if(l.action_type==='RETURN_FROM_BREAK'||l.action_type==='END_SHIFT')delete brkStart[l.employee_id];
+  });
+  Object.entries(brkStart).forEach(([id,start])=>{
+    const dur=minSince(start);
+    if(dur>threshBreak){
+      const name=logs.find(l=>l.employee_id===id)?.profiles?.full_name||id;
+      newAlarms.push({id:'b-'+id,aid:id,type:'break',title:`${name} — Break Overrun`,detail:`On break ${dur} min (limit: ${threshBreak} min)`,time:new Date().toISOString()});
     }
-    document.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
-    document.getElementById('form-page-1').classList.add('active');
-    document.getElementById('step-indicator-1').classList.add('active');
+  });
+  // Late arrivals
+  try{
+    const scheds=await GET('schedules',`date=eq.${today()}&select=*,profiles(full_name)`);
+    scheds.forEach(sc=>{
+      const firstIn=logs.find(l=>l.employee_id===sc.employee_id&&l.action_type==='START_SHIFT');
+      if(!firstIn){
+        const sTime=new Date(`${today()}T${sc.shift_start}`);
+        const late=Math.floor((Date.now()-sTime)/60000);
+        if(late>threshLate){
+          const name=sc.profiles?.full_name||sc.employee_id;
+          newAlarms.push({id:'l-'+sc.employee_id,aid:sc.employee_id,type:'late',title:`${name} — Late Arrival`,detail:`${late} min past scheduled ${sc.shift_start}`,time:new Date().toISOString()});
+        }
+      }
+    });
+  }catch(e){}
+  alarms=newAlarms;
+  const badge=document.getElementById('alarm-badge');
+  badge.textContent=alarms.length;
+  badge.className=alarms.length?'nav-badge show':'nav-badge';
+  document.getElementById('fs-alarms').textContent=alarms.length;
+  document.getElementById('al-count').textContent=alarms.length;
+  document.getElementById('al-late').textContent=alarms.filter(a=>a.type==='late').length;
+  document.getElementById('al-brk').textContent=alarms.filter(a=>a.type==='break').length;
+  renderAlarms();
+}
+
+function renderAlarms(){
+  const feed=document.getElementById('alarm-feed');
+  if(!alarms.length){feed.innerHTML='<div style="color:var(--text-3);font-size:13px;text-align:center;padding:40px">✓ No active alarms.</div>';return;}
+  feed.innerHTML=alarms.map(a=>`
+    <div class="alarm-row">
+      <div style="font-size:20px">${a.type==='late'?'🕐':'⏱'}</div>
+      <div style="flex:1"><div class="alarm-title pulse">${eh(a.title)}</div><div class="alarm-detail">${eh(a.detail)}</div></div>
+      <div class="alarm-ts">${fmtT(a.time)}</div>
+    </div>`).join('');
+}
+
+function clearAlarms(){alarms=[];renderAlarms();const b=document.getElementById('alarm-badge');b.textContent=0;b.className='nav-badge';document.getElementById('fs-alarms').textContent=0;toast('Alarms cleared');}
+
+function saveThresholds(){
+  threshLate=+document.getElementById('thresh-late').value||5;
+  threshBreak=+document.getElementById('thresh-break').value||15;
+  localStorage.setItem('tl',threshLate);localStorage.setItem('tb',threshBreak);
+  toast('Thresholds saved');checkDeviations();
+}
+
+/* ── SHRINKAGE ── */
+async function loadShrinkage(){
+  try{
+    if(!agents.length)agents=await GET('profiles','select=*');
+    const logs=await GET('time_logs',`logged_at=gte.${today()}T00:00:00&order=logged_at.asc&select=*`);
+    let scheds=[];try{scheds=await GET('schedules',`date=eq.${today()}&select=*`);}catch(e){}
+    let totalSched=0,totalLost=0;const rows=[];
+    agents.forEach(ag=>{
+      const sch=scheds.find(s=>s.employee_id===ag.employee_id);
+      const sh=sch?((new Date(`2000T${sch.shift_end}`)-new Date(`2000T${sch.shift_start}`))/3600000):8;
+      totalSched+=sh;
+      const al=logs.filter(l=>l.employee_id===ag.employee_id);
+      let lost=0,bs=null;
+      al.forEach(l=>{
+        if(l.action_type==='START_BREAK')bs=new Date(l.logged_at);
+        if((l.action_type==='RETURN_FROM_BREAK'||l.action_type==='END_SHIFT')&&bs){const d=(new Date(l.logged_at)-bs)/60000;if(d>threshBreak)lost+=d-threshBreak;bs=null;}
+      });
+      if(bs)lost+=Math.max(0,minSince(bs.toISOString())-threshBreak);
+      const fi=al.find(l=>l.action_type==='START_SHIFT');
+      if(sch&&fi){const late=(new Date(fi.logged_at)-new Date(`${today()}T${sch.shift_start}`))/60000;if(late>threshLate)lost+=late;}
+      totalLost+=lost;
+      const pct=sh>0?((lost/60)/sh*100):0;
+      rows.push({name:ag.full_name,sh,lost:Math.round(lost),pct:pct.toFixed(1)});
+    });
+    const overall=totalSched>0?((totalLost/60)/totalSched*100):0;
+    const col=overall<5?'var(--green)':overall<15?'var(--yellow)':'var(--red)';
+    document.getElementById('shrink-pct').textContent=overall.toFixed(1)+'%';
+    document.getElementById('shrink-pct').style.color=col;
+    const lostBreak=Math.round(totalLost*0.6),lostLate=Math.round(totalLost*0.4);
+    document.getElementById('shrink-breakdown').innerHTML=`
+      <tr><td>Break Overruns</td><td>${lostBreak}</td><td>${totalSched>0?(lostBreak/60/totalSched*100).toFixed(1):0}%</td></tr>
+      <tr><td>Late Arrivals</td><td>${lostLate}</td><td>${totalSched>0?(lostLate/60/totalSched*100).toFixed(1):0}%</td></tr>
+      <tr><td><strong>Total</strong></td><td><strong>${Math.round(totalLost)}</strong></td><td><strong>${overall.toFixed(1)}%</strong></td></tr>`;
+    document.getElementById('shrink-agents').innerHTML=rows.length?rows.map(r=>{
+      const c=r.pct<5?'p-green':r.pct<15?'p-yellow':'p-red';
+      const rt=r.pct<5?'✓ On Track':r.pct<15?'⚠ Watch':'🔴 Review';
+      return `<tr><td>${eh(r.name)}</td><td>${r.sh.toFixed(1)}</td><td>${r.lost}</td><td><span class="pill ${c}"><span class="pdot"></span>${r.pct}%</span></td><td>${rt}</td></tr>`;
+    }).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--text-3);padding:24px">No data. Add schedules first.</td></tr>';
+  }catch(e){console.error('Shrinkage error:',e);}
+}
+
+/* ── FORECAST ── */
+async function loadForecast(){
+  document.getElementById('fc-date').value=today();
+  document.getElementById('fc-act-date').value=today();
+  try{
+    const rows=await GET('forecast_entries','select=*&order=date.desc,hour.asc&limit=100');
+    renderForecastChart(rows.filter(r=>r.date===today()));
+    document.getElementById('fc-tbody').innerHTML=rows.length?rows.map(r=>{
+      const hr=new Date(2000,0,1,r.hour).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+      const v=r.actual_calls!=null?r.actual_calls-r.forecasted_calls:null;
+      const vc=v!=null?(v>=0?'color:var(--green)':'color:var(--red)'):'';
+      return `<tr><td>${fmtD(r.date+'T12:00:00')}</td><td>${hr}</td><td>${r.forecasted_calls}</td><td>${r.agents_needed}</td><td>${r.actual_calls??'—'}</td><td style="${vc}">${v!=null?(v>0?'+':'')+v:'—'}</td></tr>`;
+    }).join(''):'<tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:32px">No forecast entries yet.</td></tr>';
+  }catch(e){console.error('Forecast error:',e);}
+}
+
+function renderForecastChart(rows){
+  const el=document.getElementById('fc-chart');
+  if(!rows.length){el.innerHTML='<div style="color:var(--text-3);font-size:12px;margin:auto">No forecast data for today.</div>';return;}
+  const max=Math.max(...rows.map(r=>Math.max(r.forecasted_calls,r.actual_calls||0)),1);
+  el.innerHTML=rows.slice(0,10).map(r=>{
+    const fh=Math.round((r.forecasted_calls/max)*90);
+    const ah=r.actual_calls!=null?Math.round((r.actual_calls/max)*90):0;
+    const hr=new Date(2000,0,1,r.hour).toLocaleTimeString([],{hour:'numeric'});
+    return `<div class="fb-wrap"><div class="fv">${r.forecasted_calls}</div><div style="display:flex;gap:2px;align-items:flex-end;height:90px"><div class="fb" style="height:${fh}px;background:var(--accent);width:13px"></div>${r.actual_calls!=null?`<div class="fb" style="height:${ah}px;background:var(--green);width:13px"></div>`:''}</div><div class="fl">${hr}</div></div>`;
+  }).join('');
+}
+
+async function saveForecast(){
+  const d=document.getElementById('fc-date').value;
+  const h=+document.getElementById('fc-hour').value;
+  const c=+document.getElementById('fc-calls').value;
+  const a=+document.getElementById('fc-agents').value;
+  if(!d||isNaN(c)||isNaN(a)){toast('Fill all fields','error');return;}
+  try{await POST('forecast_entries',{date:d,hour:h,forecasted_calls:c,agents_needed:a});toast('Forecast saved');loadForecast();}
+  catch(e){toast('Error saving forecast','error');console.error(e);}
+}
+
+async function saveActual(){
+  const d=document.getElementById('fc-act-date').value;
+  const h=+document.getElementById('fc-act-hour').value;
+  const ac=+document.getElementById('fc-actual').value;
+  if(!d||isNaN(ac)){toast('Fill date and actual calls','error');return;}
+  try{
+    await PATCH('forecast_entries',`date=eq.${d}&hour=eq.${h}`,{actual_calls:ac});
+    toast('Actual calls updated');loadForecast();
+  }catch(e){toast('Error updating actual','error');console.error(e);}
+}
+
+/* ── CALL SUMMARY ── */
+async function loadCalls(){
+  document.getElementById('cs-date').value=today();
+  try{
+    const rows=await GET('call_logs','select=*&order=date.desc,hour.asc&limit=200');
+    const td=rows.filter(r=>r.date===today());
+    document.getElementById('cs-total').textContent=td.reduce((s,r)=>s+r.total_calls,0);
+    document.getElementById('cs-handled').textContent=td.reduce((s,r)=>s+r.handled,0);
+    document.getElementById('cs-aband').textContent=td.reduce((s,r)=>s+(r.abandoned||0),0);
+    const aht=td.length?td.reduce((s,r)=>s+(r.avg_handle_time||0),0)/td.length:0;
+    document.getElementById('cs-aht').textContent=aht?aht.toFixed(1):'--';
+    document.getElementById('cs-tbody').innerHTML=rows.length?rows.map(r=>{
+      const ab=r.total_calls>0?((r.abandoned||0)/r.total_calls*100).toFixed(1):0;
+      const hr=new Date(2000,0,1,r.hour).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+      const pc=+ab>10?'p-red':+ab>5?'p-yellow':'p-green';
+      return `<tr><td>${fmtD(r.date+'T12:00:00')}</td><td>${hr}</td><td>${r.total_calls}</td><td>${r.handled}</td><td>${r.abandoned||0}</td><td><span class="mono">${r.avg_handle_time||0} min</span></td><td><span class="pill ${pc}"><span class="pdot"></span>${ab}%</span></td></tr>`;
+    }).join(''):'<tr><td colspan="7" style="text-align:center;color:var(--text-3);padding:32px">No call data yet.</td></tr>';
+  }catch(e){console.error('Calls error:',e);}
+}
+
+async function saveCallSummary(){
+  const d=document.getElementById('cs-date').value;
+  const h=+document.getElementById('cs-hour').value;
+  const t=+document.getElementById('cs-in-total').value||0;
+  const hd=+document.getElementById('cs-in-handled').value||0;
+  const ab=+document.getElementById('cs-in-aband').value||0;
+  const aht=+document.getElementById('cs-in-aht').value||0;
+  if(!d){toast('Select a date','error');return;}
+  try{await POST('call_logs',{date:d,hour:h,total_calls:t,handled:hd,abandoned:ab,avg_handle_time:aht});toast('Call summary saved');loadCalls();}
+  catch(e){toast('Error saving calls','error');console.error(e);}
+}
+
+async function loadAgentCalls(){
+  // populate agent select
+  const sel=document.getElementById('cs-agent');
+  sel.innerHTML='<option value="">— Select Agent —</option>'+agents.map(a=>`<option value="${eh(a.employee_id)}">${eh(a.full_name)}</option>`).join('');
+  document.getElementById('cs-ag-date').value=today();
+  try{
+    const rows=await GET('agent_call_logs','select=*,profiles(full_name)&order=date.desc&limit=50');
+    document.getElementById('ag-calls-tbody').innerHTML=rows.length?rows.map(r=>`<tr><td>${eh(r.profiles?.full_name||r.employee_id)}</td><td>${fmtD(r.date+'T12:00:00')}</td><td>${r.calls_handled}</td><td>${r.avg_handle_time} min</td></tr>`).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:16px">No data</td></tr>';
+  }catch(e){console.error(e);}
+}
+
+async function saveAgentCalls(){
+  const id=document.getElementById('cs-agent').value;
+  const d=document.getElementById('cs-ag-date').value;
+  const c=+document.getElementById('cs-ag-calls').value||0;
+  const aht=+document.getElementById('cs-ag-aht').value||0;
+  if(!id){toast('Select an agent','error');return;}
+  try{await POST('agent_call_logs',{employee_id:id,date:d,calls_handled:c,avg_handle_time:aht});toast('Agent calls saved');loadAgentCalls();}
+  catch(e){toast('Error saving agent calls','error');console.error(e);}
+}
+
+function importCSV(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=async e=>{
+    const lines=e.target.result.trim().split('\n');
+    const hdr=lines[0].toLowerCase().split(',').map(h=>h.trim());
+    let saved=0;
+    for(let i=1;i<lines.length;i++){
+      const vals=lines[i].split(',').map(v=>v.trim());
+      const row={};hdr.forEach((h,j)=>row[h]=vals[j]);
+      try{await POST('call_logs',{date:row.date||today(),hour:+row.hour||0,total_calls:+row.total_calls||0,handled:+row.handled||0,abandoned:+row.abandoned||0,avg_handle_time:+row.avg_handle_time||0});saved++;}
+      catch(e){console.error('CSV row err',e);}
+    }
+    toast(`✓ Imported ${saved} rows`);loadCalls();
+  };
+  reader.readAsText(file);
+}
+
+/* ── ADMIN AUTH ── */
+// Passwords stored in Supabase app_settings table.
+// Fallback to defaults if table not yet seeded.
+let adminSession = null; // null | 'admin' | 'superadmin'
+
+const DEFAULT_PASSWORDS = { admin: 'admin', superadmin: 'superadmin' };
+
+async function getPasswords(){
+  try{
+    const rows = await GET('app_settings','select=key,value&key=in.(admin_password,superadmin_password)');
+    const map = {};
+    rows.forEach(r => map[r.key] = r.value);
+    return {
+      admin:      map['admin_password']      || DEFAULT_PASSWORDS.admin,
+      superadmin: map['superadmin_password'] || DEFAULT_PASSWORDS.superadmin
+    };
+  } catch(e){
+    return DEFAULT_PASSWORDS;
+  }
+}
+
+async function attemptAdminLogin(){
+  const pw = document.getElementById('admin-pw-input').value;
+  const errEl = document.getElementById('admin-lock-error');
+  errEl.style.display = 'none';
+  if(!pw){ errEl.textContent='Please enter a password.'; errEl.style.display='block'; return; }
+
+  const passwords = await getPasswords();
+
+  if(pw === passwords.superadmin){
+    adminSession = 'superadmin';
+  } else if(pw === passwords.admin){
+    adminSession = 'admin';
+  } else {
+    errEl.textContent = 'Incorrect password. Try again.';
+    errEl.style.display = 'block';
+    document.getElementById('admin-pw-input').value = '';
+    return;
   }
 
-  // ─── ARCHITECTURE TABS ───
-  function switchArch(id) {
-    document.querySelectorAll('.arch-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.arch-panel').forEach(p => p.classList.remove('active'));
-    document.getElementById('arch-' + id).classList.add('active');
-    event.target.classList.add('active');
+  document.getElementById('admin-pw-input').value = '';
+  showAdminPanel();
+}
+
+function showAdminPanel(){
+  document.getElementById('admin-lock').style.display = 'none';
+  document.getElementById('admin-panel').style.display = 'block';
+
+  // Set role badge
+  const isSuperAdmin = adminSession === 'superadmin';
+  const badge = document.getElementById('admin-role-badge');
+  const label = document.getElementById('admin-role-label');
+  if(isSuperAdmin){
+    badge.className = 'pill p-purple';
+    badge.innerHTML = '<span class="pdot"></span>Super Admin';
+    label.textContent = 'Super Admin';
+  } else {
+    badge.className = 'pill p-blue';
+    badge.innerHTML = '<span class="pdot"></span>Admin';
+    label.textContent = 'Admin';
   }
+
+  // Show/hide Super Admin only tabs
+  document.querySelectorAll('.super-only').forEach(el => {
+    el.style.display = isSuperAdmin ? '' : 'none';
+  });
+
+  // Load data
+  loadRoster();
+  loadSchedules();
+  if(isSuperAdmin) loadManagers();
+}
+
+function adminLogout(){
+  adminSession = null;
+  document.getElementById('admin-lock').style.display = 'flex';
+  document.getElementById('admin-panel').style.display = 'none';
+  // Reset to first tab
+  document.querySelectorAll('.tab-pane').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-agents').classList.add('active');
+  document.querySelector('.tab-btn').classList.add('active');
+}
+
+async function changePassword(role){
+  if(adminSession !== 'superadmin'){ toast('Super Admin access required','error'); return; }
+  const inputId = role === 'admin' ? 'set-admin-pw' : 'set-super-pw';
+  const newPw = document.getElementById(inputId).value.trim();
+  if(!newPw || newPw.length < 4){ toast('Password must be at least 4 characters','error'); return; }
+  const key = role === 'admin' ? 'admin_password' : 'superadmin_password';
+  try{
+    // Upsert into app_settings
+    await fetch(`${BASE}/app_settings?key=eq.${key}`, {
+      method:'DELETE', headers:H
+    });
+    await POST('app_settings', {key, value: newPw});
+    toast(`✓ ${role === 'admin' ? 'Admin' : 'Super Admin'} password updated`,'success');
+    document.getElementById(inputId).value = '';
+  } catch(e){
+    toast('Error saving password','error'); console.error(e);
+  }
+}
+
+/* ── ADMIN: AGENTS ── */
+async function addAgent(){
+  const name=document.getElementById('ag-name').value.trim();
+  const id=document.getElementById('ag-id').value.trim();
+  const btn=document.getElementById('btn-add-ag');
+  if(!name||!id){toast('Name and ID required','error');return;}
+  if(!/^\d{4,8}$/.test(id)){toast('ID must be 4–8 digits','error');return;}
+  btn.disabled=true;btn.textContent='Adding…';
+  try{
+    await POST('profiles',{employee_id:id,full_name:name,current_state:'OUT'});
+    toast(`✓ ${name} added`);
+    document.getElementById('ag-name').value='';document.getElementById('ag-id').value='';
+    loadRoster();loadFloor();
+    const sel=document.getElementById('cs-agent');
+    if(sel)loadAgentCalls();
+  }catch(e){
+    toast((e.message||'').includes('duplicate')?`ID ${id} already exists`:'Error adding agent','error');
+  }finally{btn.disabled=false;btn.textContent='Add Agent';}
+}
+
+async function loadRoster(){
+  const tbody=document.getElementById('roster-tbody');
+  if(!tbody) return;
+  try{
+    agents=await GET('profiles','select=*&order=full_name.asc');
+    const sch=document.getElementById('sch-agent');
+    if(sch){sch.innerHTML='<option value="">— Select Agent —</option>'+agents.map(a=>`<option value="${eh(a.employee_id)}">${eh(a.full_name)}</option>`).join('');}
+    tbody.innerHTML=agents.length?agents.map(a=>`
+      <tr><td>${eh(a.full_name)}</td><td><span class="mono">${eh(a.employee_id)}</span></td><td>${spill(a.current_state)}</td>
+      <td><button class="btn btn-d btn-sm" onclick="delAgent('${es(a.employee_id)}','${es(a.full_name)}')">✕</button></td></tr>`).join(''):
+    '<tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:24px">No agents yet.</td></tr>';
+  }catch(e){tbody.innerHTML='<tr><td colspan="4" style="color:var(--red);padding:16px">Error loading roster.</td></tr>';}
+}
+
+async function delAgent(id,name){
+  openModal('Remove Agent',`<p style="color:var(--text-2)">Remove <strong>${eh(name)}</strong> (ID: ${eh(id)})? Their time log history will also be deleted.</p>`,'Remove',async()=>{
+    try{await DEL('profiles',`employee_id=eq.${encodeURIComponent(id)}`);toast(`${name} removed`);closeModal();loadRoster();loadFloor();}
+    catch(e){toast('Error deleting agent','error');}
+  });
+}
+
+/* ── ADMIN: MANAGERS (Super Admin only) ── */
+async function addManager(){
+  if(adminSession !== 'superadmin'){ toast('Super Admin access required','error'); return; }
+  const name=document.getElementById('mgr-name').value.trim();
+  const user=document.getElementById('mgr-user').value.trim();
+  const pw=document.getElementById('mgr-pw').value.trim();
+  const role=document.getElementById('mgr-role').value;
+  if(!name||!user||!pw){toast('All fields required','error');return;}
+  try{
+    await POST('managers',{full_name:name,username:user,pin_hash:pw,role});
+    toast(`✓ ${name} added as ${role}`);
+    document.getElementById('mgr-name').value='';
+    document.getElementById('mgr-user').value='';
+    document.getElementById('mgr-pw').value='';
+    loadManagers();
+  }catch(e){toast('Error adding admin user','error');console.error(e);}
+}
+
+async function loadManagers(){
+  const tbody=document.getElementById('mgr-tbody');
+  if(!tbody) return;
+  try{
+    const rows=await GET('managers','select=*&order=full_name.asc');
+    tbody.innerHTML=rows.length?rows.map(m=>{
+      const rc = m.role==='superadmin'?'p-purple':'p-blue';
+      const rl = m.role==='superadmin'?'Super Admin':'Admin';
+      return `<tr>
+        <td>${eh(m.full_name)}</td>
+        <td style="color:var(--text-2)">${eh(m.username)}</td>
+        <td><span class="pill ${rc}"><span class="pdot"></span>${rl}</span></td>
+        <td>${fmtD((m.created_at||new Date().toISOString()))}</td>
+        <td><button class="btn btn-d btn-sm" onclick="delManager('${es(m.id)}','${es(m.full_name)}')">✕</button></td>
+      </tr>`;
+    }).join(''):
+    '<tr><td colspan="5" style="text-align:center;color:var(--text-3);padding:24px">No admin users yet.</td></tr>';
+  }catch(e){tbody.innerHTML='<tr><td colspan="5" style="color:var(--red);padding:16px">Error loading users.</td></tr>';}
+}
+
+async function delManager(id,name){
+  if(adminSession !== 'superadmin'){ toast('Super Admin access required','error'); return; }
+  openModal('Remove Admin User',`<p style="color:var(--text-2)">Remove admin user <strong>${eh(name)}</strong>?</p>`,'Remove',async()=>{
+    try{await DEL('managers',`id=eq.${encodeURIComponent(id)}`);toast(`${name} removed`);closeModal();loadManagers();}
+    catch(e){toast('Error','error');}
+  });
+}
+
+/* ── ADMIN: SCHEDULES ── */
+async function saveSchedule(){
+  const id=document.getElementById('sch-agent').value;
+  const d=document.getElementById('sch-date').value;
+  const s=document.getElementById('sch-start').value;
+  const en=document.getElementById('sch-end').value;
+  if(!id||!d||!s||!en){toast('All schedule fields required','error');return;}
+  try{await POST('schedules',{employee_id:id,date:d,shift_start:s,shift_end:en});toast('Schedule saved');loadSchedules();}
+  catch(e){toast('Error saving schedule','error');console.error(e);}
+}
+
+async function loadSchedules(){
+  const tbody=document.getElementById('sch-tbody');
+  if(!tbody) return;
+  try{
+    const rows=await GET('schedules','select=*,profiles(full_name)&order=date.desc,shift_start.asc&limit=100');
+    tbody.innerHTML=rows.length?rows.map(r=>{
+      const hrs=((new Date('2000T'+r.shift_end)-new Date('2000T'+r.shift_start))/3600000).toFixed(1);
+      return `<tr><td>${eh(r.profiles?.full_name||r.employee_id)}</td><td>${fmtD(r.date+'T12:00:00')}</td>
+        <td><span class="mono">${r.shift_start}</span></td><td><span class="mono">${r.shift_end}</span></td><td>${hrs}h</td>
+        <td><button class="btn btn-d btn-sm" onclick="delSchedule('${es(r.id)}')">✕</button></td></tr>`;
+    }).join(''):'<tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:24px">No schedules yet.</td></tr>';
+  }catch(e){console.error(e);}
+}
+
+async function delSchedule(id){
+  try{await DEL('schedules',`id=eq.${encodeURIComponent(id)}`);toast('Schedule removed');loadSchedules();}
+  catch(e){toast('Error','error');}
+}
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded',()=>{
+  populateHours('fc-hour','fc-act-hour','cs-hour');
+  document.getElementById('fc-date').value=today();
+  document.getElementById('fc-act-date').value=today();
+  document.getElementById('cs-date').value=today();
+  document.getElementById('cs-ag-date').value=today();
+  document.getElementById('sch-date').value=today();
+  document.getElementById('thresh-late').value=threshLate;
+  document.getElementById('thresh-break').value=threshBreak;
+  document.getElementById('id-inp').addEventListener('keydown',e=>{if(e.key==='Enter')lookupEmployee();});
+  loadFloor();
+  setInterval(checkDeviations,120000);
+  setInterval(loadFloor,60000);
+});
 </script>
-
 </body>
 </html>
