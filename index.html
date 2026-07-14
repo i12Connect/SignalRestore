@@ -1,2145 +1,323 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Command Center — Call Center Manager Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signal Restore | Coming Soon</title>
+<meta name="description" content="The Signal Restore Knowledge Platform is being tuned. Independent knowledge for business communications — coming soon.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#080b10;--surface:#0e1219;--surface2:#151c26;--surface3:#1c2535;
-  --border:rgba(99,149,255,0.1);--border-em:rgba(99,149,255,0.22);
-  --text:#dce8ff;--text-2:#7a94bb;--text-3:#3d5070;
-  --accent:#3f7fff;--accent-dim:rgba(63,127,255,0.12);
-  --green:#22d47a;--green-dim:rgba(34,212,122,0.13);
-  --yellow:#f5c842;--yellow-dim:rgba(245,200,66,0.13);
-  --red:#f05050;--red-dim:rgba(240,80,80,0.13);
-  --blue:#3f7fff;--blue-dim:rgba(63,127,255,0.13);
-  --orange:#f07830;--orange-dim:rgba(240,120,48,0.13);
-  --purple:#a855f7;--purple-dim:rgba(168,85,247,0.13);
-  --cyan:#22d4d4;--cyan-dim:rgba(34,212,212,0.13);
-  --r:10px;--r-sm:6px;
-  --mono:'JetBrains Mono','Fira Code',monospace;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;font-size:14px}
-#shell{display:flex;flex:1;height:100vh;overflow:hidden}
-#sidebar{width:220px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
-.sidebar-brand{padding:20px 16px 16px;border-bottom:1px solid var(--border)}
-.brand-name{font-size:15px;font-weight:700;letter-spacing:-0.3px}
-.brand-sub{font-size:11px;color:var(--text-3);margin-top:2px;letter-spacing:0.3px;text-transform:uppercase}
-.sidebar-nav{flex:1;padding:10px 8px;display:flex;flex-direction:column;gap:2px;overflow-y:auto}
-.nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--r-sm);cursor:pointer;color:var(--text-2);font-size:13px;font-weight:500;transition:all 0.15s;border:none;background:none;width:100%;text-align:left}
-.nav-item:hover{background:var(--surface2);color:var(--text)}
-.nav-item.active{background:var(--accent-dim);color:var(--accent)}
-.nav-icon{font-size:15px;width:18px;text-align:center;flex-shrink:0}
-.nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:10px;min-width:18px;text-align:center;display:none}
-.nav-badge.show{display:inline-block}
-.sidebar-footer{padding:12px 8px;border-top:1px solid var(--border)}
-.sidebar-clock{font-family:var(--mono);font-size:20px;font-weight:600;padding:8px 10px;letter-spacing:1px}
-.sidebar-date{font-size:11px;color:var(--text-3);padding:0 10px 8px;letter-spacing:0.3px}
-#main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:52px;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0}
-.topbar-title{font-size:15px;font-weight:600}
-.topbar-right{display:flex;align-items:center;gap:10px}
-.live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
-.view{display:none;flex:1;overflow-y:auto;padding:24px}
-.view.active{display:block}
-.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px}
-.panel-title{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:16px}
-.panel-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.panel-hdr .panel-title{margin-bottom:0}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.gap{margin-bottom:20px}
-.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px}
-.stat-lbl{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px}
-.stat-val{font-size:26px;font-weight:700;font-family:var(--mono);letter-spacing:-1px}
-.stat-sub{font-size:12px;color:var(--text-2);margin-top:4px}
-.green .stat-val{color:var(--green)}.yellow .stat-val{color:var(--yellow)}.red .stat-val{color:var(--red)}.blue .stat-val{color:var(--blue)}.purple .stat-val{color:var(--purple)}
-.dt{width:100%;border-collapse:collapse;font-size:13px}
-.dt th{text-align:left;padding:8px 12px;font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border)}
-.dt td{padding:11px 12px;border-bottom:1px solid var(--border)}
-.dt tr:last-child td{border-bottom:none}
-.dt tbody tr:hover td{background:rgba(255,255,255,0.02)}
-.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
-.pdot{width:5px;height:5px;border-radius:50%;background:currentColor}
-.p-green{background:var(--green-dim);color:var(--green)}
-.p-yellow{background:var(--yellow-dim);color:var(--yellow)}
-.p-red{background:var(--red-dim);color:var(--red)}
-.p-blue{background:var(--blue-dim);color:var(--blue)}
-.p-orange{background:var(--orange-dim);color:var(--orange)}
-.p-gray{background:var(--surface3);color:var(--text-2)}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
-.field input,.field select,.field textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 11px;font-size:13px;color:var(--text);outline:none;transition:border-color 0.15s;font-family:inherit}
-.field input:focus,.field select:focus{border-color:var(--accent)}
-.field select option{background:var(--surface2)}
-.frow{display:flex;gap:8px}
-.frow .field{flex:1;margin-bottom:0}
-.btn{padding:8px 16px;border-radius:var(--r-sm);border:none;font-size:13px;font-weight:600;cursor:pointer;transition:opacity 0.15s;font-family:inherit}
-.btn:hover{opacity:0.85}.btn:disabled{opacity:0.4;cursor:default}
-.btn-p{background:var(--accent);color:#fff}
-.btn-g{background:transparent;border:1px solid var(--border-em);color:var(--text-2)}
-.btn-g:hover{color:var(--text);background:var(--surface2)}
-.btn-d{background:var(--red-dim);color:var(--red);border:1px solid rgba(240,80,80,0.2)}
-.btn-sm{padding:5px 11px;font-size:12px}
-.bicon{padding:6px 8px;border-radius:var(--r-sm);border:1px solid var(--border);background:transparent;color:var(--text-2);cursor:pointer;font-size:14px;line-height:1;transition:all 0.15s}
-.bicon:hover{border-color:var(--border-em);color:var(--text);background:var(--surface2)}
-.mono{font-family:var(--mono);font-size:12px;color:var(--text-2);background:var(--surface2);padding:2px 7px;border-radius:4px}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-.pulse{animation:pulse 1.4s ease-in-out infinite}
-.btn-act{width:100%;padding:14px;border-radius:var(--r-sm);border:none;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:8px}
-.btn-act:active{transform:scale(0.98)}.btn-act:disabled{opacity:0.4;cursor:default}
-.b-start{background:var(--green);color:#000}.b-break{background:var(--yellow);color:#000}
-.b-return{background:var(--blue);color:#fff}.b-end{background:var(--red);color:#fff}
-.kiosk-wrap{max-width:420px;margin:60px auto}
-.kiosk-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:28px}
-.id-grp{display:flex;gap:8px}
-.id-inp{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:13px 16px;font-size:22px;font-family:var(--mono);font-weight:600;letter-spacing:4px;color:var(--text);text-align:center;outline:none;transition:border-color 0.15s}
-.id-inp:focus{border-color:var(--accent)}
-.id-inp::placeholder{letter-spacing:2px;font-size:13px;font-weight:400;color:var(--text-3)}
-.kstatus{margin-top:20px;min-height:130px;display:flex;align-items:center;justify-content:center}
-.kname{font-size:20px;font-weight:700;text-align:center;margin-bottom:6px}
-.kbadge{display:flex;justify-content:center;margin-bottom:20px}
-.kbtns{display:flex;flex-direction:column;gap:8px}
-.denied{text-align:center}
-.spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--surface);border:1px solid var(--border-em);border-radius:var(--r);padding:12px 20px;font-size:13px;font-weight:500;color:var(--text);opacity:0;transition:all 0.22s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;z-index:9999;max-width:360px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.5)}
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-#toast.success{border-color:var(--green);color:var(--green)}
-#toast.error{border-color:var(--red);color:var(--red)}
-#toast.warn{border-color:var(--yellow);color:var(--yellow)}
-#moverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:1000;align-items:center;justify-content:center}
-#moverlay.open{display:flex}
-#modal{background:var(--surface);border:1px solid var(--border-em);border-radius:var(--r);padding:28px;width:100%;max-width:440px}
-#modal h3{font-size:15px;font-weight:700;margin-bottom:18px}
-.mfooter{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
-.agent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px}
-.acard{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:16px;text-align:center;transition:border-color 0.2s}
-.acard.alarm{border-color:var(--red)}
-.avatar{width:44px;height:44px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:#fff}
-.aname{font-size:13px;font-weight:600;margin-bottom:6px}
-.atime{font-family:var(--mono);font-size:11px;color:var(--text-2);margin-top:6px}
-.alarm-row{display:flex;align-items:flex-start;gap:12px;padding:12px;background:var(--red-dim);border:1px solid rgba(240,80,80,0.25);border-radius:var(--r-sm);margin-bottom:8px}
-.alarm-title{font-size:13px;font-weight:600;color:var(--red)}
-.alarm-detail{font-size:12px;color:var(--text-2);margin-top:2px}
-.alarm-ts{font-family:var(--mono);font-size:11px;color:var(--text-3);white-space:nowrap;margin-left:auto;flex-shrink:0}
-.fc-chart{display:flex;align-items:flex-end;gap:6px;height:100px;padding-top:8px}
-.fb-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
-.fb{width:100%;border-radius:3px 3px 0 0;min-height:4px}
-.fl{font-size:10px;color:var(--text-3)}.fv{font-size:10px;font-family:var(--mono);color:var(--text-2)}
-.tab-bar{display:flex;gap:4px;border-bottom:1px solid var(--border);padding-bottom:0;margin-bottom:20px}
-.tab-btn{padding:8px 16px;border:none;background:none;color:var(--text-2);font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.15s}
-.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
-.tab-pane{display:none}.tab-pane.active{display:block}
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:2px}
-@media(max-width:768px){#sidebar{display:none}.g4,.g3{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}}
-/* ── AGENT PROFILE DRAWER ── */
-.p-purple{background:var(--purple-dim);color:var(--purple)}
-#profile-drawer{position:fixed;top:0;right:-700px;width:700px;height:100vh;background:var(--surface);border-left:1px solid var(--border-em);z-index:500;transition:right 0.3s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;overflow:hidden;max-width:100vw}
-#profile-drawer.open{right:0}
-#profile-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:499}
-#profile-overlay.open{display:block}
-.drawer-header{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--border);flex-shrink:0}
-.drawer-body{flex:1;overflow-y:auto;padding:20px 24px}
-.profile-hero{display:flex;align-items:center;gap:18px;margin-bottom:20px;padding:18px;background:var(--surface2);border-radius:var(--r);border:1px solid var(--border)}
-.profile-avatar-lg{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0}
-.profile-name{font-size:19px;font-weight:700;letter-spacing:-0.3px;margin-bottom:6px}
-.profile-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
-.profile-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
-.pstat{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px;text-align:center}
-.pstat-val{font-size:18px;font-weight:700;font-family:var(--mono);letter-spacing:-0.5px}
-.pstat-lbl{font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin-top:3px}
-.drawer-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:20px;overflow-x:auto}
-.dtab{padding:8px 12px;border:none;background:none;color:var(--text-2);font-size:12px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.15s;white-space:nowrap}
-.dtab.active{color:var(--accent);border-bottom-color:var(--accent)}
-.dtab-pane{display:none}.dtab-pane.active{display:block}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:8px}
-.cal-day{background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:5px 3px;text-align:center;cursor:pointer;transition:all 0.15s;min-height:48px;position:relative}
-.cal-day:hover{border-color:var(--accent)}
-.cal-day.other-month{opacity:0.25}
-.cal-day.today{border-color:var(--accent);background:var(--accent-dim)}
-.cal-day.scheduled{background:rgba(34,212,122,0.1);border-color:rgba(34,212,122,0.3)}
-.cal-day.day-off{background:rgba(240,80,80,0.08);border-color:rgba(240,80,80,0.2)}
-.cal-day.absent{background:rgba(245,200,66,0.1);border-color:rgba(245,200,66,0.3)}
-.cal-day-num{font-size:11px;font-weight:600;color:var(--text-2)}
-.cal-day-shift{font-size:8px;color:var(--green);margin-top:2px;line-height:1.3}
-.cal-day-tag{font-size:8px;margin-top:1px}
-.cal-hdr-day{font-size:10px;font-weight:600;color:var(--text-3);text-align:center;padding:4px 0;text-transform:uppercase;letter-spacing:0.5px}
-.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.cal-nav-title{font-size:13px;font-weight:600}
-.absence-row{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--surface2);border-radius:var(--r-sm);margin-bottom:6px;border:1px solid var(--border)}
-.log-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
-.log-row:last-child{border-bottom:none}
-.log-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.log-time{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:110px}
-.log-action{font-size:13px;color:var(--text)}
-.fte-card{background:linear-gradient(135deg,rgba(63,127,255,0.1),rgba(168,85,247,0.1));border:1px solid var(--border-em);border-radius:var(--r);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.fte-val{font-size:36px;font-weight:700;font-family:var(--mono);letter-spacing:-2px}
-.role-toggle-row{display:flex;gap:8px;align-items:center;padding:12px 16px;background:var(--surface2);border-radius:var(--r-sm);border:1px solid var(--border);margin-bottom:12px}
-.toggle-sw{position:relative;width:40px;height:22px;flex-shrink:0}
-.toggle-sw input{opacity:0;width:0;height:0;position:absolute}
-.toggle-sl{position:absolute;inset:0;background:var(--surface3);border-radius:11px;cursor:pointer;transition:0.2s}
-.toggle-sl:before{content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:0.2s}
-.toggle-sw input:checked+.toggle-sl{background:var(--accent)}
-.toggle-sw input:checked+.toggle-sl:before{transform:translateX(18px)}
+
+  :root{
+    --navy:#0F172A;
+    --navy-2:#152238;
+    --pink:#E4007C;
+    --teal:#25BCC0;
+    --orange:#F98F21;
+    --text-dim:rgba(255,255,255,.62);
+    --border:rgba(255,255,255,.12);
+    --mono:"IBM Plex Mono", monospace;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html,body{
+    height:100%;
+  }
+
+  body{
+    font-family:"Inter",sans-serif;
+    background:
+      radial-gradient(700px circle at 20% 15%, rgba(37,188,192,.10), transparent 60%),
+      radial-gradient(600px circle at 85% 85%, rgba(228,0,124,.10), transparent 60%),
+      var(--navy);
+    color:#FFFFFF;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:32px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+
+  /* Faint blueprint dot-grid, matching the main platform's visual language */
+  body::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background-image:radial-gradient(circle, rgba(255,255,255,.06) 1px, transparent 1px);
+    background-size:26px 26px;
+    pointer-events:none;
+  }
+
+  .wrap{
+    position:relative;
+    max-width:640px;
+    width:100%;
+  }
+
+  .brand{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:56px;
+  }
+
+  .brand-mark{
+    width:34px;
+    height:34px;
+    flex-shrink:0;
+  }
+
+  .brand-name{
+    font-family:"Poppins",sans-serif;
+    font-weight:600;
+    font-size:1.15rem;
+    letter-spacing:.01em;
+  }
+
+  .brand-name em{
+    font-style:normal;
+    color:var(--pink);
+  }
+
+  /* ---------- Signal scope panel ---------- */
+
+  .scope{
+    background:var(--navy-2);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:28px 24px 22px;
+    margin-bottom:40px;
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+  }
+
+  .scope-label{
+    display:flex;
+    justify-content:space-between;
+    font-family:var(--mono);
+    font-size:.68rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+    margin-bottom:14px;
+  }
+
+  .scope-label .live-dot{
+    display:inline-block;
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:var(--teal);
+    margin-right:6px;
+    box-shadow:0 0 0 0 rgba(37,188,192,.6);
+    animation:pulse 1.8s ease-out infinite;
+  }
+
+  @keyframes pulse{
+    0%   { box-shadow:0 0 0 0 rgba(37,188,192,.55); }
+    70%  { box-shadow:0 0 0 8px rgba(37,188,192,0); }
+    100% { box-shadow:0 0 0 0 rgba(37,188,192,0); }
+  }
+
+  svg.waveform{
+    width:100%;
+    height:auto;
+    display:block;
+  }
+
+  .trace{
+    fill:none;
+    stroke-width:2.5;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+
+  .trace-noisy{
+    stroke:var(--pink);
+    animation:fadeNoisy 4s ease-in-out infinite;
+  }
+
+  .trace-clean{
+    stroke:var(--teal);
+    stroke-dasharray:400;
+    stroke-dashoffset:400;
+    animation:fadeClean 4s ease-in-out infinite;
+  }
+
+  @keyframes fadeNoisy{
+    0%, 35%   { opacity:1; }
+    50%, 100% { opacity:.15; }
+  }
+
+  @keyframes fadeClean{
+    0%, 40%   { stroke-dashoffset:400; opacity:.15; }
+    65%       { opacity:1; }
+    70%, 100% { stroke-dashoffset:0; opacity:1; }
+  }
+
+  .scope-status{
+    font-family:var(--mono);
+    font-size:.72rem;
+    letter-spacing:.06em;
+    color:var(--text-dim);
+    margin-top:12px;
+    text-align:left;
+  }
+
+  .scope-status .status-word{
+    color:var(--teal);
+    font-weight:500;
+  }
+
+  /* ---------- Copy ---------- */
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:.75rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--orange);
+    margin-bottom:18px;
+  }
+
+  h1{
+    font-family:"Poppins",sans-serif;
+    font-weight:700;
+    font-size:clamp(1.9rem, 1.2rem + 3vw, 2.9rem);
+    line-height:1.2;
+    margin-bottom:20px;
+    letter-spacing:-.01em;
+  }
+
+  h1 em{
+    font-style:normal;
+    background:linear-gradient(90deg, var(--teal), var(--pink));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+
+  p.lead{
+    color:var(--text-dim);
+    font-size:1.05rem;
+    line-height:1.7;
+    max-width:480px;
+    margin:0 auto 40px;
+  }
+
+  .contact-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    font-family:var(--mono);
+    font-size:.85rem;
+  }
+
+  .contact-row a{
+    color:#FFFFFF;
+    text-decoration:none;
+    border-bottom:1px solid var(--border);
+    padding-bottom:2px;
+    transition:border-color .2s ease, color .2s ease;
+  }
+
+  .contact-row a:hover{
+    color:var(--teal);
+    border-color:var(--teal);
+  }
+
+  .contact-row .sep{
+    color:var(--text-dim);
+    opacity:.4;
+  }
+
+  footer{
+    margin-top:64px;
+    font-family:var(--mono);
+    font-size:.72rem;
+    color:rgba(255,255,255,.35);
+    letter-spacing:.04em;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .live-dot, .trace-noisy, .trace-clean{ animation:none; }
+    .trace-clean{ stroke-dashoffset:0; opacity:1; }
+    .trace-noisy{ opacity:.15; }
+  }
+
+  @media (max-width:480px){
+    .scope{ padding:20px 16px 16px; }
+  }
+
 </style>
 </head>
 <body>
-<div id="shell">
-<!-- SIDEBAR -->
-<aside id="sidebar">
-  <div class="sidebar-brand">
-    <div class="brand-name">Command Center</div>
-    <div class="brand-sub">Call Center Manager</div>
-  </div>
-  <nav class="sidebar-nav">
-    <button class="nav-item active" data-view="floor" onclick="gotoView('floor')"><span class="nav-icon">🗺</span>Floor Story</button>
-    <button class="nav-item" data-view="kiosk" onclick="gotoView('kiosk')"><span class="nav-icon">🕐</span>Agent Login Kiosk</button>
-    <button class="nav-item" data-view="breaks" onclick="gotoView('breaks')"><span class="nav-icon">☕</span>Break &amp; Lunch</button>
-    <button class="nav-item" data-view="alarms" onclick="gotoView('alarms')"><span class="nav-icon">🔔</span>Deviation Alarms<span class="nav-badge" id="alarm-badge">0</span></button>
-    <button class="nav-item" data-view="shrinkage" onclick="gotoView('shrinkage')"><span class="nav-icon">📉</span>Shrinkage</button>
-    <button class="nav-item" data-view="forecast" onclick="gotoView('forecast')"><span class="nav-icon">📈</span>Forecast</button>
-    <button class="nav-item" data-view="calls" onclick="gotoView('calls')"><span class="nav-icon">📞</span>Call Summary</button>
-    <button class="nav-item" data-view="admin" onclick="gotoView('admin')"><span class="nav-icon">⚙</span>Admin</button>
-  </nav>
-  <div class="sidebar-footer">
-    <div class="sidebar-clock" id="live-clock">--:--</div>
-    <div class="sidebar-date" id="live-date"></div>
-  </div>
-</aside>
 
-<!-- MAIN -->
-<div id="main">
-  <div class="topbar">
-    <div class="topbar-title" id="topbar-title">Floor Story</div>
-    <div class="topbar-right">
-      <div class="live-dot"></div>
-      <span style="font-size:12px;color:var(--text-2)">Live</span>
-      <button class="btn btn-g btn-sm" onclick="refreshAll()">↻ Refresh</button>
-    </div>
-  </div>
+  <div class="wrap">
 
-  <!-- FLOOR STORY -->
-  <div class="view active" id="view-floor">
-    <div class="g4 gap">
-      <div class="stat green"><div class="stat-lbl">On Shift</div><div class="stat-val" id="fs-on">0</div><div class="stat-sub">clocked in</div></div>
-      <div class="stat yellow"><div class="stat-lbl">On Break</div><div class="stat-val" id="fs-break">0</div><div class="stat-sub">on break now</div></div>
-      <div class="stat"><div class="stat-lbl">Clocked Out</div><div class="stat-val" id="fs-out">0</div><div class="stat-sub">not yet in</div></div>
-      <div class="stat red"><div class="stat-lbl">Active Alarms</div><div class="stat-val" id="fs-alarms">0</div><div class="stat-sub">need attention</div></div>
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="20" cy="20" r="19" stroke="url(#gradRing)" stroke-width="2"/>
+        <path d="M13 24c0-4 3-6 7-6s7-2 7-6" stroke="var(--teal)" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+        <circle cx="13" cy="24" r="2.2" fill="var(--pink)"/>
+        <circle cx="27" cy="12" r="2.2" fill="var(--orange)"/>
+        <defs>
+          <linearGradient id="gradRing" x1="0" y1="0" x2="40" y2="40">
+            <stop offset="0" stop-color="#25BCC0"/>
+            <stop offset="1" stop-color="#E4007C"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <span class="brand-name">Signal <em>Restore</em></span>
     </div>
-    <div class="panel">
-      <div class="panel-hdr"><div class="panel-title">Live Agent Status</div><button class="bicon" onclick="loadFloor()">↻</button></div>
-      <div class="agent-grid" id="agent-grid"><div style="color:var(--text-3);font-size:13px;grid-column:1/-1;text-align:center;padding:40px">Loading agents…</div></div>
-    </div>
-  </div>
 
-  <!-- KIOSK -->
-  <div class="view" id="view-kiosk">
-    <div class="kiosk-wrap">
-      <div style="text-align:center;margin-bottom:32px">
-        <div style="font-size:24px;font-weight:700;letter-spacing:-0.5px">Clock In / Out</div>
-        <div style="color:var(--text-2);font-size:13px;margin-top:4px">Enter your Employee ID to continue</div>
+    <div class="scope" role="img" aria-label="Animated diagram of a noisy signal resolving into a clean signal, looping">
+      <div class="scope-label">
+        <span><span class="live-dot" aria-hidden="true"></span>CH.01 SIGNAL MONITOR</span>
+        <span>SR&ndash;KP</span>
       </div>
-      <div class="kiosk-card">
-        <div class="id-grp">
-          <input id="id-inp" class="id-inp" type="text" inputmode="numeric" maxlength="6" placeholder="ID" autocomplete="off"/>
-          <button class="btn btn-p" id="btn-lookup" onclick="lookupEmployee()" style="padding:0 20px">Look Up</button>
-        </div>
-        <div class="kstatus" id="kstatus"></div>
-      </div>
+
+      <svg class="waveform" viewBox="0 0 560 120" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="60" x2="560" y2="60" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+        <path class="trace trace-noisy"
+              d="M10 60 L40 60 L52 30 L64 90 L78 20 L92 82 L106 46 L120 66 L134 40 L148 76 L162 52 L176 60 L560 60"/>
+        <path class="trace trace-clean"
+              d="M10 60 L60 60 Q90 20 120 60 T180 60 Q210 20 240 60 T300 60 Q330 20 360 60 T420 60 L560 60"
+              pathLength="400"/>
+      </svg>
+
+      <p class="scope-status">STATUS: <span class="status-word">RESTORING</span> &mdash; content calibration in progress</p>
     </div>
+
+    <p class="eyebrow">Signal Restore Knowledge Platform</p>
+    <h1>We're <em>Restoring</em> the Signal</h1>
+    <p class="lead">
+      Independent, vendor-neutral knowledge for business communications is on its way —
+      VoIP, UCaaS, CCaaS, contact centers, workforce management, and the metrics that keep
+      them running. We're taking the time to get it right before we put it in front of you.
+    </p>
+
+    <div class="contact-row">
+      <a href="mailto:support@signal-restore.com">support@signal-restore.com</a>
+      <span class="sep">&bull;</span>
+      <a href="tel:19519000067">951-900-0067</a>
+    </div>
+
+    <footer>&copy; <span id="year"></span> SIGNAL RESTORE &mdash; INDEPENDENT &bull; TRUSTED &bull; EMPOWERING</footer>
+
   </div>
 
-  <!-- BREAK & LUNCH -->
-  <div class="view" id="view-breaks">
-    <div class="g3 gap">
-      <div class="stat yellow"><div class="stat-lbl">On Break Now</div><div class="stat-val" id="bl-now">0</div></div>
-      <div class="stat"><div class="stat-lbl">Avg Break (Today)</div><div class="stat-val" id="bl-avg">--</div><div class="stat-sub">minutes</div></div>
-      <div class="stat red"><div class="stat-lbl">Overdue (&gt;threshold)</div><div class="stat-val" id="bl-over">0</div></div>
-    </div>
-    <div class="panel">
-      <div class="panel-hdr"><div class="panel-title">Today's Break Activity</div><button class="bicon" onclick="loadBreaks()">↻</button></div>
-      <table class="dt"><thead><tr><th>Agent</th><th>Started</th><th>Duration</th><th>Status</th></tr></thead>
-      <tbody id="breaks-tbody"><tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:32px">Loading…</td></tr></tbody></table>
-    </div>
-  </div>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 
-  <!-- DEVIATION ALARMS -->
-  <div class="view" id="view-alarms">
-    <div class="g3 gap">
-      <div class="stat red"><div class="stat-lbl">Active Alarms</div><div class="stat-val" id="al-count">0</div></div>
-      <div class="stat yellow"><div class="stat-lbl">Late Arrivals</div><div class="stat-val" id="al-late">0</div></div>
-      <div class="stat"><div class="stat-lbl">Break Overruns</div><div class="stat-val" id="al-brk">0</div></div>
-    </div>
-    <div class="panel gap">
-      <div class="panel-hdr">
-        <div class="panel-title">Alarm Feed</div>
-        <div style="display:flex;gap:8px"><button class="btn btn-g btn-sm" onclick="clearAlarms()">Clear All</button><button class="bicon" onclick="checkDeviations()">↻</button></div>
-      </div>
-      <div id="alarm-feed"><div style="color:var(--text-3);font-size:13px;text-align:center;padding:40px">No active alarms.</div></div>
-    </div>
-    <div class="panel">
-      <div class="panel-title">Alarm Thresholds</div>
-      <div class="g2">
-        <div class="field"><label>Late Arrival Threshold (min)</label><input type="number" id="thresh-late" value="5" min="1" max="60"/></div>
-        <div class="field"><label>Break Overrun Threshold (min)</label><input type="number" id="thresh-break" value="15" min="5" max="60"/></div>
-      </div>
-      <button class="btn btn-p" onclick="saveThresholds()">Save Thresholds</button>
-    </div>
-  </div>
-
-  <!-- SHRINKAGE -->
-  <div class="view" id="view-shrinkage">
-    <div class="g2 gap">
-      <div class="panel" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px">
-        <div class="panel-title" style="text-align:center">Today's Shrinkage Rate</div>
-        <div id="shrink-pct" style="font-family:var(--mono);font-size:48px;font-weight:700;letter-spacing:-2px;color:var(--yellow)">--%</div>
-        <div style="font-size:12px;color:var(--text-2);margin-top:6px;text-align:center">Unplanned time lost ÷ Scheduled time</div>
-      </div>
-      <div class="panel">
-        <div class="panel-title">Breakdown</div>
-        <table class="dt"><thead><tr><th>Category</th><th>Minutes Lost</th><th>% of Schedule</th></tr></thead>
-        <tbody id="shrink-breakdown"></tbody></table>
-      </div>
-    </div>
-    <div class="panel">
-      <div class="panel-hdr"><div class="panel-title">By Agent — Today</div><button class="bicon" onclick="loadShrinkage()">↻</button></div>
-      <table class="dt"><thead><tr><th>Agent</th><th>Scheduled (h)</th><th>Time Lost (min)</th><th>Shrinkage %</th><th>Rating</th></tr></thead>
-      <tbody id="shrink-agents"></tbody></table>
-    </div>
-  </div>
-
-  <!-- FORECAST -->
-  <div class="view" id="view-forecast">
-    <div class="g2 gap">
-      <div class="panel">
-        <div class="panel-title">Forecast vs Actual — Today</div>
-        <div class="fc-chart" id="fc-chart"><div style="color:var(--text-3);font-size:12px;margin:auto">No forecast data yet.</div></div>
-        <div style="display:flex;gap:16px;margin-top:10px">
-          <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-2)"><span style="width:10px;height:10px;border-radius:2px;background:var(--accent);display:inline-block"></span>Forecasted</span>
-          <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-2)"><span style="width:10px;height:10px;border-radius:2px;background:var(--green);display:inline-block"></span>Actual</span>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="panel-title">Add Forecast Entry</div>
-        <div class="field"><label>Date</label><input type="date" id="fc-date"/></div>
-        <div class="frow">
-          <div class="field"><label>Hour</label><select id="fc-hour"></select></div>
-          <div class="field"><label>Forecasted Calls</label><input type="number" id="fc-calls" placeholder="e.g. 45" min="0"/></div>
-          <div class="field"><label>Agents Needed</label><input type="number" id="fc-agents" placeholder="e.g. 4" min="1"/></div>
-        </div>
-        <button class="btn btn-p" onclick="saveForecast()" style="width:100%">Save Entry</button>
-        <div style="margin-top:12px">
-          <div class="panel-title">Update Actual Calls</div>
-          <div class="frow">
-            <div class="field"><label>Date</label><input type="date" id="fc-act-date"/></div>
-            <div class="field"><label>Hour</label><select id="fc-act-hour"></select></div>
-            <div class="field"><label>Actual Calls</label><input type="number" id="fc-actual" placeholder="e.g. 41" min="0"/></div>
-          </div>
-          <button class="btn btn-g btn-sm" onclick="saveActual()" style="width:100%">Update Actual</button>
-        </div>
-      </div>
-    </div>
-    <div class="panel">
-      <div class="panel-hdr"><div class="panel-title">Forecast Log</div><button class="bicon" onclick="loadForecast()">↻</button></div>
-      <table class="dt"><thead><tr><th>Date</th><th>Hour</th><th>Forecasted</th><th>Agents Needed</th><th>Actual</th><th>Variance</th></tr></thead>
-      <tbody id="fc-tbody"></tbody></table>
-    </div>
-  </div>
-
-  <!-- CALL SUMMARY -->
-  <div class="view" id="view-calls">
-    <div class="g4 gap">
-      <div class="stat blue"><div class="stat-lbl">Total Calls</div><div class="stat-val" id="cs-total">0</div></div>
-      <div class="stat green"><div class="stat-lbl">Handled</div><div class="stat-val" id="cs-handled">0</div></div>
-      <div class="stat red"><div class="stat-lbl">Abandoned</div><div class="stat-val" id="cs-aband">0</div></div>
-      <div class="stat yellow"><div class="stat-lbl">Avg Handle Time</div><div class="stat-val" id="cs-aht">--</div><div class="stat-sub">minutes</div></div>
-    </div>
-    <div class="g2 gap">
-      <div class="panel">
-        <div class="panel-title">Log Call Summary (Hourly)</div>
-        <div class="frow"><div class="field"><label>Date</label><input type="date" id="cs-date"/></div><div class="field"><label>Hour</label><select id="cs-hour"></select></div></div>
-        <div class="frow">
-          <div class="field"><label>Total Calls</label><input type="number" id="cs-in-total" min="0" placeholder="0"/></div>
-          <div class="field"><label>Handled</label><input type="number" id="cs-in-handled" min="0" placeholder="0"/></div>
-        </div>
-        <div class="frow">
-          <div class="field"><label>Abandoned</label><input type="number" id="cs-in-aband" min="0" placeholder="0"/></div>
-          <div class="field"><label>AHT (min)</label><input type="number" id="cs-in-aht" min="0" step="0.1" placeholder="0.0"/></div>
-        </div>
-        <div style="display:flex;gap:8px">
-          <button class="btn btn-p" style="flex:1" onclick="saveCallSummary()">Save Entry</button>
-          <label class="btn btn-g" style="cursor:pointer">📂 CSV<input type="file" accept=".csv" style="display:none" onchange="importCSV(this)"/></label>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="panel-title">Per-Agent Call Log</div>
-        <div class="field"><label>Agent</label><select id="cs-agent"></select></div>
-        <div class="frow">
-          <div class="field"><label>Date</label><input type="date" id="cs-ag-date"/></div>
-          <div class="field"><label>Calls Handled</label><input type="number" id="cs-ag-calls" min="0" placeholder="0"/></div>
-          <div class="field"><label>AHT (min)</label><input type="number" id="cs-ag-aht" min="0" step="0.1" placeholder="0"/></div>
-        </div>
-        <button class="btn btn-p" onclick="saveAgentCalls()" style="width:100%">Log Agent Calls</button>
-        <div style="margin-top:16px">
-          <div class="panel-title">Agent Call History</div>
-          <table class="dt"><thead><tr><th>Agent</th><th>Date</th><th>Calls</th><th>AHT</th></tr></thead>
-          <tbody id="ag-calls-tbody"><tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:16px">No data</td></tr></tbody></table>
-        </div>
-      </div>
-    </div>
-    <div class="panel">
-      <div class="panel-hdr"><div class="panel-title">Hourly Call Log</div><button class="bicon" onclick="loadCalls()">↻</button></div>
-      <table class="dt"><thead><tr><th>Date</th><th>Hour</th><th>Total</th><th>Handled</th><th>Abandoned</th><th>AHT</th><th>Abandon %</th></tr></thead>
-      <tbody id="cs-tbody"><tr><td colspan="7" style="text-align:center;color:var(--text-3);padding:32px">No call data yet.</td></tr></tbody></table>
-    </div>
-  </div>
-
-  <!-- ADMIN: LOCK SCREEN -->
-  <div class="view" id="view-admin">
-
-    <!-- LOCK SCREEN (shown when logged out) -->
-    <div id="admin-lock" style="display:flex;align-items:center;justify-content:center;min-height:70vh">
-      <div style="width:100%;max-width:360px">
-        <div style="text-align:center;margin-bottom:32px">
-          <div style="font-size:40px;margin-bottom:12px">🔒</div>
-          <div style="font-size:20px;font-weight:700;letter-spacing:-0.3px">Admin Access</div>
-          <div style="color:var(--text-2);font-size:13px;margin-top:6px">Enter your credentials to continue</div>
-        </div>
-        <div class="panel">
-          <div class="field"><label>Username / ID</label>
-            <input id="admin-user-input" type="text" placeholder="Username or Employee ID" autocomplete="username"
-              onkeydown="if(event.key==='Enter')document.getElementById('admin-pw-input').focus()"/>
-          </div>
-          <div class="field"><label>Password</label>
-            <input id="admin-pw-input" type="password" placeholder="Password" autocomplete="current-password"
-              onkeydown="if(event.key==='Enter')attemptAdminLogin()"/>
-          </div>
-          <div id="admin-lock-error" style="color:var(--red);font-size:12px;margin-bottom:12px;display:none">Incorrect credentials. Try again.</div>
-          <button class="btn btn-p" onclick="attemptAdminLogin()" style="width:100%">Unlock</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ADMIN PANEL (shown when unlocked) -->
-    <div id="admin-panel" style="display:none">
-
-      <!-- Session bar -->
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm)">
-        <div style="display:flex;align-items:center;gap:10px">
-          <span id="admin-role-badge" class="pill p-blue"><span class="pdot"></span>Admin</span>
-          <span style="font-size:13px;color:var(--text-2)">Logged in as <strong id="admin-role-label" style="color:var(--text)">Admin</strong></span>
-        </div>
-        <button class="btn btn-g btn-sm" onclick="adminLogout()">🔒 Lock</button>
-      </div>
-
-      <!-- TABS — Super Admin sees extra tab -->
-      <div class="tab-bar">
-        <button class="tab-btn active" onclick="switchTab(event,'tab-agents')">👤 Agents</button>
-        <button class="tab-btn" onclick="switchTab(event,'tab-schedules')">📅 Schedules</button>
-        <button class="tab-btn super-only" onclick="switchTab(event,'tab-users')" style="display:none">🛡 Admin Users</button>
-        <button class="tab-btn super-only" onclick="switchTab(event,'tab-settings')" style="display:none">⚙ Settings</button>
-      </div>
-
-      <!-- TAB: AGENTS -->
-      <div class="tab-pane active" id="tab-agents">
-        <div class="g2">
-          <div class="panel">
-            <div class="panel-title">Add Agent</div>
-            <div class="field"><label>Full Name</label><input id="ag-name" type="text" placeholder="Jane Smith"/></div>
-            <div class="field"><label>Employee ID</label>
-              <div class="frow"><input id="ag-id" type="text" inputmode="numeric" maxlength="6" placeholder="e.g. 482910" style="flex:1"/><button class="btn btn-g btn-sm" onclick="genPIN('ag-id')">⚄ Random</button></div>
-            </div>
-            <div class="frow">
-              <div class="field"><label>Department</label><input id="ag-dept" type="text" placeholder="Support"/></div>
-              <div class="field"><label>Hire Date</label><input id="ag-hire" type="date"/></div>
-            </div>
-            <div class="frow">
-              <div class="field"><label>Phone</label><input id="ag-phone" type="text" placeholder="555-000-0000"/></div>
-              <div class="field"><label>Weekly Hours</label>
-                <select id="ag-weekly">
-                  <option value="40">40h — Full Time</option>
-                  <option value="37.5">37.5h</option>
-                  <option value="32">32h</option>
-                  <option value="24">24h — Part Time</option>
-                  <option value="20">20h — Part Time</option>
-                </select>
-              </div>
-            </div>
-            <button class="btn btn-p" id="btn-add-ag" onclick="addAgent()" style="width:100%;margin-top:4px">Add Agent</button>
-          </div>
-          <div class="panel">
-            <div class="panel-hdr"><div class="panel-title">Agent Roster</div><button class="bicon" onclick="loadRoster()">↻</button></div>
-            <table class="dt"><thead><tr><th>Name</th><th>ID</th><th>Dept</th><th>Status</th><th></th></tr></thead>
-            <tbody id="roster-tbody"><tr><td colspan="5" style="text-align:center;color:var(--text-3);padding:24px">Loading…</td></tr></tbody></table>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB: SCHEDULES -->
-      <div class="tab-pane" id="tab-schedules">
-        <div class="panel gap">
-          <div class="panel-title">Bulk Schedule Builder</div>
-          <!-- Step 1: Agent + Month -->
-          <div class="frow" style="margin-bottom:16px">
-            <div class="field"><label>Agent</label><select id="sch-agent"><option value="">— Select Agent —</option></select></div>
-            <div class="field"><label>View Month</label><input type="month" id="sch-month"/></div>
-            <div style="display:flex;align-items:flex-end;padding-bottom:14px">
-              <button class="btn btn-g btn-sm" onclick="loadBulkCal()">Load Calendar</button>
-            </div>
-          </div>
-
-          <!-- Mode tabs -->
-          <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
-            <button class="btn btn-p btn-sm" id="mode-click" onclick="setBulkMode('click')">☑ Click Days</button>
-            <button class="btn btn-g btn-sm" id="mode-pattern" onclick="setBulkMode('pattern')">📅 Day Pattern</button>
-            <button class="btn btn-g btn-sm" id="mode-range" onclick="setBulkMode('range')">↔ Date Range</button>
-          </div>
-
-          <!-- MODE: CLICK TO SELECT -->
-          <div id="bulk-click-mode">
-            <div style="font-size:12px;color:var(--text-2);margin-bottom:8px">Click days to select/deselect. Selected days shown in blue.</div>
-            <div id="bulk-cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:12px"></div>
-            <div id="bulk-selected-count" style="font-size:12px;color:var(--text-2);margin-bottom:12px">0 days selected</div>
-          </div>
-
-          <!-- MODE: DAY PATTERN -->
-          <div id="bulk-pattern-mode" style="display:none">
-            <div style="font-size:12px;color:var(--text-2);margin-bottom:10px">Select which days of the week, then choose a date range to apply the pattern.</div>
-            <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap">
-              ${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((d,i)=>`
-                <button class="btn btn-g btn-sm dow-btn" data-dow="${i}" onclick="toggleDow(${i},this)" style="min-width:44px">${d}</button>
-              `).join('')}
-            </div>
-            <div class="frow">
-              <div class="field"><label>From Date</label><input type="date" id="pat-from"/></div>
-              <div class="field"><label>To Date</label><input type="date" id="pat-to"/></div>
-            </div>
-            <button class="btn btn-g btn-sm" onclick="applyPattern()" style="margin-bottom:12px">Generate Selected Days</button>
-            <div id="pattern-preview" style="font-size:12px;color:var(--text-2)"></div>
-          </div>
-
-          <!-- MODE: DATE RANGE -->
-          <div id="bulk-range-mode" style="display:none">
-            <div style="font-size:12px;color:var(--text-2);margin-bottom:10px">Select a start and end date. Optionally exclude weekends.</div>
-            <div class="frow">
-              <div class="field"><label>From Date</label><input type="date" id="rng-from"/></div>
-              <div class="field"><label>To Date</label><input type="date" id="rng-to"/></div>
-            </div>
-            <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
-              <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer">
-                <input type="checkbox" id="rng-skip-weekends" checked/> Skip weekends
-              </label>
-            </div>
-            <button class="btn btn-g btn-sm" onclick="applyRange()">Generate Selected Days</button>
-            <div id="range-preview" style="font-size:12px;color:var(--text-2);margin-top:8px"></div>
-          </div>
-
-          <hr style="border:none;border-top:1px solid var(--border);margin:16px 0"/>
-
-          <!-- Shift Details (shared across all modes) -->
-          <div style="font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:12px">Shift Details</div>
-          <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
-            <button class="btn btn-g btn-sm" onclick="applyShiftPreset('8-5')">8am–5pm</button>
-            <button class="btn btn-g btn-sm" onclick="applyShiftPreset('9-6')">9am–6pm</button>
-            <button class="btn btn-g btn-sm" onclick="applyShiftPreset('7-4')">7am–4pm</button>
-            <button class="btn btn-g btn-sm" onclick="applyShiftPreset('off')">Day Off</button>
-          </div>
-          <div id="shift-detail-fields">
-            <div class="frow">
-              <div class="field"><label>Shift Start</label><input type="time" id="bs-start" value="08:00"/></div>
-              <div class="field"><label>Shift End</label><input type="time" id="bs-end" value="17:00"/></div>
-              <div class="field"><label>Lunch Start</label><input type="time" id="bs-lunch-s" value="12:00"/></div>
-              <div class="field"><label>Lunch End</label><input type="time" id="bs-lunch-e" value="13:00"/></div>
-            </div>
-            <div class="frow">
-              <div class="field"><label>Break 1</label><input type="time" id="bs-brk1" value="10:00"/></div>
-              <div class="field"><label>Break 2</label><input type="time" id="bs-brk2" value="15:00"/></div>
-            </div>
-          </div>
-
-          <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
-            <button class="btn btn-p" onclick="applyBulkSchedule()" style="flex:1">Apply to Selected Days</button>
-            <button class="btn btn-g btn-sm" onclick="clearBulkSelection()">Clear</button>
-          </div>
-          <div id="bulk-result" style="margin-top:10px;font-size:13px"></div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-hdr"><div class="panel-title">Schedule Log</div><button class="bicon" onclick="loadSchedules()">↻</button></div>
-          <table class="dt"><thead><tr><th>Agent</th><th>Date</th><th>Start</th><th>End</th><th>Lunch</th><th>Hours</th><th></th></tr></thead>
-          <tbody id="sch-tbody"><tr><td colspan="7" style="text-align:center;color:var(--text-3);padding:24px">No schedules yet.</td></tr></tbody></table>
-        </div>
-      </div>
-
-      <!-- TAB: ADMIN USERS (Super Admin only) -->
-      <div class="tab-pane" id="tab-users">
-        <div class="g2">
-          <div class="panel">
-            <div class="panel-title">Add Admin User</div>
-            <div class="field"><label>Full Name</label><input id="mgr-name" type="text" placeholder="John Manager"/></div>
-            <div class="field"><label>Username</label><input id="mgr-user" type="text" placeholder="john@company.com"/></div>
-            <div class="field"><label>Password</label>
-              <div class="frow"><input id="mgr-pw" type="text" placeholder="Set a password" style="flex:1"/><button class="btn btn-g btn-sm" onclick="genPIN('mgr-pw')">⚄ Random</button></div>
-            </div>
-            <div class="field"><label>Role</label>
-              <select id="mgr-role">
-                <option value="admin">Admin — Can manage agents, schedules, calls</option>
-                <option value="superadmin">Super Admin — Full access including user management</option>
-              </select>
-            </div>
-            <button class="btn btn-p" onclick="addManager()" style="width:100%">Add Admin User</button>
-          </div>
-          <div class="panel">
-            <div class="panel-hdr"><div class="panel-title">Admin Users</div><button class="bicon" onclick="loadManagers()">↻</button></div>
-            <table class="dt"><thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Added</th><th></th></tr></thead>
-            <tbody id="mgr-tbody"><tr><td colspan="5" style="text-align:center;color:var(--text-3);padding:24px">Loading…</td></tr></tbody></table>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB: SETTINGS (Super Admin only) -->
-      <div class="tab-pane" id="tab-settings">
-        <div class="g2">
-          <div class="panel">
-            <div class="panel-title">Change Admin Password</div>
-            <div style="background:var(--yellow-dim);border:1px solid rgba(245,200,66,0.2);border-radius:var(--r-sm);padding:12px;margin-bottom:16px;font-size:12px;color:var(--yellow)">
-              ⚠ This changes the password for the <strong>Admin</strong> role. Super Admin password is changed separately below.
-            </div>
-            <div class="field"><label>New Admin Password</label><input id="set-admin-pw" type="text" placeholder="New password"/></div>
-            <button class="btn btn-p" onclick="changePassword('admin')" style="width:100%">Update Admin Password</button>
-          </div>
-          <div class="panel">
-            <div class="panel-title">Change Super Admin Password</div>
-            <div style="background:var(--red-dim);border:1px solid rgba(240,80,80,0.2);border-radius:var(--r-sm);padding:12px;margin-bottom:16px;font-size:12px;color:var(--red)">
-              🔴 Changing this locks out all Super Admins using the old password.
-            </div>
-            <div class="field"><label>New Super Admin Password</label><input id="set-super-pw" type="text" placeholder="New password"/></div>
-            <button class="btn btn-p" onclick="changePassword('superadmin')" style="width:100%">Update Super Admin Password</button>
-          </div>
-        </div>
-        <div class="panel" style="margin-top:16px">
-          <div class="panel-title">Alarm Thresholds</div>
-          <div class="g2">
-            <div class="field"><label>Late Arrival Threshold (min)</label><input type="number" id="thresh-late" value="5" min="1" max="60"/></div>
-            <div class="field"><label>Break Overrun Threshold (min)</label><input type="number" id="thresh-break" value="15" min="5" max="60"/></div>
-          </div>
-          <button class="btn btn-p" onclick="saveThresholds()">Save Thresholds</button>
-        </div>
-      </div>
-
-    </div><!-- /admin-panel -->
-  </div><!-- /view-admin -->
-
-</div><!-- /main -->
-</div><!-- /shell -->
-
-<!-- ── PROFILE DRAWER ── -->
-<div id="profile-overlay" onclick="closeProfile()"></div>
-<div id="profile-drawer">
-  <div class="drawer-header">
-    <div style="font-size:14px;font-weight:600" id="drawer-title">Agent Profile</div>
-    <div style="display:flex;gap:8px">
-      <button class="btn btn-g btn-sm" onclick="closeProfile()">✕ Close</button>
-    </div>
-  </div>
-  <div class="drawer-body" id="drawer-body">
-    <div style="text-align:center;padding:60px;color:var(--text-3)">Loading profile…</div>
-  </div>
-</div>
-
-<div id="toast"></div>
-<div id="moverlay" onclick="if(event.target===this)closeModal()">
-  <div id="modal">
-    <h3 id="modal-title"></h3>
-    <div id="modal-body"></div>
-    <div class="mfooter">
-      <button class="btn btn-g" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-p" id="modal-ok">Confirm</button>
-    </div>
-  </div>
-</div>
-
-<script>
-/* ── SUPABASE ── */
-const SB_URL = 'https://lcrqqbnvgadkluccnmja.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjcnFxYm52Z2Fka2x1Y2NubWphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwNjU0MTYsImV4cCI6MjA5NzY0MTQxNn0.Gq4nCyJAx7TmngqQLtlDN4BDpBJw3ZFatZbZphKDUI4';
-const BASE = SB_URL+'/rest/v1';
-const H = {'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=representation'};
-
-async function GET(t,p=''){const r=await fetch(`${BASE}/${t}?${p}`,{headers:H});if(!r.ok)throw new Error(await r.text());return r.json();}
-async function POST(t,b){const r=await fetch(`${BASE}/${t}`,{method:'POST',headers:H,body:JSON.stringify(b)});if(!r.ok)throw new Error(await r.text());return r.json();}
-async function PATCH(t,p,b){const r=await fetch(`${BASE}/${t}?${p}`,{method:'PATCH',headers:H,body:JSON.stringify(b)});if(!r.ok)throw new Error(await r.text());return r.json();}
-async function DEL(t,p){const r=await fetch(`${BASE}/${t}?${p}`,{method:'DELETE',headers:H});if(!r.ok)throw new Error(await r.text());}
-
-/* ── STATE ── */
-let agents=[], alarms=[];
-let threshLate  = +localStorage.getItem('tl')||5;
-let threshBreak = +localStorage.getItem('tb')||15;
-
-/* ── CLOCK ── */
-function tick(){
-  const n=new Date();
-  document.getElementById('live-clock').textContent=n.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  document.getElementById('live-date').textContent=n.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'});
-}
-setInterval(tick,1000);tick();
-
-/* ── NAV ── */
-const TITLES={floor:'Floor Story',kiosk:'Agent Login Kiosk',breaks:'Break & Lunch Tracking',alarms:'Deviation Alarms',shrinkage:'Shrinkage Calculator',forecast:'Forecast',calls:'Call Summary',admin:'Admin'};
-function gotoView(v){
-  document.querySelectorAll('.view').forEach(e=>e.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active'));
-  document.getElementById('view-'+v).classList.add('active');
-  document.querySelector(`[data-view="${v}"]`)?.classList.add('active');
-  document.getElementById('topbar-title').textContent=TITLES[v]||v;
-  const loaders={floor:loadFloor,breaks:loadBreaks,alarms:()=>{checkDeviations();},shrinkage:loadShrinkage,forecast:()=>{loadForecast();populateHours('fc-hour','fc-act-hour');},calls:()=>{loadCalls();loadAgentCalls();populateHours('cs-hour');},admin:()=>{if(adminSession)showAdminPanel();},kiosk:resetKiosk};
-  loaders[v]?.();
-}
-function switchTab(e,id){
-  document.querySelectorAll('.tab-pane').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  e.target.classList.add('active');
-}
-
-/* ── TOAST ── */
-let _t;
-function toast(msg,type='success'){const el=document.getElementById('toast');clearTimeout(_t);el.textContent=msg;el.className=`show ${type}`;_t=setTimeout(()=>el.className='',3200);}
-
-/* ── MODAL ── */
-function openModal(title,html,label,fn){
-  document.getElementById('modal-title').textContent=title;
-  document.getElementById('modal-body').innerHTML=html;
-  const ok=document.getElementById('modal-ok');ok.textContent=label;ok.onclick=fn;
-  document.getElementById('moverlay').classList.add('open');
-}
-function closeModal(){document.getElementById('moverlay').classList.remove('open');}
-
-/* ── UTILS ── */
-function eh(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function es(s){return String(s).replace(/'/g,"\\'").replace(/"/g,'\\"');}
-function genPIN(id){document.getElementById(id).value=String(Math.floor(100000+Math.random()*900000));}
-function today(){return new Date().toISOString().slice(0,10);}
-function fmtT(iso){return new Date(iso).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
-function fmtD(iso){return new Date(iso).toLocaleDateString([],{month:'short',day:'numeric'});}
-function minSince(iso){return Math.floor((Date.now()-new Date(iso))/60000);}
-function populateHours(...ids){
-  ids.forEach(id=>{const el=document.getElementById(id);if(!el)return;el.innerHTML='';for(let h=0;h<24;h++){const l=new Date(2000,0,1,h).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});el.innerHTML+=`<option value="${h}">${l}</option>`;}el.value=new Date().getHours();});
-}
-function avatarColor(n){const c=['#3f7fff','#22d47a','#f07830','#a855f7','#22d4d4','#f5c842','#f05050'];let h=0;for(let x of n)h=(h*31+x.charCodeAt(0))%c.length;return c[h];}
-function spill(s){const m={OUT:{c:'p-gray',l:'Out'},IN:{c:'p-green',l:'On Shift'},ON_BREAK:{c:'p-yellow',l:'On Break'}};const p=m[s]||m.OUT;return `<span class="pill ${p.c}"><span class="pdot"></span>${p.l}</span>`;}
-
-/* ── REFRESH ── */
-function refreshAll(){loadFloor();checkDeviations();toast('↻ Refreshed');}
-
-/* ── FLOOR STORY ── */
-async function loadFloor(){
-  try{
-    agents=await GET('profiles','select=*&order=full_name.asc');
-    const on=agents.filter(a=>a.current_state==='IN').length;
-    const br=agents.filter(a=>a.current_state==='ON_BREAK').length;
-    const out=agents.filter(a=>a.current_state==='OUT').length;
-    document.getElementById('fs-on').textContent=on;
-    document.getElementById('fs-break').textContent=br;
-    document.getElementById('fs-out').textContent=out;
-    document.getElementById('fs-alarms').textContent=alarms.length;
-    const grid=document.getElementById('agent-grid');
-    if(!agents.length){grid.innerHTML='<div style="color:var(--text-3);font-size:13px;grid-column:1/-1;text-align:center;padding:40px">No agents yet. Add them in Admin.</div>';return;}
-    grid.innerHTML=agents.map(a=>{
-      const isAlarm=alarms.some(al=>al.aid===a.employee_id);
-      const col=avatarColor(a.full_name);
-      const init=a.full_name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-      const sc={IN:'p-green',ON_BREAK:'p-yellow',OUT:'p-gray'}[a.current_state];
-      const sl={IN:'On Shift',ON_BREAK:'On Break',OUT:'Clocked Out'}[a.current_state];
-      return `<div class="acard${isAlarm?' alarm':''}">
-        <div class="avatar" style="background:${col}">${eh(init)}</div>
-        <div class="aname">${eh(a.full_name)}</div>
-        <span class="pill ${sc}" style="margin:0 auto"><span class="pdot"></span>${sl}</span>
-        ${isAlarm?'<div style="color:var(--red);font-size:11px;margin-top:6px" class="pulse">⚠ Alarm</div>':''}
-        <div class="atime">ID: ${eh(a.employee_id)}</div>
-      </div>`;
-    }).join('');
-  }catch(e){console.error('Floor error:',e);}
-}
-
-/* ── KIOSK ── */
-async function lookupEmployee(){
-  const inp=document.getElementById('id-inp'),st=document.getElementById('kstatus'),btn=document.getElementById('btn-lookup'),id=inp.value.trim();
-  if(!id)return;
-  btn.disabled=true;st.innerHTML='<div class="spinner"></div>';
-  try{
-    const rows=await GET('profiles',`employee_id=eq.${encodeURIComponent(id)}&select=full_name,current_state&limit=1`);
-    if(!rows||!rows.length)st.innerHTML='<div class="denied"><span style="font-size:36px;display:block;margin-bottom:10px">⛔</span><div style="color:var(--red);font-size:15px;font-weight:700">Access Denied: Unauthorized ID</div><div style="color:var(--text-2);font-size:13px;margin-top:4px">This ID is not registered.</div></div>';
-    else renderActions(st,id,rows[0].full_name,rows[0].current_state);
-  }catch(e){st.innerHTML='';toast('Connection error.','error');}
-  finally{btn.disabled=false;}
-}
-
-function renderActions(el,id,name,state){
-  const bc={OUT:'p-gray',IN:'p-green',ON_BREAK:'p-yellow'}[state];
-  const bl={OUT:'Clocked Out',IN:'On Shift',ON_BREAK:'On Break'}[state];
-  let btns='';
-  if(state==='OUT')btns=`<button class="btn-act b-start" onclick="punch('${es(id)}','${es(name)}','START_SHIFT','IN')">▶ Start Shift</button>`;
-  else if(state==='IN')btns=`<button class="btn-act b-break" onclick="punch('${es(id)}','${es(name)}','START_BREAK','ON_BREAK')">⏸ Take Break</button><button class="btn-act b-end" onclick="punch('${es(id)}','${es(name)}','END_SHIFT','OUT')">◼ End Shift</button>`;
-  else btns=`<button class="btn-act b-return" onclick="punch('${es(id)}','${es(name)}','RETURN_FROM_BREAK','IN')">↩ Return From Break</button><button class="btn-act b-end" onclick="punch('${es(id)}','${es(name)}','END_SHIFT','OUT')">◼ End Shift (Force Logout)</button>`;
-  el.innerHTML=`<div style="width:100%"><div class="kname">${eh(name)}</div><div class="kbadge"><span class="pill ${bc}"><span class="pdot"></span>${bl}</span></div><div class="kbtns">${btns}</div></div>`;
-}
-
-async function punch(id,name,action,newState){
-  document.querySelectorAll('.btn-act').forEach(b=>b.disabled=true);
-  try{
-    await POST('time_logs',{employee_id:id,action_type:action});
-    await PATCH('profiles',`employee_id=eq.${encodeURIComponent(id)}`,{current_state:newState});
-    const lb={START_SHIFT:'Start Shift',START_BREAK:'Break Started',RETURN_FROM_BREAK:'Returned From Break',END_SHIFT:'Shift Ended'};
-    toast(`✓ ${lb[action]} at ${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}`,'success');
-    resetKiosk();loadFloor();checkDeviations();
-  }catch(e){document.querySelectorAll('.btn-act').forEach(b=>b.disabled=false);toast('Error recording punch.','error');}
-}
-
-function resetKiosk(){
-  const i=document.getElementById('id-inp'),s=document.getElementById('kstatus');
-  if(i)i.value='';if(s)s.innerHTML='';
-  setTimeout(()=>document.getElementById('id-inp')?.focus(),100);
-}
-
-/* ── BREAKS ── */
-async function loadBreaks(){
-  const tbody=document.getElementById('breaks-tbody');
-  tbody.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:24px">Loading…</td></tr>';
-  try{
-    const logs=await GET('time_logs',`action_type=in.(START_BREAK,RETURN_FROM_BREAK,END_SHIFT)&logged_at=gte.${today()}T00:00:00&order=logged_at.desc&select=*,profiles(full_name)`);
-    const byAg={};
-    logs.forEach(l=>{
-      if(!byAg[l.employee_id])byAg[l.employee_id]={name:l.profiles?.full_name||l.employee_id,starts:[],ends:[]};
-      if(l.action_type==='START_BREAK')byAg[l.employee_id].starts.push(l.logged_at);
-      if(l.action_type==='RETURN_FROM_BREAK'||l.action_type==='END_SHIFT')byAg[l.employee_id].ends.push(l.logged_at);
-    });
-    const sessions=[];let totalMin=0,bCount=0,overdue=0;
-    Object.values(byAg).forEach(ag=>{
-      ag.starts.forEach((s,i)=>{
-        const ended=ag.ends[i];
-        const dur=ended?Math.floor((new Date(ended)-new Date(s))/60000):minSince(s);
-        const ongoing=!ended;
-        if(!ongoing){totalMin+=dur;bCount++;}
-        if(dur>threshBreak)overdue++;
-        sessions.push({name:ag.name,start:s,dur,ongoing});
-      });
-    });
-    document.getElementById('bl-now').textContent=agents.filter(a=>a.current_state==='ON_BREAK').length;
-    document.getElementById('bl-avg').textContent=bCount?Math.round(totalMin/bCount):'--';
-    document.getElementById('bl-over').textContent=overdue;
-    tbody.innerHTML=sessions.length?sessions.map(s=>{
-      const cls=s.ongoing?'p-orange':s.dur>threshBreak?'p-red':'p-green';
-      const lbl=s.ongoing?'Ongoing':s.dur>threshBreak?'Overrun':'Returned';
-      return `<tr><td>${eh(s.name)}</td><td>${fmtT(s.start)}</td><td><span class="mono">${s.dur} min</span></td><td><span class="pill ${cls}"><span class="pdot"></span>${lbl}</span></td></tr>`;
-    }).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:32px">No break activity today.</td></tr>';
-  }catch(e){tbody.innerHTML='<tr><td colspan="4" style="color:var(--red);padding:16px">Error loading break data.</td></tr>';console.error(e);}
-}
-
-/* ── DEVIATION ALARMS ── */
-async function checkDeviations(){
-  if(!agents.length){try{agents=await GET('profiles','select=*');}catch(e){return;}}
-  const logs=[];
-  try{const l=await GET('time_logs',`logged_at=gte.${today()}T00:00:00&order=logged_at.asc&select=*,profiles(full_name)`);logs.push(...l);}catch(e){return;}
-  const newAlarms=[];
-  // Break overruns
-  const brkStart={};
-  logs.forEach(l=>{
-    if(l.action_type==='START_BREAK')brkStart[l.employee_id]=l.logged_at;
-    if(l.action_type==='RETURN_FROM_BREAK'||l.action_type==='END_SHIFT')delete brkStart[l.employee_id];
-  });
-  Object.entries(brkStart).forEach(([id,start])=>{
-    const dur=minSince(start);
-    if(dur>threshBreak){
-      const name=logs.find(l=>l.employee_id===id)?.profiles?.full_name||id;
-      newAlarms.push({id:'b-'+id,aid:id,type:'break',title:`${name} — Break Overrun`,detail:`On break ${dur} min (limit: ${threshBreak} min)`,time:new Date().toISOString()});
-    }
-  });
-  // Late arrivals
-  try{
-    const scheds=await GET('schedules',`date=eq.${today()}&select=*,profiles(full_name)`);
-    scheds.forEach(sc=>{
-      const firstIn=logs.find(l=>l.employee_id===sc.employee_id&&l.action_type==='START_SHIFT');
-      if(!firstIn){
-        const sTime=new Date(`${today()}T${sc.shift_start}`);
-        const late=Math.floor((Date.now()-sTime)/60000);
-        if(late>threshLate){
-          const name=sc.profiles?.full_name||sc.employee_id;
-          newAlarms.push({id:'l-'+sc.employee_id,aid:sc.employee_id,type:'late',title:`${name} — Late Arrival`,detail:`${late} min past scheduled ${sc.shift_start}`,time:new Date().toISOString()});
-        }
-      }
-    });
-  }catch(e){}
-  alarms=newAlarms;
-  const badge=document.getElementById('alarm-badge');
-  badge.textContent=alarms.length;
-  badge.className=alarms.length?'nav-badge show':'nav-badge';
-  document.getElementById('fs-alarms').textContent=alarms.length;
-  document.getElementById('al-count').textContent=alarms.length;
-  document.getElementById('al-late').textContent=alarms.filter(a=>a.type==='late').length;
-  document.getElementById('al-brk').textContent=alarms.filter(a=>a.type==='break').length;
-  renderAlarms();
-}
-
-function renderAlarms(){
-  const feed=document.getElementById('alarm-feed');
-  if(!alarms.length){feed.innerHTML='<div style="color:var(--text-3);font-size:13px;text-align:center;padding:40px">✓ No active alarms.</div>';return;}
-  feed.innerHTML=alarms.map(a=>`
-    <div class="alarm-row">
-      <div style="font-size:20px">${a.type==='late'?'🕐':'⏱'}</div>
-      <div style="flex:1"><div class="alarm-title pulse">${eh(a.title)}</div><div class="alarm-detail">${eh(a.detail)}</div></div>
-      <div class="alarm-ts">${fmtT(a.time)}</div>
-    </div>`).join('');
-}
-
-function clearAlarms(){alarms=[];renderAlarms();const b=document.getElementById('alarm-badge');b.textContent=0;b.className='nav-badge';document.getElementById('fs-alarms').textContent=0;toast('Alarms cleared');}
-
-function saveThresholds(){
-  threshLate=+document.getElementById('thresh-late').value||5;
-  threshBreak=+document.getElementById('thresh-break').value||15;
-  localStorage.setItem('tl',threshLate);localStorage.setItem('tb',threshBreak);
-  toast('Thresholds saved');checkDeviations();
-}
-
-/* ── SHRINKAGE ── */
-async function loadShrinkage(){
-  try{
-    if(!agents.length)agents=await GET('profiles','select=*');
-    const logs=await GET('time_logs',`logged_at=gte.${today()}T00:00:00&order=logged_at.asc&select=*`);
-    let scheds=[];try{scheds=await GET('schedules',`date=eq.${today()}&select=*`);}catch(e){}
-    let totalSched=0,totalLost=0;const rows=[];
-    agents.forEach(ag=>{
-      const sch=scheds.find(s=>s.employee_id===ag.employee_id);
-      const sh=sch?((new Date(`2000T${sch.shift_end}`)-new Date(`2000T${sch.shift_start}`))/3600000):8;
-      totalSched+=sh;
-      const al=logs.filter(l=>l.employee_id===ag.employee_id);
-      let lost=0,bs=null;
-      al.forEach(l=>{
-        if(l.action_type==='START_BREAK')bs=new Date(l.logged_at);
-        if((l.action_type==='RETURN_FROM_BREAK'||l.action_type==='END_SHIFT')&&bs){const d=(new Date(l.logged_at)-bs)/60000;if(d>threshBreak)lost+=d-threshBreak;bs=null;}
-      });
-      if(bs)lost+=Math.max(0,minSince(bs.toISOString())-threshBreak);
-      const fi=al.find(l=>l.action_type==='START_SHIFT');
-      if(sch&&fi){const late=(new Date(fi.logged_at)-new Date(`${today()}T${sch.shift_start}`))/60000;if(late>threshLate)lost+=late;}
-      totalLost+=lost;
-      const pct=sh>0?((lost/60)/sh*100):0;
-      rows.push({name:ag.full_name,sh,lost:Math.round(lost),pct:pct.toFixed(1)});
-    });
-    const overall=totalSched>0?((totalLost/60)/totalSched*100):0;
-    const col=overall<5?'var(--green)':overall<15?'var(--yellow)':'var(--red)';
-    document.getElementById('shrink-pct').textContent=overall.toFixed(1)+'%';
-    document.getElementById('shrink-pct').style.color=col;
-    const lostBreak=Math.round(totalLost*0.6),lostLate=Math.round(totalLost*0.4);
-    document.getElementById('shrink-breakdown').innerHTML=`
-      <tr><td>Break Overruns</td><td>${lostBreak}</td><td>${totalSched>0?(lostBreak/60/totalSched*100).toFixed(1):0}%</td></tr>
-      <tr><td>Late Arrivals</td><td>${lostLate}</td><td>${totalSched>0?(lostLate/60/totalSched*100).toFixed(1):0}%</td></tr>
-      <tr><td><strong>Total</strong></td><td><strong>${Math.round(totalLost)}</strong></td><td><strong>${overall.toFixed(1)}%</strong></td></tr>`;
-    document.getElementById('shrink-agents').innerHTML=rows.length?rows.map(r=>{
-      const c=r.pct<5?'p-green':r.pct<15?'p-yellow':'p-red';
-      const rt=r.pct<5?'✓ On Track':r.pct<15?'⚠ Watch':'🔴 Review';
-      return `<tr><td>${eh(r.name)}</td><td>${r.sh.toFixed(1)}</td><td>${r.lost}</td><td><span class="pill ${c}"><span class="pdot"></span>${r.pct}%</span></td><td>${rt}</td></tr>`;
-    }).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--text-3);padding:24px">No data. Add schedules first.</td></tr>';
-  }catch(e){console.error('Shrinkage error:',e);}
-}
-
-/* ── FORECAST ── */
-async function loadForecast(){
-  document.getElementById('fc-date').value=today();
-  document.getElementById('fc-act-date').value=today();
-  try{
-    const rows=await GET('forecast_entries','select=*&order=date.desc,hour.asc&limit=100');
-    renderForecastChart(rows.filter(r=>r.date===today()));
-    document.getElementById('fc-tbody').innerHTML=rows.length?rows.map(r=>{
-      const hr=new Date(2000,0,1,r.hour).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-      const v=r.actual_calls!=null?r.actual_calls-r.forecasted_calls:null;
-      const vc=v!=null?(v>=0?'color:var(--green)':'color:var(--red)'):'';
-      return `<tr><td>${fmtD(r.date+'T12:00:00')}</td><td>${hr}</td><td>${r.forecasted_calls}</td><td>${r.agents_needed}</td><td>${r.actual_calls??'—'}</td><td style="${vc}">${v!=null?(v>0?'+':'')+v:'—'}</td></tr>`;
-    }).join(''):'<tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:32px">No forecast entries yet.</td></tr>';
-  }catch(e){console.error('Forecast error:',e);}
-}
-
-function renderForecastChart(rows){
-  const el=document.getElementById('fc-chart');
-  if(!rows.length){el.innerHTML='<div style="color:var(--text-3);font-size:12px;margin:auto">No forecast data for today.</div>';return;}
-  const max=Math.max(...rows.map(r=>Math.max(r.forecasted_calls,r.actual_calls||0)),1);
-  el.innerHTML=rows.slice(0,10).map(r=>{
-    const fh=Math.round((r.forecasted_calls/max)*90);
-    const ah=r.actual_calls!=null?Math.round((r.actual_calls/max)*90):0;
-    const hr=new Date(2000,0,1,r.hour).toLocaleTimeString([],{hour:'numeric'});
-    return `<div class="fb-wrap"><div class="fv">${r.forecasted_calls}</div><div style="display:flex;gap:2px;align-items:flex-end;height:90px"><div class="fb" style="height:${fh}px;background:var(--accent);width:13px"></div>${r.actual_calls!=null?`<div class="fb" style="height:${ah}px;background:var(--green);width:13px"></div>`:''}</div><div class="fl">${hr}</div></div>`;
-  }).join('');
-}
-
-async function saveForecast(){
-  const d=document.getElementById('fc-date').value;
-  const h=+document.getElementById('fc-hour').value;
-  const c=+document.getElementById('fc-calls').value;
-  const a=+document.getElementById('fc-agents').value;
-  if(!d||isNaN(c)||isNaN(a)){toast('Fill all fields','error');return;}
-  try{await POST('forecast_entries',{date:d,hour:h,forecasted_calls:c,agents_needed:a});toast('Forecast saved');loadForecast();}
-  catch(e){toast('Error saving forecast','error');console.error(e);}
-}
-
-async function saveActual(){
-  const d=document.getElementById('fc-act-date').value;
-  const h=+document.getElementById('fc-act-hour').value;
-  const ac=+document.getElementById('fc-actual').value;
-  if(!d||isNaN(ac)){toast('Fill date and actual calls','error');return;}
-  try{
-    await PATCH('forecast_entries',`date=eq.${d}&hour=eq.${h}`,{actual_calls:ac});
-    toast('Actual calls updated');loadForecast();
-  }catch(e){toast('Error updating actual','error');console.error(e);}
-}
-
-/* ── CALL SUMMARY ── */
-async function loadCalls(){
-  document.getElementById('cs-date').value=today();
-  try{
-    const rows=await GET('call_logs','select=*&order=date.desc,hour.asc&limit=200');
-    const td=rows.filter(r=>r.date===today());
-    document.getElementById('cs-total').textContent=td.reduce((s,r)=>s+r.total_calls,0);
-    document.getElementById('cs-handled').textContent=td.reduce((s,r)=>s+r.handled,0);
-    document.getElementById('cs-aband').textContent=td.reduce((s,r)=>s+(r.abandoned||0),0);
-    const aht=td.length?td.reduce((s,r)=>s+(r.avg_handle_time||0),0)/td.length:0;
-    document.getElementById('cs-aht').textContent=aht?aht.toFixed(1):'--';
-    document.getElementById('cs-tbody').innerHTML=rows.length?rows.map(r=>{
-      const ab=r.total_calls>0?((r.abandoned||0)/r.total_calls*100).toFixed(1):0;
-      const hr=new Date(2000,0,1,r.hour).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-      const pc=+ab>10?'p-red':+ab>5?'p-yellow':'p-green';
-      return `<tr><td>${fmtD(r.date+'T12:00:00')}</td><td>${hr}</td><td>${r.total_calls}</td><td>${r.handled}</td><td>${r.abandoned||0}</td><td><span class="mono">${r.avg_handle_time||0} min</span></td><td><span class="pill ${pc}"><span class="pdot"></span>${ab}%</span></td></tr>`;
-    }).join(''):'<tr><td colspan="7" style="text-align:center;color:var(--text-3);padding:32px">No call data yet.</td></tr>';
-  }catch(e){console.error('Calls error:',e);}
-}
-
-async function saveCallSummary(){
-  const d=document.getElementById('cs-date').value;
-  const h=+document.getElementById('cs-hour').value;
-  const t=+document.getElementById('cs-in-total').value||0;
-  const hd=+document.getElementById('cs-in-handled').value||0;
-  const ab=+document.getElementById('cs-in-aband').value||0;
-  const aht=+document.getElementById('cs-in-aht').value||0;
-  if(!d){toast('Select a date','error');return;}
-  try{await POST('call_logs',{date:d,hour:h,total_calls:t,handled:hd,abandoned:ab,avg_handle_time:aht});toast('Call summary saved');loadCalls();}
-  catch(e){toast('Error saving calls','error');console.error(e);}
-}
-
-async function loadAgentCalls(){
-  // populate agent select
-  const sel=document.getElementById('cs-agent');
-  sel.innerHTML='<option value="">— Select Agent —</option>'+agents.map(a=>`<option value="${eh(a.employee_id)}">${eh(a.full_name)}</option>`).join('');
-  document.getElementById('cs-ag-date').value=today();
-  try{
-    const rows=await GET('agent_call_logs','select=*,profiles(full_name)&order=date.desc&limit=50');
-    document.getElementById('ag-calls-tbody').innerHTML=rows.length?rows.map(r=>`<tr><td>${eh(r.profiles?.full_name||r.employee_id)}</td><td>${fmtD(r.date+'T12:00:00')}</td><td>${r.calls_handled}</td><td>${r.avg_handle_time} min</td></tr>`).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:16px">No data</td></tr>';
-  }catch(e){console.error(e);}
-}
-
-async function saveAgentCalls(){
-  const id=document.getElementById('cs-agent').value;
-  const d=document.getElementById('cs-ag-date').value;
-  const c=+document.getElementById('cs-ag-calls').value||0;
-  const aht=+document.getElementById('cs-ag-aht').value||0;
-  if(!id){toast('Select an agent','error');return;}
-  try{await POST('agent_call_logs',{employee_id:id,date:d,calls_handled:c,avg_handle_time:aht});toast('Agent calls saved');loadAgentCalls();}
-  catch(e){toast('Error saving agent calls','error');console.error(e);}
-}
-
-function importCSV(input){
-  const file=input.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=async e=>{
-    const lines=e.target.result.trim().split('\n');
-    const hdr=lines[0].toLowerCase().split(',').map(h=>h.trim());
-    let saved=0;
-    for(let i=1;i<lines.length;i++){
-      const vals=lines[i].split(',').map(v=>v.trim());
-      const row={};hdr.forEach((h,j)=>row[h]=vals[j]);
-      try{await POST('call_logs',{date:row.date||today(),hour:+row.hour||0,total_calls:+row.total_calls||0,handled:+row.handled||0,abandoned:+row.abandoned||0,avg_handle_time:+row.avg_handle_time||0});saved++;}
-      catch(e){console.error('CSV row err',e);}
-    }
-    toast(`✓ Imported ${saved} rows`);loadCalls();
-  };
-  reader.readAsText(file);
-}
-
-/* ── ADMIN AUTH ── */
-let adminSession = null; // null | 'admin' | 'superadmin'
-let adminUsername = '';
-
-// Hardcoded Super Admin — ID: 0001, password: admin1
-const SUPER_ADMIN_ID = '0001';
-const SUPER_ADMIN_PW = 'admin1';
-
-async function getPasswords(){
-  try{
-    const rows = await GET('app_settings','select=key,value&key=in.(admin_password,superadmin_password)');
-    const map = {};
-    rows.forEach(r => map[r.key] = r.value);
-    return {
-      admin:      map['admin_password']      || 'admin',
-      superadmin: map['superadmin_password'] || 'superadmin'
-    };
-  } catch(e){
-    return { admin: 'admin', superadmin: 'superadmin' };
-  }
-}
-
-async function attemptAdminLogin(){
-  const user = (document.getElementById('admin-user-input')?.value||'').trim();
-  const pw   = (document.getElementById('admin-pw-input')?.value||'').trim();
-  const errEl = document.getElementById('admin-lock-error');
-  errEl.style.display = 'none';
-
-  if(!user || !pw){
-    errEl.textContent = 'Please enter your username and password.';
-    errEl.style.display = 'block';
-    return;
-  }
-
-  // Hardcoded Super Admin check (ID 0001 / admin1)
-  if(user === SUPER_ADMIN_ID && pw === SUPER_ADMIN_PW){
-    adminSession  = 'superadmin';
-    adminUsername = 'Super Admin (0001)';
-    document.getElementById('admin-user-input').value = '';
-    document.getElementById('admin-pw-input').value   = '';
-    showAdminPanel();
-    return;
-  }
-
-  // Check against Supabase managers table
-  try{
-    const rows = await GET('managers', `username=eq.${encodeURIComponent(user)}&select=*`);
-    if(rows && rows.length && rows[0].pin_hash === pw){
-      adminSession  = rows[0].role || 'admin';
-      adminUsername = rows[0].full_name || user;
-      document.getElementById('admin-user-input').value = '';
-      document.getElementById('admin-pw-input').value   = '';
-      showAdminPanel();
-      return;
-    }
-  } catch(e){ console.error('Manager lookup error:', e); }
-
-  // Fallback: check app_settings passwords (legacy)
-  const passwords = await getPasswords();
-  if(pw === passwords.superadmin){
-    adminSession  = 'superadmin';
-    adminUsername = user;
-  } else if(pw === passwords.admin){
-    adminSession  = 'admin';
-    adminUsername = user;
-  } else {
-    errEl.textContent = 'Incorrect credentials. Try again.';
-    errEl.style.display = 'block';
-    document.getElementById('admin-pw-input').value = '';
-    return;
-  }
-
-  document.getElementById('admin-user-input').value = '';
-  document.getElementById('admin-pw-input').value   = '';
-  showAdminPanel();
-}
-
-function showAdminPanel(){
-  document.getElementById('admin-lock').style.display = 'none';
-  document.getElementById('admin-panel').style.display = 'block';
-
-  const isSuperAdmin = adminSession === 'superadmin';
-  const badge = document.getElementById('admin-role-badge');
-  const label = document.getElementById('admin-role-label');
-  if(isSuperAdmin){
-    badge.className = 'pill p-purple';
-    badge.innerHTML = '<span class="pdot"></span>Super Admin';
-    label.textContent = adminUsername || 'Super Admin';
-  } else {
-    badge.className = 'pill p-blue';
-    badge.innerHTML = '<span class="pdot"></span>Admin';
-    label.textContent = adminUsername || 'Admin';
-  }
-
-  document.querySelectorAll('.super-only').forEach(el => {
-    el.style.display = isSuperAdmin ? '' : 'none';
-  });
-
-  // Set schedule month picker to current month
-  const now = new Date();
-  const monthStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
-  const schMonth = document.getElementById('sch-month');
-  if(schMonth) schMonth.value = monthStr;
-
-  loadRoster();
-  loadSchedules();
-  if(isSuperAdmin) loadManagers();
-}
-
-function adminLogout(){
-  adminSession = null;
-  document.getElementById('admin-lock').style.display = 'flex';
-  document.getElementById('admin-panel').style.display = 'none';
-  // Reset to first tab
-  document.querySelectorAll('.tab-pane').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-agents').classList.add('active');
-  document.querySelector('.tab-btn').classList.add('active');
-}
-
-async function changePassword(role){
-  if(adminSession !== 'superadmin'){ toast('Super Admin access required','error'); return; }
-  const inputId = role === 'admin' ? 'set-admin-pw' : 'set-super-pw';
-  const newPw = document.getElementById(inputId).value.trim();
-  if(!newPw || newPw.length < 4){ toast('Password must be at least 4 characters','error'); return; }
-  const key = role === 'admin' ? 'admin_password' : 'superadmin_password';
-  try{
-    // Upsert into app_settings
-    await fetch(`${BASE}/app_settings?key=eq.${key}`, {
-      method:'DELETE', headers:H
-    });
-    await POST('app_settings', {key, value: newPw});
-    toast(`✓ ${role === 'admin' ? 'Admin' : 'Super Admin'} password updated`,'success');
-    document.getElementById(inputId).value = '';
-  } catch(e){
-    toast('Error saving password','error'); console.error(e);
-  }
-}
-
-/* ── ADMIN: AGENTS ── */
-async function addAgent(){
-  const name  = document.getElementById('ag-name').value.trim();
-  const id    = document.getElementById('ag-id').value.trim();
-  const dept  = document.getElementById('ag-dept').value.trim();
-  const hire  = document.getElementById('ag-hire').value;
-  const phone = document.getElementById('ag-phone').value.trim();
-  const weekly= parseFloat(document.getElementById('ag-weekly').value)||40;
-  const btn   = document.getElementById('btn-add-ag');
-  if(!name||!id){toast('Name and ID required','error');return;}
-  if(!/^\d{4,8}$/.test(id)){toast('ID must be 4–8 digits','error');return;}
-  btn.disabled=true; btn.textContent='Adding…';
-  try{
-    await POST('profiles',{
-      employee_id:   id,
-      full_name:     name,
-      current_state: 'OUT',
-      department:    dept||null,
-      hire_date:     hire||null,
-      phone:         phone||null,
-      weekly_hours:  weekly,
-      role:          'agent'
-    });
-    toast(`✓ ${name} added`);
-    document.getElementById('ag-name').value  = '';
-    document.getElementById('ag-id').value    = '';
-    document.getElementById('ag-dept').value  = '';
-    document.getElementById('ag-hire').value  = '';
-    document.getElementById('ag-phone').value = '';
-    loadRoster(); loadFloor();
-    const sel=document.getElementById('cs-agent');
-    if(sel) loadAgentCalls();
-  }catch(e){
-    toast((e.message||'').includes('duplicate')?`ID ${id} already exists`:'Error adding agent','error');
-  }finally{btn.disabled=false; btn.textContent='Add Agent';}
-}
-
-async function loadRoster(){
-  const tbody=document.getElementById('roster-tbody');
-  if(!tbody) return;
-  try{
-    agents=await GET('profiles','select=*&order=full_name.asc');
-    // Populate all agent selects
-    ['sch-agent','cs-agent'].forEach(selId=>{
-      const el=document.getElementById(selId);
-      if(el) el.innerHTML='<option value="">— Select Agent —</option>'+agents.map(a=>`<option value="${eh(a.employee_id)}">${eh(a.full_name)}</option>`).join('');
-    });
-    tbody.innerHTML=agents.length?agents.map(a=>{
-      const roleLabel = a.role==='superadmin'?'<span class="pill p-purple" style="padding:1px 6px;font-size:10px"><span class="pdot"></span>Super</span>':
-                        a.role==='admin'?'<span class="pill p-blue" style="padding:1px 6px;font-size:10px"><span class="pdot"></span>Admin</span>':'';
-      return `<tr>
-        <td><button onclick="openProfile('${es(a.employee_id)}')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:13px;font-weight:600;padding:0;text-align:left">${eh(a.full_name)}</button> ${roleLabel}</td>
-        <td><span class="mono">${eh(a.employee_id)}</span></td>
-        <td style="color:var(--text-2)">${eh(a.department||'—')}</td>
-        <td>${spill(a.current_state)}</td>
-        <td><button class="btn btn-d btn-sm" onclick="delAgent('${es(a.employee_id)}','${es(a.full_name)}')">✕</button></td>
-      </tr>`;
-    }).join(''):
-    '<tr><td colspan="5" style="text-align:center;color:var(--text-3);padding:24px">No agents yet.</td></tr>';
-  }catch(e){tbody.innerHTML='<tr><td colspan="5" style="color:var(--red);padding:16px">Error loading roster.</td></tr>';}
-}
-
-async function delAgent(id,name){
-  openModal('Remove Agent',`<p style="color:var(--text-2)">Remove <strong>${eh(name)}</strong> (ID: ${eh(id)})? Their time log history will also be deleted.</p>`,'Remove',async()=>{
-    try{await DEL('profiles',`employee_id=eq.${encodeURIComponent(id)}`);toast(`${name} removed`);closeModal();loadRoster();loadFloor();}
-    catch(e){toast('Error deleting agent','error');}
-  });
-}
-
-/* ── ADMIN: MANAGERS (Super Admin only) ── */
-async function addManager(){
-  if(adminSession !== 'superadmin'){ toast('Super Admin access required','error'); return; }
-  const name=document.getElementById('mgr-name').value.trim();
-  const user=document.getElementById('mgr-user').value.trim();
-  const pw=document.getElementById('mgr-pw').value.trim();
-  const role=document.getElementById('mgr-role').value;
-  if(!name||!user||!pw){toast('All fields required','error');return;}
-  try{
-    await POST('managers',{full_name:name,username:user,pin_hash:pw,role});
-    toast(`✓ ${name} added as ${role}`);
-    document.getElementById('mgr-name').value='';
-    document.getElementById('mgr-user').value='';
-    document.getElementById('mgr-pw').value='';
-    loadManagers();
-  }catch(e){toast('Error adding admin user','error');console.error(e);}
-}
-
-async function loadManagers(){
-  const tbody=document.getElementById('mgr-tbody');
-  if(!tbody) return;
-  try{
-    const rows=await GET('managers','select=*&order=full_name.asc');
-    tbody.innerHTML=rows.length?rows.map(m=>{
-      const rc = m.role==='superadmin'?'p-purple':'p-blue';
-      const rl = m.role==='superadmin'?'Super Admin':'Admin';
-      return `<tr>
-        <td>${eh(m.full_name)}</td>
-        <td style="color:var(--text-2)">${eh(m.username)}</td>
-        <td><span class="pill ${rc}"><span class="pdot"></span>${rl}</span></td>
-        <td>${fmtD((m.created_at||new Date().toISOString()))}</td>
-        <td><button class="btn btn-d btn-sm" onclick="delManager('${es(m.id)}','${es(m.full_name)}')">✕</button></td>
-      </tr>`;
-    }).join(''):
-    '<tr><td colspan="5" style="text-align:center;color:var(--text-3);padding:24px">No admin users yet.</td></tr>';
-  }catch(e){tbody.innerHTML='<tr><td colspan="5" style="color:var(--red);padding:16px">Error loading users.</td></tr>';}
-}
-
-async function delManager(id,name){
-  if(adminSession !== 'superadmin'){ toast('Super Admin access required','error'); return; }
-  openModal('Remove Admin User',`<p style="color:var(--text-2)">Remove admin user <strong>${eh(name)}</strong>?</p>`,'Remove',async()=>{
-    try{await DEL('managers',`id=eq.${encodeURIComponent(id)}`);toast(`${name} removed`);closeModal();loadManagers();}
-    catch(e){toast('Error','error');}
-  });
-}
-
-/* ── BULK SCHEDULER ── */
-let bulkSelectedDates = new Set();
-let bulkMode = 'click';
-let selectedDows = new Set();
-
-function setBulkMode(mode){
-  bulkMode = mode;
-  ['click','pattern','range'].forEach(m=>{
-    document.getElementById(`bulk-${m}-mode`).style.display = m===mode?'block':'none';
-    document.getElementById(`mode-${m}`).className = m===mode?'btn btn-p btn-sm':'btn btn-g btn-sm';
-  });
-}
-
-function loadBulkCal(){
-  const agId = document.getElementById('sch-agent').value;
-  const monthVal = document.getElementById('sch-month').value;
-  if(!agId||!monthVal){ toast('Select an agent and month first','error'); return; }
-  bulkSelectedDates.clear();
-  renderBulkCal(monthVal);
-  updateBulkCount();
-}
-
-function renderBulkCal(monthVal){
-  const [yr,mo] = monthVal.split('-').map(Number);
-  const firstDay = new Date(yr, mo-1, 1);
-  const lastDay  = new Date(yr, mo, 0);
-  const todayStr = today();
-  let html = '';
-
-  // Day headers
-  ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d=>{
-    html += `<div style="font-size:10px;font-weight:600;color:var(--text-3);text-align:center;padding:4px 0;text-transform:uppercase">${d}</div>`;
-  });
-
-  // Leading blanks
-  for(let i=0;i<firstDay.getDay();i++) html += '<div></div>';
-
-  for(let d=1;d<=lastDay.getDate();d++){
-    const ds = `${yr}-${String(mo).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const isSel = bulkSelectedDates.has(ds);
-    const isToday = ds===todayStr;
-    html += `<div onclick="toggleBulkDay('${ds}',this)"
-      style="background:${isSel?'var(--accent)':isToday?'var(--accent-dim)':'var(--surface2)'};
-             border:1px solid ${isSel?'var(--accent)':isToday?'var(--accent)':'var(--border)'};
-             border-radius:4px;padding:6px 4px;text-align:center;cursor:pointer;font-size:12px;
-             font-weight:${isSel?'700':'400'};color:${isSel?'#fff':isToday?'var(--accent)':'var(--text-2)'};
-             transition:all 0.1s" data-date="${ds}">${d}</div>`;
-  }
-
-  document.getElementById('bulk-cal-grid').innerHTML = html;
-}
-
-function toggleBulkDay(dateStr, el){
-  if(bulkSelectedDates.has(dateStr)){
-    bulkSelectedDates.delete(dateStr);
-    el.style.background = 'var(--surface2)';
-    el.style.borderColor = 'var(--border)';
-    el.style.color = 'var(--text-2)';
-    el.style.fontWeight = '400';
-  } else {
-    bulkSelectedDates.add(dateStr);
-    el.style.background = 'var(--accent)';
-    el.style.borderColor = 'var(--accent)';
-    el.style.color = '#fff';
-    el.style.fontWeight = '700';
-  }
-  updateBulkCount();
-}
-
-function updateBulkCount(){
-  const el = document.getElementById('bulk-selected-count');
-  if(el) el.textContent = `${bulkSelectedDates.size} day${bulkSelectedDates.size!==1?'s':''} selected`;
-}
-
-function toggleDow(dow, btn){
-  if(selectedDows.has(dow)){
-    selectedDows.delete(dow);
-    btn.className = 'btn btn-g btn-sm dow-btn';
-  } else {
-    selectedDows.add(dow);
-    btn.className = 'btn btn-p btn-sm dow-btn';
-  }
-}
-
-function applyPattern(){
-  const from = document.getElementById('pat-from').value;
-  const to   = document.getElementById('pat-to').value;
-  if(!from||!to||selectedDows.size===0){ toast('Select days of week and a date range','error'); return; }
-  bulkSelectedDates.clear();
-  let cur = new Date(from+'T12:00:00');
-  const end = new Date(to+'T12:00:00');
-  while(cur<=end){
-    if(selectedDows.has(cur.getDay())){
-      bulkSelectedDates.add(cur.toISOString().slice(0,10));
-    }
-    cur.setDate(cur.getDate()+1);
-  }
-  document.getElementById('pattern-preview').textContent = `${bulkSelectedDates.size} days selected`;
-  updateBulkCount();
-  toast(`${bulkSelectedDates.size} days selected`);
-}
-
-function applyRange(){
-  const from    = document.getElementById('rng-from').value;
-  const to      = document.getElementById('rng-to').value;
-  const skipWE  = document.getElementById('rng-skip-weekends').checked;
-  if(!from||!to){ toast('Select a date range','error'); return; }
-  bulkSelectedDates.clear();
-  let cur = new Date(from+'T12:00:00');
-  const end = new Date(to+'T12:00:00');
-  while(cur<=end){
-    const dow = cur.getDay();
-    if(!skipWE || (dow!==0&&dow!==6)){
-      bulkSelectedDates.add(cur.toISOString().slice(0,10));
-    }
-    cur.setDate(cur.getDate()+1);
-  }
-  document.getElementById('range-preview').textContent = `${bulkSelectedDates.size} days selected`;
-  updateBulkCount();
-  toast(`${bulkSelectedDates.size} days selected`);
-}
-
-function applyShiftPreset(preset){
-  const presets = {
-    '8-5':  {s:'08:00',e:'17:00',ls:'12:00',le:'13:00',b1:'10:00',b2:'15:00'},
-    '9-6':  {s:'09:00',e:'18:00',ls:'13:00',le:'14:00',b1:'11:00',b2:'16:00'},
-    '7-4':  {s:'07:00',e:'16:00',ls:'11:00',le:'12:00',b1:'09:00',b2:'14:00'},
-    'off':  null
-  };
-  const p = presets[preset];
-  const fields = document.getElementById('shift-detail-fields');
-  if(!p){
-    fields.style.opacity='0.4'; fields.style.pointerEvents='none';
-    return;
-  }
-  fields.style.opacity='1'; fields.style.pointerEvents='';
-  document.getElementById('bs-start').value   = p.s;
-  document.getElementById('bs-end').value     = p.e;
-  document.getElementById('bs-lunch-s').value = p.ls;
-  document.getElementById('bs-lunch-e').value = p.le;
-  document.getElementById('bs-brk1').value    = p.b1;
-  document.getElementById('bs-brk2').value    = p.b2;
-}
-
-function clearBulkSelection(){
-  bulkSelectedDates.clear();
-  updateBulkCount();
-  const monthVal = document.getElementById('sch-month')?.value;
-  if(monthVal) renderBulkCal(monthVal);
-  document.getElementById('bulk-result').textContent='';
-}
-
-async function applyBulkSchedule(){
-  const agId = document.getElementById('sch-agent').value;
-  if(!agId){ toast('Select an agent first','error'); return; }
-  if(bulkSelectedDates.size===0){ toast('Select at least one day','error'); return; }
-
-  const isOff   = document.getElementById('shift-detail-fields').style.opacity==='0.4';
-  const start   = document.getElementById('bs-start').value;
-  const end     = document.getElementById('bs-end').value;
-  const lunchS  = document.getElementById('bs-lunch-s').value;
-  const lunchE  = document.getElementById('bs-lunch-e').value;
-  const brk1    = document.getElementById('bs-brk1').value;
-  const brk2    = document.getElementById('bs-brk2').value;
-
-  const dates = [...bulkSelectedDates].sort();
-  const resultEl = document.getElementById('bulk-result');
-  resultEl.innerHTML = `<span style="color:var(--text-2)">Saving ${dates.length} entries…</span>`;
-
-  let saved=0, skipped=0, overwritten=0;
-
-  // Check existing schedules
-  const existing = await GET('schedules', `employee_id=eq.${encodeURIComponent(agId)}&date=in.(${dates.join(',')})&select=date`).catch(()=>[]);
-  const existingDates = new Set(existing.map(e=>e.date));
-
-  if(existingDates.size>0){
-    const confirmed = confirm(`${existingDates.size} of the selected dates already have a schedule.\n\nClick OK to overwrite them, or Cancel to skip them.`);
-    if(!confirmed){
-      // Skip existing
-      const datesToSave = dates.filter(d=>!existingDates.has(d));
-      skipped = existingDates.size;
-      for(const d of datesToSave){
-        try{
-          await POST('schedules',{employee_id:agId,date:d,
-            shift_start:isOff?'OFF':start, shift_end:isOff?'OFF':end,
-            lunch_start:isOff?null:lunchS, lunch_end:isOff?null:lunchE,
-            break1_time:isOff?null:brk1,  break2_time:isOff?null:brk2});
-          saved++;
-        }catch(e){console.error(e);}
-      }
-    } else {
-      // Overwrite all
-      for(const d of dates){
-        try{
-          if(existingDates.has(d)){
-            await PATCH('schedules',`employee_id=eq.${encodeURIComponent(agId)}&date=eq.${d}`,{
-              shift_start:isOff?'OFF':start, shift_end:isOff?'OFF':end,
-              lunch_start:isOff?null:lunchS, lunch_end:isOff?null:lunchE,
-              break1_time:isOff?null:brk1,  break2_time:isOff?null:brk2});
-            overwritten++;
-          } else {
-            await POST('schedules',{employee_id:agId,date:d,
-              shift_start:isOff?'OFF':start, shift_end:isOff?'OFF':end,
-              lunch_start:isOff?null:lunchS, lunch_end:isOff?null:lunchE,
-              break1_time:isOff?null:brk1,  break2_time:isOff?null:brk2});
-            saved++;
-          }
-        }catch(e){console.error(e);}
-      }
-    }
-  } else {
-    for(const d of dates){
-      try{
-        await POST('schedules',{employee_id:agId,date:d,
-          shift_start:isOff?'OFF':start, shift_end:isOff?'OFF':end,
-          lunch_start:isOff?null:lunchS, lunch_end:isOff?null:lunchE,
-          break1_time:isOff?null:brk1,  break2_time:isOff?null:brk2});
-        saved++;
-      }catch(e){console.error(e);}
-    }
-  }
-
-  const parts=[];
-  if(saved)       parts.push(`<span style="color:var(--green)">✓ ${saved} saved</span>`);
-  if(overwritten) parts.push(`<span style="color:var(--yellow)">↻ ${overwritten} updated</span>`);
-  if(skipped)     parts.push(`<span style="color:var(--text-2)">${skipped} skipped</span>`);
-  resultEl.innerHTML = parts.join(' · ');
-  toast(`Schedule applied to ${saved+overwritten} days`);
-  clearBulkSelection();
-  loadSchedules();
-}
-
-async function saveSchedule(){ /* legacy single-save kept for profile drawer */ }
-
-async function loadSchedules(){
-  const tbody=document.getElementById('sch-tbody');
-  if(!tbody) return;
-  try{
-    const rows=await GET('schedules','select=*,profiles(full_name)&order=date.desc,shift_start.asc&limit=200');
-    tbody.innerHTML=rows.length?rows.map(r=>{
-      const isOff = r.shift_start==='OFF';
-      const hrs = isOff ? '—' : ((new Date('2000T'+r.shift_end)-new Date('2000T'+r.shift_start))/3600000).toFixed(1)+'h';
-      return `<tr>
-        <td><button onclick="openProfile('${es(r.employee_id)}')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:13px;font-weight:500;padding:0">${eh(r.profiles?.full_name||r.employee_id)}</button></td>
-        <td>${fmtD(r.date+'T12:00:00')}</td>
-        <td>${isOff?'<span class="pill p-red"><span class="pdot"></span>Day Off</span>':`<span class="mono">${r.shift_start}</span>`}</td>
-        <td>${isOff?'—':`<span class="mono">${r.shift_end}</span>`}</td>
-        <td>${r.lunch_start?`<span class="mono">${r.lunch_start}–${r.lunch_end}</span>`:'—'}</td>
-        <td>${hrs}</td>
-        <td><button class="btn btn-d btn-sm" onclick="delSchedule('${es(r.id)}')">✕</button></td>
-      </tr>`;
-    }).join(''):'<tr><td colspan="7" style="text-align:center;color:var(--text-3);padding:24px">No schedules yet.</td></tr>';
-  }catch(e){console.error(e);}
-}
-
-async function delSchedule(id){
-  try{await DEL('schedules',`id=eq.${encodeURIComponent(id)}`);toast('Schedule removed');loadSchedules();}
-  catch(e){toast('Error','error');}
-}
-
-/* ── AGENT PROFILE DRAWER ── */
-let currentProfileId = null;
-let calViewDate = new Date();
-
-async function openProfile(employeeId){
-  currentProfileId = employeeId;
-  document.getElementById('profile-drawer').classList.add('open');
-  document.getElementById('profile-overlay').classList.add('open');
-  document.getElementById('drawer-body').innerHTML = '<div style="text-align:center;padding:60px;color:var(--text-3)"><div class="spinner" style="margin:0 auto"></div></div>';
-  await renderProfile(employeeId);
-}
-
-function closeProfile(){
-  document.getElementById('profile-drawer').classList.remove('open');
-  document.getElementById('profile-overlay').classList.remove('open');
-  currentProfileId = null;
-}
-
-async function renderProfile(id){
-  try{
-    // Fetch agent + extended profile
-    const [agRows, logs, scheds, absences, agCalls] = await Promise.all([
-      GET('profiles', `employee_id=eq.${encodeURIComponent(id)}&select=*`),
-      GET('time_logs', `employee_id=eq.${encodeURIComponent(id)}&order=logged_at.desc&limit=200`),
-      GET('schedules', `employee_id=eq.${encodeURIComponent(id)}&order=date.asc`),
-      GET('absences', `employee_id=eq.${encodeURIComponent(id)}&order=date.desc`).catch(()=>[]),
-      GET('agent_call_logs', `employee_id=eq.${encodeURIComponent(id)}&order=date.desc&limit=30`).catch(()=>[])
-    ]);
-
-    const ag = agRows[0];
-    if(!ag){ document.getElementById('drawer-body').innerHTML = '<div style="padding:40px;color:var(--red)">Agent not found.</div>'; return; }
-
-    document.getElementById('drawer-title').textContent = ag.full_name;
-
-    // ── Compute stats ──
-    const todayStr = today();
-    const todayLogs = logs.filter(l => l.logged_at.startsWith(todayStr));
-
-    // Total hours worked (all time)
-    let totalMinutes = 0;
-    let shiftStart = null;
-    [...logs].reverse().forEach(l => {
-      if(l.action_type === 'START_SHIFT') shiftStart = new Date(l.logged_at);
-      if(l.action_type === 'END_SHIFT' && shiftStart){
-        totalMinutes += (new Date(l.logged_at) - shiftStart) / 60000;
-        shiftStart = null;
-      }
-    });
-    const totalHrs = (totalMinutes / 60).toFixed(1);
-
-    // Today hours
-    let todayMin = 0, ts2 = null;
-    [...todayLogs].reverse().forEach(l => {
-      if(l.action_type === 'START_SHIFT') ts2 = new Date(l.logged_at);
-      if(l.action_type === 'END_SHIFT' && ts2){ todayMin += (new Date(l.logged_at) - ts2)/60000; ts2 = null; }
-    });
-    if(ts2) todayMin += (Date.now() - ts2)/60000; // still clocked in
-    const todayHrs = (todayMin / 60).toFixed(1);
-
-    // Absences count
-    const absCount = absences.length;
-
-    // FTE calculation
-    const weeklyHrs = ag.weekly_hours || 40;
-    const schedHrsThisMonth = scheds
-      .filter(s => s.date && s.date.startsWith(new Date().toISOString().slice(0,7)))
-      .reduce((sum,s) => {
-        const hrs = (new Date('2000T'+s.shift_end) - new Date('2000T'+s.shift_start)) / 3600000;
-        return sum + hrs;
-      }, 0);
-    const workingDaysMonth = 22;
-    const scheduledHrsPerWeek = schedHrsThisMonth / (workingDaysMonth / 5);
-    const fte = scheduledHrsPerWeek > 0 ? (scheduledHrsPerWeek / weeklyHrs).toFixed(2) : (weeklyHrs / weeklyHrs).toFixed(2);
-
-    // Shrinkage for this agent
-    const agScheds = scheds.filter(s => s.date === todayStr);
-    let agLost = 0;
-    if(agScheds.length){
-      let bs = null;
-      todayLogs.forEach(l => {
-        if(l.action_type==='START_BREAK') bs = new Date(l.logged_at);
-        if((l.action_type==='RETURN_FROM_BREAK'||l.action_type==='END_SHIFT')&&bs){
-          const d = (new Date(l.logged_at)-bs)/60000;
-          if(d > threshBreak) agLost += d - threshBreak;
-          bs = null;
-        }
-      });
-    }
-    const shrinkPct = todayHrs > 0 ? ((agLost/60) / parseFloat(todayHrs) * 100).toFixed(1) : '0.0';
-
-    // ── Role ──
-    const isAdmin = ag.role === 'admin' || ag.role === 'superadmin';
-
-    const col = avatarColor(ag.full_name);
-    const init = ag.full_name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-
-    document.getElementById('drawer-body').innerHTML = `
-      <!-- HERO -->
-      <div class="profile-hero">
-        <div class="profile-avatar-lg" style="background:${col}">${eh(init)}</div>
-        <div style="flex:1">
-          <div class="profile-name">${eh(ag.full_name)}</div>
-          <div style="font-size:12px;color:var(--text-2);margin-bottom:6px">ID: <span class="mono">${eh(ag.employee_id)}</span> · ${eh(ag.department||'No Department')}</div>
-          <div class="profile-tags">
-            ${spill(ag.current_state)}
-            <span class="pill ${isAdmin?'p-purple':'p-gray'}"><span class="pdot"></span>${isAdmin?'Admin':'Agent'}</span>
-            ${ag.weekly_hours && ag.weekly_hours !== 40 ? `<span class="pill p-blue"><span class="pdot"></span>${ag.weekly_hours}h/wk</span>` : '<span class="pill p-green"><span class="pdot"></span>FT 40h</span>'}
-          </div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Hired</div>
-          <div style="font-size:13px;font-weight:600">${ag.hire_date ? fmtD(ag.hire_date+'T12:00:00') : '—'}</div>
-        </div>
-      </div>
-
-      <!-- STATS -->
-      <div class="profile-stats-grid">
-        <div class="pstat"><div class="pstat-val" style="color:var(--green)">${todayHrs}h</div><div class="pstat-lbl">Today</div></div>
-        <div class="pstat"><div class="pstat-val" style="color:var(--blue)">${totalHrs}h</div><div class="pstat-lbl">Total Logged</div></div>
-        <div class="pstat"><div class="pstat-val" style="color:${absCount>2?'var(--red)':'var(--text)'}">${absCount}</div><div class="pstat-lbl">Absences</div></div>
-        <div class="pstat"><div class="pstat-val" style="color:${shrinkPct>15?'var(--red)':shrinkPct>5?'var(--yellow)':'var(--green)'}">${shrinkPct}%</div><div class="pstat-lbl">Shrinkage</div></div>
-      </div>
-
-      <!-- FTE -->
-      <div class="fte-card">
-        <div>
-          <div style="font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px">FTE Equivalent</div>
-          <div class="fte-val">${fte}</div>
-        </div>
-        <div style="text-align:right;font-size:12px;color:var(--text-2)">
-          <div>Based on ${weeklyHrs}h/week standard</div>
-          <div style="margin-top:4px">Sched this month: <strong style="color:var(--text)">${schedHrsThisMonth.toFixed(1)}h</strong></div>
-          <div style="margin-top:2px">Est weekly avg: <strong style="color:var(--text)">${scheduledHrsPerWeek.toFixed(1)}h</strong></div>
-        </div>
-      </div>
-
-      <!-- DRAWER TABS -->
-      <div class="drawer-tabs">
-        <button class="dtab active" onclick="switchDtab(event,'dp-info')">Info</button>
-        <button class="dtab" onclick="switchDtab(event,'dp-schedule')">Schedule</button>
-        <button class="dtab" onclick="switchDtab(event,'dp-absences')">Absences</button>
-        <button class="dtab" onclick="switchDtab(event,'dp-history')">Time History</button>
-        <button class="dtab" onclick="switchDtab(event,'dp-calls')">Call Stats</button>
-        <button class="dtab" onclick="switchDtab(event,'dp-permissions')">Permissions</button>
-      </div>
-
-      <!-- TAB: INFO -->
-      <div class="dtab-pane active" id="dp-info">
-        <div class="g2">
-          <div>
-            <div class="panel-title">Profile Details</div>
-            <div class="field"><label>Full Name</label><input id="pf-name" value="${eh(ag.full_name)}"/></div>
-            <div class="field"><label>Department</label><input id="pf-dept" value="${eh(ag.department||'')}"/></div>
-            <div class="field"><label>Phone</label><input id="pf-phone" value="${eh(ag.phone||'')}"/></div>
-            <div class="field"><label>Hire Date</label><input type="date" id="pf-hire" value="${ag.hire_date||''}"/></div>
-            <div class="field"><label>Weekly Hours</label>
-              <select id="pf-weekly">
-                <option value="40" ${(ag.weekly_hours||40)===40?'selected':''}>40h — Full Time (Standard)</option>
-                <option value="37.5" ${ag.weekly_hours===37.5?'selected':''}>37.5h</option>
-                <option value="32" ${ag.weekly_hours===32?'selected':''}>32h</option>
-                <option value="24" ${ag.weekly_hours===24?'selected':''}>24h — Part Time</option>
-                <option value="20" ${ag.weekly_hours===20?'selected':''}>20h — Part Time</option>
-                <option value="custom">Custom…</option>
-              </select>
-            </div>
-            <div class="field" id="pf-custom-wrap" style="display:${ag.weekly_hours&&![40,37.5,32,24,20].includes(ag.weekly_hours)?'block':'none'}">
-              <label>Custom Hours/Week</label><input type="number" id="pf-custom-hrs" value="${ag.weekly_hours||40}" min="1" max="80"/>
-            </div>
-            <div class="field"><label>Notes</label><textarea id="pf-notes" rows="3" style="resize:vertical">${eh(ag.notes||'')}</textarea></div>
-            <button class="btn btn-p" onclick="saveProfileInfo('${es(id)}')" style="width:100%">Save Changes</button>
-          </div>
-          <div>
-            <div class="panel-title">Call Performance (Last 30 days)</div>
-            ${agCalls.length ? `
-              <div class="pstat" style="margin-bottom:10px;text-align:left;padding:14px">
-                <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-                  <span style="font-size:12px;color:var(--text-2)">Total Calls Handled</span>
-                  <strong>${agCalls.reduce((s,r)=>s+r.calls_handled,0)}</strong>
-                </div>
-                <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-                  <span style="font-size:12px;color:var(--text-2)">Avg Handle Time</span>
-                  <strong>${agCalls.length?(agCalls.reduce((s,r)=>s+(r.avg_handle_time||0),0)/agCalls.length).toFixed(1):0} min</strong>
-                </div>
-                <div style="display:flex;justify-content:space-between">
-                  <span style="font-size:12px;color:var(--text-2)">Days Logged</span>
-                  <strong>${agCalls.length}</strong>
-                </div>
-              </div>` : '<div style="color:var(--text-3);font-size:13px;padding:20px 0">No call data yet.</div>'}
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB: SCHEDULE -->
-      <div class="dtab-pane" id="dp-schedule">
-        <div id="profile-cal"></div>
-        <!-- Add Shift Form -->
-        <div style="margin-top:16px;padding:16px;background:var(--surface2);border-radius:var(--r-sm);border:1px solid var(--border)">
-          <div style="font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:12px">Add Shift / Day Off</div>
-          <div class="frow">
-            <div class="field"><label>Date</label><input type="date" id="ps-date" value="${todayStr}"/></div>
-            <div class="field"><label>Type</label>
-              <select id="ps-type" onchange="document.getElementById('ps-shift-fields').style.display=this.value==='shift'?'':'none'">
-                <option value="shift">Shift</option>
-                <option value="off">Day Off (Scheduled)</option>
-              </select>
-            </div>
-          </div>
-          <div id="ps-shift-fields">
-            <div class="frow">
-              <div class="field"><label>Start</label><input type="time" id="ps-start" value="08:00"/></div>
-              <div class="field"><label>End</label><input type="time" id="ps-end" value="17:00"/></div>
-              <div class="field"><label>Lunch Start</label><input type="time" id="ps-lunch-start" value="12:00"/></div>
-              <div class="field"><label>Lunch End</label><input type="time" id="ps-lunch-end" value="13:00"/></div>
-            </div>
-            <div class="frow">
-              <div class="field"><label>Break 1</label><input type="time" id="ps-brk1" value="10:00"/></div>
-              <div class="field"><label>Break 2</label><input type="time" id="ps-brk2" value="15:00"/></div>
-            </div>
-          </div>
-          <button class="btn btn-p" onclick="saveProfileSchedule('${es(id)}')" style="width:100%">Save Entry</button>
-        </div>
-      </div>
-
-      <!-- TAB: ABSENCES -->
-      <div class="dtab-pane" id="dp-absences">
-        <div style="padding:14px;background:var(--surface2);border-radius:var(--r-sm);border:1px solid var(--border);margin-bottom:16px">
-          <div style="font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:12px">Log Absence</div>
-          <div class="frow">
-            <div class="field"><label>Date</label><input type="date" id="pa-date" value="${todayStr}"/></div>
-            <div class="field"><label>Type</label>
-              <select id="pa-type">
-                <option value="sick">Sick Day</option>
-                <option value="noshow">No Show</option>
-                <option value="emergency">Emergency</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-          </div>
-          <div class="field"><label>Reason / Notes</label><input id="pa-reason" placeholder="Brief description…"/></div>
-          <button class="btn btn-p" onclick="saveAbsence('${es(id)}')" style="width:100%">Log Absence</button>
-        </div>
-        <div id="absence-list">
-          ${absences.length ? absences.map(a => {
-            const icons = {sick:'🤒',noshow:'🚫',emergency:'🚨',other:'📋'};
-            const cls = {sick:'p-yellow',noshow:'p-red',emergency:'p-red',other:'p-gray'};
-            return `<div class="absence-row">
-              <div style="font-size:18px">${icons[a.type]||'📋'}</div>
-              <div style="flex:1">
-                <div style="font-size:13px;font-weight:500">${fmtD(a.date+'T12:00:00')} — <span class="pill ${cls[a.type]||'p-gray'}" style="padding:1px 7px">${a.type}</span></div>
-                <div style="font-size:12px;color:var(--text-2);margin-top:3px">${eh(a.reason||'No reason given')}</div>
-              </div>
-              <button class="btn btn-d btn-sm" onclick="delAbsence('${es(a.id)}')">✕</button>
-            </div>`;
-          }).join('') : '<div style="color:var(--text-3);font-size:13px;text-align:center;padding:32px">No absences logged.</div>'}
-        </div>
-      </div>
-
-      <!-- TAB: TIME HISTORY -->
-      <div class="dtab-pane" id="dp-history">
-        <div style="max-height:400px;overflow-y:auto">
-          ${logs.length ? logs.slice(0,100).map(l => {
-            const dotColor = {START_SHIFT:'var(--green)',END_SHIFT:'var(--red)',START_BREAK:'var(--yellow)',RETURN_FROM_BREAK:'var(--blue)'}[l.action_type]||'var(--text-3)';
-            const lbl = {START_SHIFT:'Clocked In',END_SHIFT:'Clocked Out',START_BREAK:'Break Started',RETURN_FROM_BREAK:'Returned from Break'}[l.action_type]||l.action_type;
-            const dt = new Date(l.logged_at);
-            return `<div class="log-row">
-              <div class="log-dot" style="background:${dotColor}"></div>
-              <div class="log-time">${dt.toLocaleDateString([],{month:'short',day:'numeric'})} ${dt.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
-              <div class="log-action">${lbl}</div>
-            </div>`;
-          }).join('') : '<div style="color:var(--text-3);font-size:13px;text-align:center;padding:32px">No time history yet.</div>'}
-        </div>
-      </div>
-
-      <!-- TAB: CALL STATS -->
-      <div class="dtab-pane" id="dp-calls">
-        ${agCalls.length ? `
-          <table class="dt">
-            <thead><tr><th>Date</th><th>Calls Handled</th><th>Avg Handle Time</th></tr></thead>
-            <tbody>${agCalls.map(r=>`<tr><td>${fmtD(r.date+'T12:00:00')}</td><td>${r.calls_handled}</td><td>${r.avg_handle_time} min</td></tr>`).join('')}</tbody>
-          </table>` :
-          '<div style="color:var(--text-3);font-size:13px;text-align:center;padding:40px">No call data logged for this agent yet.</div>'
-        }
-      </div>
-
-      <!-- TAB: PERMISSIONS -->
-      <div class="dtab-pane" id="dp-permissions">
-        ${adminSession === 'superadmin' ? `
-          <div style="margin-bottom:16px;padding:14px;background:var(--yellow-dim);border:1px solid rgba(245,200,66,0.2);border-radius:var(--r-sm);font-size:12px;color:var(--yellow)">
-            ⚠ Role changes take effect immediately. Admins gain access to the Admin panel.
-          </div>
-          <div class="role-toggle-row">
-            <div style="flex:1">
-              <div style="font-size:13px;font-weight:600">Admin Access</div>
-              <div style="font-size:12px;color:var(--text-2);margin-top:2px">Can access Admin panel, manage agents &amp; schedules</div>
-            </div>
-            <label class="toggle-sw">
-              <input type="checkbox" id="perm-admin" ${isAdmin?'checked':''} onchange="toggleAgentRole('${es(id)}', this.checked)"/>
-              <span class="toggle-sl"></span>
-            </label>
-          </div>
-          <div class="role-toggle-row" id="perm-super-row" style="${isAdmin?'':'opacity:0.4;pointer-events:none'}">
-            <div style="flex:1">
-              <div style="font-size:13px;font-weight:600">Super Admin</div>
-              <div style="font-size:12px;color:var(--text-2);margin-top:2px">Full access including user management &amp; settings</div>
-            </div>
-            <label class="toggle-sw">
-              <input type="checkbox" id="perm-super" ${ag.role==='superadmin'?'checked':''} onchange="toggleSuperRole('${es(id)}', this.checked)"/>
-              <span class="toggle-sl"></span>
-            </label>
-          </div>` :
-          '<div style="color:var(--text-3);font-size:13px;text-align:center;padding:40px">Super Admin access required to change permissions.</div>'
-        }
-      </div>
-    `;
-
-    // Render calendar
-    renderProfileCal(id, scheds, absences);
-
-    // Custom hours toggle
-    document.getElementById('pf-weekly')?.addEventListener('change', function(){
-      document.getElementById('pf-custom-wrap').style.display = this.value==='custom'?'block':'none';
-    });
-
-  } catch(e){ console.error('Profile error:',e); document.getElementById('drawer-body').innerHTML = `<div style="padding:40px;color:var(--red)">Error loading profile: ${e.message}</div>`; }
-}
-
-function switchDtab(e, paneId){
-  document.querySelectorAll('.dtab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.dtab-pane').forEach(p=>p.classList.remove('active'));
-  e.target.classList.add('active');
-  document.getElementById(paneId).classList.add('active');
-}
-
-/* ── PROFILE CALENDAR ── */
-function renderProfileCal(agentId, scheds, absences){
-  const el = document.getElementById('profile-cal');
-  if(!el) return;
-
-  const now = calViewDate;
-  const year = now.getFullYear();
-  const month = now.getMonth();
-  const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month+1, 0);
-  const todayStr = today();
-
-  // Build lookup maps
-  const schedMap = {};
-  scheds.forEach(s => { if(s.date) schedMap[s.date] = s; });
-  const absMap = {};
-  absences.forEach(a => { if(a.date) absMap[a.date] = a; });
-
-  const monthName = now.toLocaleDateString([],{month:'long',year:'numeric'});
-
-  let html = `
-    <div class="cal-nav">
-      <button class="bicon" onclick="calPrev('${agentId}')">‹</button>
-      <div class="cal-nav-title">${monthName}</div>
-      <button class="bicon" onclick="calNext('${agentId}')">›</button>
-    </div>
-    <div class="cal-grid">
-      ${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d=>`<div class="cal-hdr-day">${d}</div>`).join('')}
-  `;
-
-  // Fill leading blanks
-  for(let i=0; i<firstDay.getDay(); i++) html += '<div class="cal-day other-month"></div>';
-
-  for(let d=1; d<=lastDay.getDate(); d++){
-    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const isToday = dateStr === todayStr;
-    const sch = schedMap[dateStr];
-    const abs = absMap[dateStr];
-    let cls = isToday ? ' today' : '';
-    let inner = `<div class="cal-day-num">${d}</div>`;
-
-    if(abs){
-      cls += ' absent';
-      const absIcons = {sick:'🤒',noshow:'🚫',emergency:'🚨',other:'📋'};
-      inner += `<div class="cal-day-tag">${absIcons[abs.type]||'📋'}</div>`;
-    } else if(sch){
-      if(sch.shift_start === 'OFF'){
-        cls += ' day-off';
-        inner += `<div class="cal-day-shift" style="color:var(--red)">OFF</div>`;
-      } else {
-        cls += ' scheduled';
-        inner += `<div class="cal-day-shift">${sch.shift_start?.slice(0,5)}–${sch.shift_end?.slice(0,5)}</div>`;
-        if(sch.lunch_start) inner += `<div class="cal-day-tag" style="color:var(--text-3)">🍽 ${sch.lunch_start?.slice(0,5)}</div>`;
-      }
-    }
-
-    html += `<div class="cal-day${cls}" title="${dateStr}" onclick="quickAddShift('${agentId}','${dateStr}')">${inner}</div>`;
-  }
-
-  // Fill trailing blanks
-  const trailing = (7 - ((firstDay.getDay() + lastDay.getDate()) % 7)) % 7;
-  for(let i=0; i<trailing; i++) html += '<div class="cal-day other-month"></div>';
-
-  html += '</div>';
-
-  // Legend
-  html += `<div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap">
-    <span style="font-size:11px;color:var(--text-3);display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:rgba(34,212,122,0.2);border:1px solid rgba(34,212,122,0.4);display:inline-block"></span>Scheduled</span>
-    <span style="font-size:11px;color:var(--text-3);display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:rgba(240,80,80,0.1);border:1px solid rgba(240,80,80,0.2);display:inline-block"></span>Day Off</span>
-    <span style="font-size:11px;color:var(--text-3);display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:rgba(245,200,66,0.15);border:1px solid rgba(245,200,66,0.3);display:inline-block"></span>Absent</span>
-    <span style="font-size:11px;color:var(--text-3);display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--accent-dim);border:1px solid var(--accent);display:inline-block"></span>Today</span>
-  </div>`;
-
-  el.innerHTML = html;
-}
-
-function calPrev(id){ calViewDate = new Date(calViewDate.getFullYear(), calViewDate.getMonth()-1, 1); openProfile(id); }
-function calNext(id){ calViewDate = new Date(calViewDate.getFullYear(), calViewDate.getMonth()+1, 1); openProfile(id); }
-
-function quickAddShift(agentId, dateStr){
-  document.getElementById('ps-date').value = dateStr;
-  // Switch to schedule tab
-  document.querySelectorAll('.dtab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.dtab-pane').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.dtab')[1].classList.add('active');
-  document.getElementById('dp-schedule').classList.add('active');
-}
-
-/* ── SAVE PROFILE INFO ── */
-async function saveProfileInfo(id){
-  const weekly = document.getElementById('pf-weekly').value;
-  const customHrs = document.getElementById('pf-custom-hrs')?.value;
-  const weeklyHrs = weekly === 'custom' ? parseFloat(customHrs)||40 : parseFloat(weekly)||40;
-  try{
-    await PATCH('profiles', `employee_id=eq.${encodeURIComponent(id)}`, {
-      full_name:    document.getElementById('pf-name').value.trim(),
-      department:   document.getElementById('pf-dept').value.trim(),
-      phone:        document.getElementById('pf-phone').value.trim(),
-      hire_date:    document.getElementById('pf-hire').value||null,
-      weekly_hours: weeklyHrs,
-      notes:        document.getElementById('pf-notes').value.trim()
-    });
-    toast('Profile saved','success');
-    loadRoster(); loadFloor();
-    // refresh local agents cache
-    const idx = agents.findIndex(a=>a.employee_id===id);
-    if(idx>=0){ agents[idx].full_name = document.getElementById('pf-name').value.trim(); }
-  } catch(e){ toast('Error saving profile','error'); console.error(e); }
-}
-
-/* ── SAVE PROFILE SCHEDULE ── */
-async function saveProfileSchedule(id){
-  const d = document.getElementById('ps-date').value;
-  const type = document.getElementById('ps-type').value;
-  if(!d){ toast('Select a date','error'); return; }
-  try{
-    if(type === 'off'){
-      await POST('schedules',{employee_id:id, date:d, shift_start:'OFF', shift_end:'OFF'});
-    } else {
-      await POST('schedules',{
-        employee_id:   id,
-        date:          d,
-        shift_start:   document.getElementById('ps-start').value,
-        shift_end:     document.getElementById('ps-end').value,
-        lunch_start:   document.getElementById('ps-lunch-start').value,
-        lunch_end:     document.getElementById('ps-lunch-end').value,
-        break1_time:   document.getElementById('ps-brk1').value,
-        break2_time:   document.getElementById('ps-brk2').value
-      });
-    }
-    toast('Schedule saved','success');
-    calViewDate = new Date(d);
-    openProfile(id);
-  } catch(e){
-    // Try update if duplicate
-    try{
-      await PATCH('schedules', `employee_id=eq.${encodeURIComponent(id)}&date=eq.${d}`, {
-        shift_start:  type==='off'?'OFF':document.getElementById('ps-start').value,
-        shift_end:    type==='off'?'OFF':document.getElementById('ps-end').value,
-        lunch_start:  type==='off'?null:document.getElementById('ps-lunch-start').value,
-        lunch_end:    type==='off'?null:document.getElementById('ps-lunch-end').value,
-        break1_time:  type==='off'?null:document.getElementById('ps-brk1').value,
-        break2_time:  type==='off'?null:document.getElementById('ps-brk2').value
-      });
-      toast('Schedule updated','success');
-      calViewDate = new Date(d);
-      openProfile(id);
-    } catch(e2){ toast('Error saving schedule','error'); console.error(e2); }
-  }
-}
-
-/* ── ABSENCES ── */
-async function saveAbsence(id){
-  const d = document.getElementById('pa-date').value;
-  const type = document.getElementById('pa-type').value;
-  const reason = document.getElementById('pa-reason').value.trim();
-  if(!d){ toast('Select a date','error'); return; }
-  try{
-    await POST('absences',{employee_id:id, date:d, type, reason});
-    toast('Absence logged','success');
-    openProfile(id);
-  } catch(e){ toast('Error logging absence','error'); console.error(e); }
-}
-
-async function delAbsence(absId){
-  try{
-    await DEL('absences',`id=eq.${encodeURIComponent(absId)}`);
-    toast('Absence removed','success');
-    if(currentProfileId) openProfile(currentProfileId);
-  } catch(e){ toast('Error','error'); }
-}
-
-/* ── ROLE TOGGLES ── */
-async function toggleAgentRole(id, makeAdmin){
-  if(adminSession !== 'superadmin'){ toast('Super Admin required','error'); return; }
-  try{
-    await PATCH('profiles', `employee_id=eq.${encodeURIComponent(id)}`, { role: makeAdmin ? 'admin' : 'agent' });
-    toast(makeAdmin ? 'Admin access granted' : 'Reverted to Agent', 'success');
-    document.getElementById('perm-super-row').style.cssText = makeAdmin ? '' : 'opacity:0.4;pointer-events:none';
-    if(!makeAdmin){ document.getElementById('perm-super').checked = false; }
-    loadRoster();
-  } catch(e){ toast('Error updating role','error'); console.error(e); }
-}
-
-async function toggleSuperRole(id, makeSuper){
-  if(adminSession !== 'superadmin'){ toast('Super Admin required','error'); return; }
-  try{
-    await PATCH('profiles', `employee_id=eq.${encodeURIComponent(id)}`, { role: makeSuper ? 'superadmin' : 'admin' });
-    toast(makeSuper ? 'Super Admin granted' : 'Downgraded to Admin', 'success');
-  } catch(e){ toast('Error updating role','error'); console.error(e); }
-}
-
-/* ── WEBHOOK RECEIVER INFO ── */
-// Your phone system can POST call data to your Supabase Edge Function.
-// Example payload your system should send:
-// POST https://lcrqqbnvgadkluccnmja.supabase.co/functions/v1/call-webhook
-// { "date": "2026-06-25", "hour": 14, "total_calls": 52,
-//   "handled": 48, "abandoned": 4, "avg_handle_time": 4.2 }
-// Set up the Edge Function in Supabase Dashboard → Edge Functions.
-
-/* ── INIT ── */
-document.addEventListener('DOMContentLoaded',()=>{
-  populateHours('fc-hour','fc-act-hour','cs-hour');
-  const todayStr = today();
-  const nowMonth = todayStr.slice(0,7);
-  document.getElementById('fc-date').value     = todayStr;
-  document.getElementById('fc-act-date').value = todayStr;
-  document.getElementById('cs-date').value     = todayStr;
-  document.getElementById('cs-ag-date').value  = todayStr;
-  const schMonth = document.getElementById('sch-month');
-  if(schMonth) schMonth.value = nowMonth;
-  document.getElementById('thresh-late').value  = threshLate;
-  document.getElementById('thresh-break').value = threshBreak;
-  document.getElementById('id-inp').addEventListener('keydown',e=>{if(e.key==='Enter')lookupEmployee();});
-  document.getElementById('admin-user-input')?.addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('admin-pw-input')?.focus();});
-  // Pre-set date range pickers
-  const nextMonthDate = new Date();
-  nextMonthDate.setMonth(nextMonthDate.getMonth()+1);
-  const endOfNextMonth = new Date(nextMonthDate.getFullYear(),nextMonthDate.getMonth()+1,0);
-  const endStr = endOfNextMonth.toISOString().slice(0,10);
-  ['pat-from','rng-from'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=todayStr;});
-  ['pat-to','rng-to'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=endStr;});
-  loadFloor();
-  setInterval(checkDeviations,120000);
-  setInterval(loadFloor,60000);
-});
-</script>
 </body>
 </html>
